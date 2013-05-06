@@ -1,0 +1,9 @@
+*
+!.gitignore
+!*.hpp
+!*.cpp
+!*.cpp
+!Makefile
+!README
+!Shared
+!Server
