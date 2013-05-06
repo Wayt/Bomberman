@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:32:40 2013 maxime ginters
-** Last update Mon May 06 17:39:07 2013 maxime ginters
+** Last update Mon May 06 18:30:57 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKETACCEPTOR_H_
@@ -16,21 +16,22 @@
 #include "Shared.h"
 #include "SessionSocket.h"
 
+class SessionSocketMgr;
+
 using boost::asio::ip::tcp;
 
 class SessionSocketAcceptor
 {
 public:
-    SessionSocketAcceptor(boost::asio::io_service& io_service);
+    SessionSocketAcceptor(SessionSocketMgr* mgr);
 
     bool Initialize(std::string const& addr, std::string const& port);
 
-    boost::asio::io_service& getIOService();
-
+    void RegisterAccept();
     void HandleAccept(SessionSocket* new_sock, const boost::system::error_code& error);
 
 private:
-    boost::asio::io_service& _io_service;
+    SessionSocketMgr* _socketMgr;
     boost::asio::ip::tcp::acceptor _acceptor;
 };
 

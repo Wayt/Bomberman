@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:22:32 2013 maxime ginters
-** Last update Mon May 06 15:59:05 2013 maxime ginters
+** Last update Mon May 06 18:16:13 2013 maxime ginters
 */
 
 #ifndef SERVER_H_
@@ -15,6 +15,7 @@
 #include "Shared.h"
 #include "RunRunnable.hpp"
 #include "SessionSocketAcceptor.h"
+#include "SessionSocketMgr.h"
 
 #define SERVER_SLEEP_TIME 50
 
@@ -35,11 +36,7 @@ public:
 private:
     void Update(uint32 const diff);
 
-    boost::asio::io_service _io_service;
-    RunnablePool<boost::asio::io_service> _NetThreads;
-    SessionSocketAcceptor _acceptor;
-    uint8 _NetThreadsCount;
-
+    SessionSocketMgr _socketMgr;
 };
 
 #endif /* !SERVER_H_ */

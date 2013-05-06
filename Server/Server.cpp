@@ -5,15 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Mon May 06 15:59:25 2013 maxime ginters
+** Last update Mon May 06 18:17:21 2013 maxime ginters
 */
 
 #include <iostream>
 #include <unistd.h>
 #include "Server.h"
 
-Server::Server() : _io_service(), _NetThreads(), _acceptor(_io_service),
-    _NetThreadsCount(1)
+Server::Server() : _socketMgr()
 {}
 
 Server::~Server()
@@ -21,9 +20,8 @@ Server::~Server()
 
 bool Server::Initialize(std::string const& addr, std::string const& port, uint8 netthread)
 {
-    if (!_acceptor.Initialize(addr, port))
+    if (!_socketMgr.Initialize(addr, port, netthread))
         return false;
-    _NetThreadsCount = netthread;
 
     // prepare map
     return true;
@@ -31,21 +29,20 @@ bool Server::Initialize(std::string const& addr, std::string const& port, uint8 
 
 void Server::Start()
 {
-    for (uint8 i = 0; i < _NetThreadsCount; ++i)
-        _NetThreads.CreateThread(_io_service);
     run();
+    _socketMgr.StartNetwork();
 }
 
 void Server::Stop()
 {
+    _socketMgr.StopNetwork();
     stop();
-    _io_service.stop();
 }
 
 void Server::Join()
 {
+    _socketMgr.JoinNetwork();
     join();
-    _NetThreads.JoinAll();
 }
 
 void Server::operator()()
