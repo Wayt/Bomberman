@@ -4,6 +4,7 @@
 !*.hpp
 !*.cpp
 !*.h
+!*.so
 !Makefile
 !README
 !Shared
