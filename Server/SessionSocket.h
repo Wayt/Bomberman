@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:10 2013 maxime ginters
-** Last update Mon May 06 17:38:07 2013 maxime ginters
+** Last update Mon May 06 18:35:36 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKET_H_
@@ -25,7 +25,7 @@ public:
 
     tcp::socket& socket();
 
-    void start();
+    void OnOpen();
 private:
     tcp::socket _socket;
     Session* _session;
