@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Apr 15 14:08:19 2013 maxime ginters
-** Last update Tue Apr 16 19:13:28 2013 maxime ginters
+** Last update Mon May 06 17:33:58 2013 fabien casters
 */
 
 #ifndef SHAREDDEFINES_H_
