@@ -3,7 +3,7 @@
 !.gitignore
 !*.hpp
 !*.cpp
-!*.cpp
+!*.h
 !Makefile
 !README
 !Shared
