@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue Apr 16 16:05:56 2013 maxime ginters
-** Last update Tue Apr 16 19:14:49 2013 maxime ginters
+** Last update Mon May 06 14:16:50 2013 maxime ginters
 */
 
 #include <algorithm>
@@ -40,14 +40,19 @@ std::string &trim(std::string &s)
         return ltrim(rtrim(s));
 }
 
-uint64 GetMSTime()
+uint32 GetMSTime()
 {
     timeval time;
     gettimeofday(&time, NULL);
     return (time.tv_sec * 1000) + (time.tv_usec / 1000);
 }
 
-uint32 GetMSTimeDiffToNow(uint64 time)
+uint32 GetMSTimeDiffToNow(uint32 time)
 {
-    return GetMSTime() - time;
+    return GetMSTimeDiff(time, GetMSTime());
+}
+
+uint32 GetMSTimeDiff(uint32 prev, uint32 now)
+{
+    return now - prev;
 }
