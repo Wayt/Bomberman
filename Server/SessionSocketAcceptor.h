@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:32:40 2013 maxime ginters
-** Last update Mon May 06 18:30:57 2013 maxime ginters
+** Last update Wed May 08 17:19:49 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKETACCEPTOR_H_
@@ -14,9 +14,9 @@
 #include <boost/bind.hpp>
 #include <boost/asio.hpp>
 #include "Shared.h"
-#include "SessionSocket.h"
 
 class SessionSocketMgr;
+class SessionSocket;
 
 using boost::asio::ip::tcp;
 

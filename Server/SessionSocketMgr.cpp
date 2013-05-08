@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:05:32 2013 maxime ginters
-** Last update Mon May 06 18:35:45 2013 maxime ginters
+** Last update Wed May 08 17:16:30 2013 maxime ginters
 */
 
 #include "SessionSocketMgr.h"
@@ -48,9 +48,16 @@ void SessionSocketMgr::HandleAccept(SessionSocket* new_sock, const boost::system
 {
     if (!error)
     {
+        _NewSocks.push_back(new_sock);
         new_sock->OnOpen();
     }
     else
         delete new_sock;
     _acceptor.RegisterAccept();
+}
+
+void SessionSocketMgr::RemoveNewSock(SessionSocket* sock)
+{
+    _NewSocks.remove(sock);
+    std::cout << "NewSockSize : " << _NewSocks.size() << std::endl;
 }

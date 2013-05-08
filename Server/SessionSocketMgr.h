@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:05:32 2013 maxime ginters
-** Last update Mon May 06 18:33:04 2013 maxime ginters
+** Last update Wed May 08 17:14:18 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKETMGR_H_
@@ -15,6 +15,9 @@
 #include "Shared.h"
 #include "RunRunnable.hpp"
 #include "SessionSocketAcceptor.h"
+#include "SessionSocket.h"
+
+class SessionSocket;
 
 class SessionSocketMgr
 {
@@ -30,11 +33,14 @@ public:
 
     void HandleAccept(SessionSocket* new_sock, const boost::system::error_code& error);
 
+    void RemoveNewSock(SessionSocket* sock);
+
 private:
     boost::asio::io_service _io_service;
     SessionSocketAcceptor _acceptor;
     uint8 _NetThreadsCount;
     RunnablePool<boost::asio::io_service> _NetThreads;
+    std::list<SessionSocket*> _NewSocks;
 };
 
 #endif /* !SESSIONSOCKETMGR_H_ */
