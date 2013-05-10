@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 08 17:23:17 2013 maxime ginters
-** Last update Wed May 08 18:13:24 2013 maxime ginters
+** Last update Fri May 10 15:39:04 2013 maxime ginters
 */
 
 #ifndef PACKET_H_
@@ -52,6 +52,13 @@ public:
     {
         _storage.reserve(size + 2);
         *this << uint16(code);
+    }
+
+    Packet(char buff[], uint32 size) :
+        _rpos(2), _wpos(size)
+    {
+        _storage.reserve(size);
+        memcpy(&_storage[0], buff, size);
     }
 
     Packet& operator<<(uint8 value)
@@ -102,6 +109,98 @@ public:
         return *this;
     }
 
+    Packet& operator<<(float value)
+    {
+        append<float>(swap_endian(value));
+        return *this;
+    }
+
+    Packet& operator<<(double value)
+    {
+        append<double>(swap_endian(value));
+        return *this;
+    }
+
+    Packet& operator<<(std::string const& value)
+    {
+        append((uint8 const*)value.c_str(), value.length());
+        append((uint8)0);
+        return *this;
+    }
+
+    Packet& operator>>(std::string& value)
+    {
+        value.clear();
+        while (_rpos < size())
+        {
+            char c = read<char>();
+            if (c == 0)
+                break;
+            value += c;
+        }
+        return *this;
+    }
+
+    Packet& operator>>(uint8& value)
+    {
+        value = read<uint8>();
+        return *this;
+    }
+
+    Packet& operator>>(uint16& value)
+    {
+        value = read<uint16>();
+        return *this;
+    }
+
+    Packet& operator>>(uint32& value)
+    {
+        value = read<uint32>();
+        return *this;
+    }
+
+    Packet& operator>>(uint64& value)
+    {
+        value = read<uint64>();
+        return *this;
+    }
+
+    Packet& operator>>(int8& value)
+    {
+        value = read<int8>();
+        return *this;
+    }
+
+    Packet& operator>>(int16& value)
+    {
+        value = read<int16>();
+        return *this;
+    }
+
+    Packet& operator>>(int32& value)
+    {
+        value = read<int32>();
+        return *this;
+    }
+
+    Packet& operator>>(int64& value)
+    {
+        value = read<int64>();
+        return *this;
+    }
+
+    Packet& operator>>(float& value)
+    {
+        value = read<float>();
+        return *this;
+    }
+
+    Packet& operator>>(double& value)
+    {
+        value = read<double>();
+        return *this;
+    }
+
     size_t size() const
     {
         return _storage.size();
@@ -112,6 +211,11 @@ public:
         return &_storage[0];
     }
 
+    Opcodes GetOpcode() const
+    {
+        return (Opcodes)read<uint16>(0);
+    }
+
 private:
     template<class T>
     void append(T value)
@@ -119,12 +223,27 @@ private:
         append((uint8*)&value, sizeof(value));
     }
 
-    void append(const uint8* data, size_t size)
+    void append(const uint8* data, uint32 size)
     {
         if (_storage.size() < _wpos + size)
             _storage.resize(_wpos + size);
         memcpy(&_storage[_wpos], data, size);
         _wpos += size;
+    }
+
+    template<class T>
+    T read()
+    {
+        T val = read<T>(_rpos);
+        _rpos += sizeof(T);
+        return val;
+    }
+
+    template<class T>
+    T read(uint32 pos) const
+    {
+        T val = *((T const*)&_storage[pos]);
+        return val;
     }
 
     std::vector<uint8> _storage;

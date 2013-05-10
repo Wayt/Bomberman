@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Mon May 06 18:17:46 2013 maxime ginters
+## Last update Fri May 10 15:44:30 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -20,7 +20,8 @@ LDFLAGS	= -L../Shared -lshared -lpthread -lboost_system
 
 NAME	= bomberman
 
-SRCS	= Main.cpp Server.cpp SessionSocketAcceptor.cpp Session.cpp SessionSocket.cpp SessionSocketMgr.cpp
+SRCS	= Main.cpp Server.cpp SessionSocketAcceptor.cpp Session.cpp SessionSocket.cpp SessionSocketMgr.cpp \
+		  Opcodes.cpp SessionHandler.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

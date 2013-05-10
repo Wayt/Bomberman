@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:22:32 2013 maxime ginters
-** Last update Mon May 06 18:16:13 2013 maxime ginters
+** Last update Fri May 10 16:15:48 2013 maxime ginters
 */
 
 #ifndef SERVER_H_
@@ -33,10 +33,15 @@ public:
 
     void operator()();
 
+    void AddSession(Session* sess);
+
 private:
     void Update(uint32 const diff);
+    void UpdateSessions(uint32 const diff);
 
     SessionSocketMgr _socketMgr;
+    LockedQueue<Session> _addSessionQueue;
+    std::list<Session*> _sessionList;
 };
 
 #endif /* !SERVER_H_ */

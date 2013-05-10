@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:05:32 2013 maxime ginters
-** Last update Wed May 08 17:14:18 2013 maxime ginters
+** Last update Fri May 10 15:49:07 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKETMGR_H_
@@ -16,13 +16,15 @@
 #include "RunRunnable.hpp"
 #include "SessionSocketAcceptor.h"
 #include "SessionSocket.h"
+#include "Opcodes.h"
 
 class SessionSocket;
+class Server;
 
 class SessionSocketMgr
 {
 public:
-    SessionSocketMgr();
+    SessionSocketMgr(Server* srv);
 
     boost::asio::io_service& GetIOService();
 
@@ -35,12 +37,15 @@ public:
 
     void RemoveNewSock(SessionSocket* sock);
 
+    Server* GetServer() const;
+
 private:
     boost::asio::io_service _io_service;
     SessionSocketAcceptor _acceptor;
     uint8 _NetThreadsCount;
     RunnablePool<boost::asio::io_service> _NetThreads;
     std::list<SessionSocket*> _NewSocks;
+    Server* _server;
 };
 
 #endif /* !SESSIONSOCKETMGR_H_ */

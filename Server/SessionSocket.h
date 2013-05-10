@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:10 2013 maxime ginters
-** Last update Wed May 08 17:38:12 2013 maxime ginters
+** Last update Fri May 10 16:02:57 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKET_H_
@@ -28,9 +28,12 @@ public:
     SessionSocket(SessionSocketMgr* sockMgr);
 
     tcp::socket& socket();
+    bool IsClosed() const;
 
     void OnOpen();
     void OnClose();
+
+    void Close();
 
     void HandleInput(boost::system::error_code const& error, std::size_t reicvSize);
 

@@ -5,14 +5,15 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Mon May 06 18:17:21 2013 maxime ginters
+** Last update Fri May 10 16:16:22 2013 maxime ginters
 */
 
 #include <iostream>
 #include <unistd.h>
 #include "Server.h"
+#include "Session.h"
 
-Server::Server() : _socketMgr()
+Server::Server() : _socketMgr(this)
 {}
 
 Server::~Server()
@@ -69,8 +70,38 @@ void Server::operator()()
 
 }
 
+void Server::AddSession(Session* sess)
+{
+    _addSessionQueue.add(sess);
+}
+
 void Server::Update(uint32 const diff)
 {
-    (void)diff;
-    sleep(10);
+    UpdateSessions(diff);
+}
+
+void Server::UpdateSessions(uint32 const diff)
+{
+    Session* sess = NULL;
+    while ((sess = _addSessionQueue.get()) != NULL)
+        _sessionList.push_back(sess);
+
+    std::list<Session*>::iterator itr = _sessionList.begin();
+    std::list<Session*>::iterator next;
+    for (; itr != _sessionList.end(); itr = next)
+    {
+        next = itr;
+        ++next;
+
+        if ((sess = (*itr)) != NULL)
+        {
+            if (!sess->Update(diff))
+            {
+                sess->HandleLogout();
+                _sessionList.erase(itr);
+                delete sess;
+
+            }
+        }
+    }
 }

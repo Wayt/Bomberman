@@ -5,13 +5,15 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:05:32 2013 maxime ginters
-** Last update Wed May 08 17:16:30 2013 maxime ginters
+** Last update Fri May 10 16:10:19 2013 maxime ginters
 */
 
 #include "SessionSocketMgr.h"
+#include "Server.h"
 
-SessionSocketMgr::SessionSocketMgr() : _io_service(),
-    _acceptor(this), _NetThreadsCount(1), _NetThreads()
+SessionSocketMgr::SessionSocketMgr(Server* srv) : _io_service(),
+    _acceptor(this), _NetThreadsCount(1), _NetThreads(),
+    _server(srv)
 {}
 
 boost::asio::io_service& SessionSocketMgr::GetIOService()
@@ -48,7 +50,6 @@ void SessionSocketMgr::HandleAccept(SessionSocket* new_sock, const boost::system
 {
     if (!error)
     {
-        _NewSocks.push_back(new_sock);
         new_sock->OnOpen();
     }
     else
@@ -56,8 +57,7 @@ void SessionSocketMgr::HandleAccept(SessionSocket* new_sock, const boost::system
     _acceptor.RegisterAccept();
 }
 
-void SessionSocketMgr::RemoveNewSock(SessionSocket* sock)
+Server* SessionSocketMgr::GetServer() const
 {
-    _NewSocks.remove(sock);
-    std::cout << "NewSockSize : " << _NewSocks.size() << std::endl;
+    return _server;
 }
