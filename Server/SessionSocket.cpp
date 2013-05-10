@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:18 2013 maxime ginters
-** Last update Fri May 10 16:10:49 2013 maxime ginters
+** Last update Fri May 10 23:05:11 2013 maxime ginters
 */
 
 #include "SessionSocket.h"
@@ -56,30 +56,25 @@ void SessionSocket::HandleInput(boost::system::error_code const& error, std::siz
     if (!_session)
         return;
 
-    (void)bytes_transferred;
-    (void)_session;
-    std::cout << "HandleInput : ";
-    std::cout.write(buffer, bytes_transferred);
-    std::cout << std::endl;
+    header[bytes_transferred] = 0;
+    uint16 size = to<uint16>(header);
+    char buff[size];
 
-    _session->QueuePacket(new Packet(buffer, bytes_transferred));
+    boost::system::error_code ignored_ec;
+    read(_socket, boost::asio::buffer(buff, size), ignored_ec);
+
+    _session->QueuePacket(new Packet(buff, size));
     _RegisterRead();
 }
 
 void SessionSocket::SendPacket(Packet const* packet)
 {
-    const uint8* data = packet->content();
-    size_t size = packet->size();
-    for (size_t i = 0; i < size; ++i)
-        printf("%x - ", data[i]);
-    printf("\n");
-    fflush(stdout);
     _socket.write_some(boost::asio::buffer(packet->content(), packet->size()));
 }
 
 void SessionSocket::_RegisterRead()
 {
-    _socket.async_read_some(boost::asio::buffer(buffer, SOCKET_BUFFER_SIZE),
+    async_read(_socket, boost::asio::buffer(header, PACKET_HEADER_SIZE),
             boost::bind(&SessionSocket::HandleInput, this,
                 boost::asio::placeholders::error,
                 boost::asio::placeholders::bytes_transferred));

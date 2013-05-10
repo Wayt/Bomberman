@@ -5,13 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:10 2013 maxime ginters
-** Last update Fri May 10 16:02:57 2013 maxime ginters
+** Last update Fri May 10 23:04:38 2013 maxime ginters
 */
 
 #ifndef SESSIONSOCKET_H_
 # define SESSIONSOCKET_H_
 
-#define SOCKET_BUFFER_SIZE 4096
+#define PACKET_HEADER_SIZE 2
 
 #include <boost/asio.hpp>
 #include "Shared.h"
@@ -42,7 +42,7 @@ private:
     void _RegisterRead();
     tcp::socket _socket;
     Session* _session;
-    char buffer[SOCKET_BUFFER_SIZE];
+    char header[PACKET_HEADER_SIZE + 1];
     SessionSocketMgr* _sockMgr;
 };
 

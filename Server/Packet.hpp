@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 08 17:23:17 2013 maxime ginters
-** Last update Fri May 10 15:39:04 2013 maxime ginters
+** Last update Fri May 10 22:49:29 2013 maxime ginters
 */
 
 #ifndef PACKET_H_
@@ -48,17 +48,18 @@ class Packet
 {
 public:
     Packet(Opcodes code, uint32 size = PACKET_DEFAULT_SIZE) :
-        _rpos(0), _wpos(0)
+        _rpos(2), _wpos(2)
     {
-        _storage.reserve(size + 2);
+        _storage.reserve(size + 4);
         *this << uint16(code);
     }
 
-    Packet(char buff[], uint32 size) :
-        _rpos(2), _wpos(size)
+    Packet(char buff[], uint16 size) :
+        _rpos(4), _wpos(size)
     {
-        _storage.reserve(size);
-        memcpy(&_storage[0], buff, size);
+        _storage.reserve(size + 2);
+        memcpy(&_storage[0], (const uint8*)&size, 2);
+        memcpy(&_storage[2], buff, size);
     }
 
     Packet& operator<<(uint8 value)
@@ -229,6 +230,7 @@ private:
             _storage.resize(_wpos + size);
         memcpy(&_storage[_wpos], data, size);
         _wpos += size;
+        memcpy(&_storage[0], (const uint8*)&_wpos, 2);
     }
 
     template<class T>
@@ -247,8 +249,8 @@ private:
     }
 
     std::vector<uint8> _storage;
-    uint32 _rpos;
-    uint32 _wpos;
+    uint16 _rpos;
+    uint16 _wpos;
 };
 
 #endif /* !PACKET_H_ */
