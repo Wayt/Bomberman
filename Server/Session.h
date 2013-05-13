@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:47:46 2013 maxime ginters
-** Last update Fri May 10 16:08:15 2013 maxime ginters
+** Last update Mon May 13 17:01:44 2013 maxime ginters
 */
 
 #ifndef SESSION_H_
@@ -27,6 +27,7 @@ public:
     OpcodeStatus GetStatus() const;
 
     void QueuePacket(Packet* pkt);
+    void SendPacket(Packet const& pkt);
 
     bool Update(uint32 const diff);
 
@@ -34,7 +35,7 @@ public:
     void HandleLogout();
 
     // Handler
-    void HandlePlayerName(Packet& recvData);
+    void HandleLoginPlayer(Packet& recvData);
 
 private:
     SessionSocket* _socket;

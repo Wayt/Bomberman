@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:38:08 2013 maxime ginters
-** Last update Fri May 10 15:07:03 2013 maxime ginters
+** Last update Mon May 13 13:54:04 2013 maxime ginters
 */
 
 #ifndef SHARED_H_
@@ -21,5 +21,6 @@
 #include "Singleton.hpp"
 #include "SharedDefines.h"
 #include "LockedQueue.hpp"
+#include "RunRunnable.hpp"
 
 #endif /* !SHARED_H_ */

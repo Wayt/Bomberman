@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:18 2013 maxime ginters
-** Last update Fri May 10 23:05:11 2013 maxime ginters
+** Last update Mon May 13 16:46:40 2013 maxime ginters
 */
 
 #include "SessionSocket.h"
@@ -43,6 +43,7 @@ void SessionSocket::Close()
     OnClose();
     _socket.close();
 }
+
 void SessionSocket::HandleInput(boost::system::error_code const& error, std::size_t bytes_transferred)
 {
     if (error)
@@ -56,9 +57,9 @@ void SessionSocket::HandleInput(boost::system::error_code const& error, std::siz
     if (!_session)
         return;
 
-    header[bytes_transferred] = 0;
-    uint16 size = to<uint16>(header);
-    char buff[size];
+    (void)bytes_transferred;
+    uint16 size = swap_endian(*((uint16 const*)&header[0]));
+    uint8 buff[size];
 
     boost::system::error_code ignored_ec;
     read(_socket, boost::asio::buffer(buff, size), ignored_ec);

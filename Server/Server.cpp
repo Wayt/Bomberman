@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Fri May 10 16:16:22 2013 maxime ginters
+** Last update Mon May 13 14:19:32 2013 maxime ginters
 */
 
 #include <iostream>
@@ -67,7 +67,6 @@ void Server::operator()()
         else
             prevSleep = 0;
     }
-
 }
 
 void Server::AddSession(Session* sess)

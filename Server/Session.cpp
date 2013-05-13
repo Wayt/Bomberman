@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:52:15 2013 maxime ginters
-** Last update Fri May 10 16:16:38 2013 maxime ginters
+** Last update Mon May 13 17:01:39 2013 maxime ginters
 */
 
 #include <iostream>
@@ -34,6 +34,11 @@ void Session::QueuePacket(Packet* pkt)
     _recvQueue.add(pkt);
 }
 
+void Session::SendPacket(Packet const& pkt)
+{
+    _socket->SendPacket(&pkt);
+}
+
 void Session::Close()
 {
     _closing = true;
@@ -49,7 +54,6 @@ void Session::HandleLogout()
 
 bool Session::Update(uint32 const diff)
 {
-    std::cout << "Session::Update" << std::endl;
     if (_closing)
         return false;
 
@@ -61,7 +65,7 @@ bool Session::Update(uint32 const diff)
         if (!pkt)
             continue;
 
-        OpcodeHandler const* opcodehandler = sOpcodesMgr->GetOpcodeHandler(pkt->GetOpcode());
+        OpcodeHandler const* opcodehandler = sOpcodesMgr->GetOpcodeHandler((Opcodes)pkt->GetOpcode());
         if (!opcodehandler)
         {
             sLog->error("Error: receiv an unknow opcode : 0x%x", pkt->GetOpcode());
@@ -76,8 +80,8 @@ bool Session::Update(uint32 const diff)
             continue;
         }
 
-        if (opcodehandler->handler)
-            (this->*(opcodehandler->handler))(*pkt);
+        if (opcodehandler->srv_handler)
+            (this->*(opcodehandler->srv_handler))(*pkt);
 
         delete pkt;
     }

@@ -5,17 +5,19 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 08 17:23:17 2013 maxime ginters
-** Last update Mon May 13 13:44:42 2013 maxime ginters
+** Last update Mon May 13 16:24:31 2013 maxime ginters
 */
 
 #ifndef PACKET_H_
 # define PACKET_H_
 
 #include <vector>
+#include <cstring>
 #include "Opcodes.h"
 #include "Shared.h"
 
 #define PACKET_DEFAULT_SIZE 512
+#define PACKET_HEADER_SIZE 2
 
 inline bool my_is_big_endian()
 {
@@ -54,12 +56,12 @@ public:
         *this << uint16(code);
     }
 
-    Packet(char buff[], uint16 size) :
-        _rpos(4), _wpos(size)
+    Packet(uint8 buff[], uint16 size) :
+        _rpos(4), _wpos(0)
     {
         _storage.reserve(size + 2);
-        memcpy(&_storage[0], (const uint8*)&size, 2);
-        memcpy(&_storage[2], buff, size);
+        append(size);
+        append(buff, size);
     }
 
     Packet& operator<<(uint8 value)
@@ -212,9 +214,9 @@ public:
         return &_storage[0];
     }
 
-    Opcodes GetOpcode() const
+    uint16 GetOpcode() const
     {
-        return (Opcodes)read<uint16>(0);
+        return read<uint16>(2);
     }
 
 private:
@@ -236,6 +238,7 @@ private:
     void update_size()
     {
         uint16 size = _wpos - 2;
+        size = swap_endian(size);
         memcpy(&_storage[0], (const uint8*)&size, 2);
     }
 
@@ -251,7 +254,7 @@ private:
     T read(uint32 pos) const
     {
         T val = *((T const*)&_storage[pos]);
-        return val;
+        return swap_endian(val);
     }
 
     std::vector<uint8> _storage;

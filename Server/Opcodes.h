@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Fri May 10 15:40:38 2013 maxime ginters
+** Last update Mon May 13 16:53:58 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -21,21 +21,30 @@ enum OpcodeStatus
     STATUS_INGAME       = 3
 };
 
+enum LoginResponses
+{
+    LOGIN_RESPONSE_OK                 = 0,
+    LOGIN_RESPONSE_NICK_UNAVAILABLE   = 1
+};
+
 enum Opcodes
 {
     NULL_OPCODE         = 0x0000,
     SMSG_TEST           = 0x0001,
-    CMSG_PLAYER_NAME    = 0x0002,
+    CMSG_LOGIN_PLAYER   = 0x0002,
+    SMSG_LOGIN_RESPONSE = 0x0003,
 };
 
 class Packet;
 class Session;
+class Client;
 
 struct OpcodeHandler
 {
     Opcodes opcode;
     OpcodeStatus status;
-    void (Session::*handler)(Packet& recvData);
+    void (Session::*srv_handler)(Packet& recvData);
+    void (Client::*cli_handler)(Packet& recvData);
 };
 
 class OpcodesMgr : public Singleton<OpcodesMgr>

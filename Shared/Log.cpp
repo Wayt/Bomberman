@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue Apr 16 15:10:46 2013 maxime ginters
-** Last update Mon May 06 13:59:58 2013 maxime ginters
+** Last update Mon May 13 17:03:30 2013 maxime ginters
 */
 
 #include <ctime>
@@ -57,6 +57,7 @@ void Log::out(const char* str, ...)
     std::string st = ctime(&tm);
     st[st.length() - 1] = ' ';
     _stream << st << ": " << buff << std::endl;
+    std::cout << "OUT : " << buff << std::endl;
     _streamMutex.unlock();
 }
 
@@ -75,6 +76,7 @@ void Log::error(const char* str, ...)
     std::string st = ctime(&tm);
     st[st.length() - 1] = 0;
     _error << st << ": " << buff << std::endl;
+    std::cerr << "ERR : " << buff << std::endl;
     _errorMutex.unlock();
 }
 
@@ -93,5 +95,6 @@ void Log::debug(const char* str, ...)
     std::string st = ctime(&tm);
     st[st.length() - 1] = 0;
     _debug << st << ": " << buff << std::endl;
+    std::cout << "DEBUG : " << buff << std::endl;
     _debugMutex.unlock();
 }
