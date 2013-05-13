@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Mon May 13 16:55:46 2013 maxime ginters
+## Last update Mon May 13 18:35:08 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -14,14 +14,15 @@ RM	= rm -f
 
 CXXFLAGS	+= -Wextra -Wall -Werror
 CXXFLAGS	+= -I. -I../Shared
+CXXFLAGS	+= -fopenmp
 #CXXFLAGS	+= -ggdb3
 
-LDFLAGS	= -L../Shared -lshared -lpthread -lboost_system
+LDFLAGS	= -L../Shared -lshared -lpthread -lboost_system -lgomp
 
 NAME	= bomberman
 
 SRCS	= Main.cpp Server.cpp SessionSocketAcceptor.cpp Session.cpp SessionSocket.cpp SessionSocketMgr.cpp \
-		  Opcodes.cpp SessionHandler.cpp \
+		  Opcodes.cpp SessionHandler.cpp Map.cpp MapObject.cpp \
 		  Client.cpp ClientSocket.cpp ClientHandler.cpp
 
 OBJS	= $(SRCS:.cpp=.o)

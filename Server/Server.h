@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:22:32 2013 maxime ginters
-** Last update Fri May 10 16:15:48 2013 maxime ginters
+** Last update Mon May 13 18:36:46 2013 maxime ginters
 */
 
 #ifndef SERVER_H_
@@ -16,6 +16,7 @@
 #include "RunRunnable.hpp"
 #include "SessionSocketAcceptor.h"
 #include "SessionSocketMgr.h"
+#include "Map.h"
 
 #define SERVER_SLEEP_TIME 50
 
@@ -42,6 +43,7 @@ private:
     SessionSocketMgr _socketMgr;
     LockedQueue<Session> _addSessionQueue;
     std::list<Session*> _sessionList;
+    Map* _map;
 };
 
 #endif /* !SERVER_H_ */

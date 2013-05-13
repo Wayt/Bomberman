@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Mon May 13 14:19:32 2013 maxime ginters
+** Last update Mon May 13 18:38:03 2013 maxime ginters
 */
 
 #include <iostream>
@@ -13,7 +13,8 @@
 #include "Server.h"
 #include "Session.h"
 
-Server::Server() : _socketMgr(this)
+Server::Server() : _socketMgr(this), _addSessionQueue(),
+    _sessionList(), _map(NULL)
 {}
 
 Server::~Server()
@@ -25,6 +26,7 @@ bool Server::Initialize(std::string const& addr, std::string const& port, uint8 
         return false;
 
     // prepare map
+    _map = Map::CreateNewRandomMap(300, 300, 0.5f, 0.5f);
     return true;
 }
 
