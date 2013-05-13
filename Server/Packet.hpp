@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 08 17:23:17 2013 maxime ginters
-** Last update Fri May 10 23:38:28 2013 maxime ginters
+** Last update Mon May 13 13:44:42 2013 maxime ginters
 */
 
 #ifndef PACKET_H_
@@ -236,7 +236,7 @@ private:
     void update_size()
     {
         uint16 size = _wpos - 2;
-        memcpy(&_storage[0], (const uint8*)&ize 2);
+        memcpy(&_storage[0], (const uint8*)&size, 2);
     }
 
     template<class T>
