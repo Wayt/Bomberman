@@ -5,13 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Mon May 13 17:13:14 2013 maxime ginters
+** Last update Tue May 14 17:37:46 2013 maxime ginters
 */
 
 #include "Client.h"
 
 Client::Client(std::string const& name) :
-    _name(name), _ioservice(), _status(STATUS_NO_AUTHED),
+    _name(name), _guid(0), _pos(), _modelId(0), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this),
     _NetThreads(), _recvQueue()
 {}

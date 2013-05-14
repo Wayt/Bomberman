@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Tue May 14 17:11:45 2013 maxime ginters
+** Last update Tue May 14 17:26:51 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -15,7 +15,7 @@
 #include "Session.h"
 
 Map::Map(uint32 width, uint32 height) :
-    _mapGridMap(), _nextGuid(1)
+    _mapGridMap(), _nextGuid(1), _width(width), _height(height)
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -221,4 +221,10 @@ void Map::GridUpdater(Player* player, uint16 action, uint8 updateFlags)
             if (MapGrid* grid = GetGridAt(x + updater[i].x, y + updater[i].y))
                 grid->UpdateForPlayer(player, action);
     }
+}
+
+void Map::GetWidthAndHeight(uint32& width, uint32& height) const
+{
+    width = _width;
+    height = _height;
 }

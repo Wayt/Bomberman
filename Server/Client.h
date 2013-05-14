@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Mon May 13 16:52:30 2013 maxime ginters
+** Last update Tue May 14 17:37:57 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -15,6 +15,7 @@
 #include <boost/asio.hpp>
 #include "Shared.h"
 #include "ClientSocket.h"
+#include "Position.h"
 
 #define CLIENT_SLEEP_TIME 20
 
@@ -39,11 +40,16 @@ public:
 
     // Handlers
     void HandleLoginResponse(Packet& recvData);
+    void HandleSendObject(Packet& recvData);
+    void HandleAddToMap(Packet& recvData);
 
 private:
     void Update(uint32 const diff);
 
     std::string _name;
+    uint64 _guid;
+    Position _pos;
+    uint32 _modelId;
     boost::asio::io_service _ioservice;
     OpcodeStatus _status;
     ClientSocket _socket;

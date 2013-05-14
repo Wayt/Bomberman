@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Tue May 14 16:37:29 2013 maxime ginters
+** Last update Tue May 14 17:21:21 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -34,6 +34,8 @@ enum Opcodes
     CMSG_LOGIN_PLAYER   = 0x0002,
     SMSG_LOGIN_RESPONSE = 0x0003,
     SMSG_SEND_OBJECT    = 0x0004,
+    CMSG_ENTER_GAME     = 0x0005,
+    SMSG_ADD_TO_MAP     = 0x0006,
 };
 
 class Packet;

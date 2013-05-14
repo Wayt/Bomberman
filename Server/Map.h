@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Tue May 14 17:06:59 2013 maxime ginters
+** Last update Tue May 14 17:26:13 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -75,12 +75,16 @@ public:
 
     uint64 MakeNewGuid();
 
+    void GetWidthAndHeight(uint32& width, uint32& height) const;
+
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;
     MapGrid* GetGridAt(float x, float y);
 
     std::map<std::pair<float, float>, MapGrid*> _mapGridMap;
     uint64 _nextGuid;
+    uint32 _width;
+    uint32 _height;
 };
 
 #endif /* !MAP_H_ */

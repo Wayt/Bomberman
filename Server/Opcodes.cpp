@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Mon May 13 16:57:35 2013 maxime ginters
+** Last update Tue May 14 17:22:46 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -18,6 +18,9 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
     static OpcodeHandler opcodes[] = {
         {CMSG_LOGIN_PLAYER, STATUS_NO_AUTHED, &Session::HandleLoginPlayer, NULL},
         {SMSG_LOGIN_RESPONSE, STATUS_NO_AUTHED, NULL, &Client::HandleLoginResponse},
+        {SMSG_SEND_OBJECT, STATUS_INGAME, NULL, &Client::HandleSendObject},
+        {CMSG_ENTER_GAME, STATUS_AUTHED, &Session::HandleEnterGame, NULL},
+        {SMSG_ADD_TO_MAP, STATUS_AUTHED, NULL, &Client::HandleAddToMap},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}
     };
 
