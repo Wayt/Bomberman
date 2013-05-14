@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:52:15 2013 maxime ginters
-** Last update Mon May 13 17:01:39 2013 maxime ginters
+** Last update Tue May 14 17:08:40 2013 maxime ginters
 */
 
 #include <iostream>
@@ -14,7 +14,8 @@
 
 Session::Session(SessionSocket* sock, Server* srv) :
     _socket(sock), _status(STATUS_NO_AUTHED),
-    _recvQueue(), _server(srv), _closing(false)
+    _recvQueue(), _server(srv), _closing(false),
+    _player(NULL)
 {
     _server->AddSession(this);
 }

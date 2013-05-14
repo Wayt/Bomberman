@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Mon May 13 18:38:03 2013 maxime ginters
+** Last update Tue May 14 17:01:14 2013 maxime ginters
 */
 
 #include <iostream>
@@ -26,7 +26,7 @@ bool Server::Initialize(std::string const& addr, std::string const& port, uint8 
         return false;
 
     // prepare map
-    _map = Map::CreateNewRandomMap(300, 300, 0.5f, 0.5f);
+    _map = Map::CreateNewRandomMap(200, 200, 0.5f, 0.5f);
     return true;
 }
 
@@ -105,4 +105,14 @@ void Server::UpdateSessions(uint32 const diff)
             }
         }
     }
+}
+
+Map const* Server::GetMap() const
+{
+    return _map;
+}
+
+Map* Server::GetMap()
+{
+    return _map;
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:22:32 2013 maxime ginters
-** Last update Mon May 13 18:36:46 2013 maxime ginters
+** Last update Tue May 14 17:00:43 2013 maxime ginters
 */
 
 #ifndef SERVER_H_
@@ -35,6 +35,9 @@ public:
     void operator()();
 
     void AddSession(Session* sess);
+
+    Map const* GetMap() const;
+    Map* GetMap();
 
 private:
     void Update(uint32 const diff);

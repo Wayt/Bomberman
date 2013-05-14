@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:47:46 2013 maxime ginters
-** Last update Mon May 13 17:01:44 2013 maxime ginters
+** Last update Tue May 14 17:08:27 2013 maxime ginters
 */
 
 #ifndef SESSION_H_
@@ -15,6 +15,7 @@
 #include "SessionSocket.h"
 #include "Opcodes.h"
 #include "Packet.hpp"
+#include "Player.h"
 
 class Server;
 
@@ -43,6 +44,7 @@ private:
     LockedQueue<Packet> _recvQueue;
     Server* _server;
     bool _closing;
+    Player* _player;
 };
 
 #endif /* !SESSION_H_ */

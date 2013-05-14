@@ -5,14 +5,17 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Mon May 13 18:39:37 2013 maxime ginters
+** Last update Tue May 14 17:11:45 2013 maxime ginters
 */
 
 #include <cstdlib>
 #include <vector>
+#include <algorithm>
 #include "Map.h"
+#include "Session.h"
 
-Map::Map(uint32 width, uint32 height)
+Map::Map(uint32 width, uint32 height) :
+    _mapGridMap(), _nextGuid(1)
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -85,7 +88,7 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         {
             if (map[y][x] == 1)
             {
-                MapObject* obj = new MapObject(1, "Wall");
+                MapObject* obj = new MapObject(newMap->MakeNewGuid(), MODELID_WALL, TYPEID_OBJECT, "Wall");
                 obj->UpdatePosition(x * MAP_PRECISION, y * MAP_PRECISION, 0.0f, 0.0f);
                 newMap->AddObject(obj);
             }
@@ -108,18 +111,18 @@ void Map::AddObject(MapObject* obj)
         return;
     }
 
-    grid->AddObject(obj);
     obj->SetMap(this);
+    grid->AddObject(obj);
     obj->SetInWorld();
 }
 
 MapGrid::MapGrid() :
-    _objectList(), _isLoaded(false)
+    _objectList(), _isActive(false)
 {}
 
-bool MapGrid::IsLoaded() const
+bool MapGrid::IsActive() const
 {
-    return _isLoaded;
+    return _isActive;
 }
 
 void MapGrid::AddObject(MapObject* obj)
@@ -133,6 +136,21 @@ void MapGrid::RemoveObject(MapObject* obj)
     _objectList.remove(obj);
 }
 
+void MapGrid::UpdateForPlayer(Player* player, uint16 action)
+{
+    if (action & GRIDUPDATE_ACTIVE)
+        _isActive = true;
+    if (action & GRIDUPDATE_SENDOBJ)
+    {
+        std::list<MapObject*>::const_iterator itr;
+        Packet data(SMSG_SEND_OBJECT);
+        data << uint32(_objectList.size());
+        for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+            (*itr)->BuildObjectCreateForPlayer(data);
+        player->GetSession()->SendPacket(data);
+    }
+}
+
 MapGrid* Map::GetGridAt(float x, float y)
 {
     x = (float)((uint32)x - ((uint32)x % GRID_SIZE));
@@ -143,4 +161,64 @@ MapGrid* Map::GetGridAt(float x, float y)
     if (itr == _mapGridMap.end())
         return NULL;
     return itr->second;
+}
+
+uint64 Map::MakeNewGuid()
+{
+    return _nextGuid++;
+}
+
+bool Map::_GetGridXY(MapGrid* grid, float& x, float& y) const
+{
+    std::map<std::pair<float, float>, MapGrid*>::const_iterator itr;
+    for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+    {
+        if (itr->second == grid)
+        {
+            y = itr->first.first;
+            x = itr->first.second;
+            return true;
+        }
+    }
+    return false;
+}
+
+uint8 Map::BuildGridUpdaterFlags(MapGrid* old, MapGrid* newGrid) const
+{
+    if (!old)
+        return UPDATE_FULL;
+
+    float oldX, oldY, newX, newY;
+    if (!_GetGridXY(old, oldX, oldY) || !_GetGridXY(newGrid, newX, newY))
+        return 0;
+
+    uint8 flags = 0;
+    flags |= (oldY < newY ? UPDATE_DOWN : (oldY > newY ? UPDATE_UP : 0));
+    flags |= (oldX < newX ? UPDATE_RIGHT : (oldX > newX ? UPDATE_LEFT : 0));
+    return flags;
+}
+
+void Map::GridUpdater(Player* player, uint16 action, uint8 updateFlags)
+{
+    float x, y;
+    player->GetPosition(x, y);
+
+    static GridUpdateOrder updater[] = {
+        {-GRID_SIZE, -GRID_SIZE, UPDATE_DOWN | UPDATE_LEFT},
+        {-GRID_SIZE, 0, UPDATE_DOWN},
+        {-GRID_SIZE, GRID_SIZE, UPDATE_DOWN | UPDATE_RIGHT},
+        {0, -GRID_SIZE, UPDATE_LEFT},
+        {0, 0, UPDATE_CURRENT},
+        {0, GRID_SIZE, UPDATE_RIGHT},
+        {GRID_SIZE, -GRID_SIZE, UPDATE_UP | UPDATE_LEFT},
+        {GRID_SIZE, 0, UPDATE_UP},
+        {GRID_SIZE, GRID_SIZE, UPDATE_UP | UPDATE_RIGHT}
+    };
+
+    for (uint8 i = 0; i < GRID_UPDATE_COUNT; ++i)
+    {
+        if (updater[i].flags & updateFlags)
+            if (MapGrid* grid = GetGridAt(x + updater[i].x, y + updater[i].y))
+                grid->UpdateForPlayer(player, action);
+    }
 }

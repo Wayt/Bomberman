@@ -5,16 +5,30 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Mon May 13 18:38:40 2013 maxime ginters
+** Last update Tue May 14 17:14:04 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
 # define MAPOBJECT_H_
 
 #include "Shared.h"
+#include "Packet.hpp"
 
 class MapGrid;
 class Map;
+
+enum ModelIds
+{
+    MODELID_PLAYER  = 0,
+    MODELID_WALL    = 1,
+    MODELID_BOMB    = 2
+};
+
+enum TypeId
+{
+    TYPEID_PLAYER   = 0,
+    TYPEID_OBJECT   = 1,
+};
 
 class Position
 {
@@ -41,7 +55,7 @@ private:
 class MapObject : public Position
 {
 public:
-    explicit MapObject(uint32 modelId, std::string const& name);
+    explicit MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name);
 
     void SetInWorld(bool in_world = true);
     bool IsInWorld() const;
@@ -50,12 +64,18 @@ public:
 
     virtual void SetGrid(MapGrid* grid);
     void SetMap(Map* map);
-private:
+    TypeId GetTypeId() const;
+
+    void BuildObjectCreateForPlayer(Packet& data) const;
+    uint64 GetGUID() const;
+protected:
     uint32 _modelId;
     bool _isInWorld;
     MapGrid* _currGrid;
     std::string _name;
     Map* _map;
+    TypeId _typeId;
+    uint64 const _guid;
 };
 
 #endif /* !MAPOBJECT_H_ */
