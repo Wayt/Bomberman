@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Wed May 15 15:51:00 2013 fabien casters
+** Last update Wed May 15 17:47:36 2013 fabien casters
 */
 
 #include "Cube.h"

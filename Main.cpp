@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Wed May 15 16:27:24 2013 fabien casters
+** Last update Wed May 15 17:37:17 2013 fabien casters
 */
 
 #include "Shared.h"
@@ -16,6 +16,7 @@ int main(int ac, char **av)
 {
     (void)ac;
     (void)av;
+
 
     if (ac == 3)
     {

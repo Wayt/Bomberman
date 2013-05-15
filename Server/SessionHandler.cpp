@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Wed May 15 17:48:38 2013 maxime ginters
+** Last update Wed May 15 17:54:13 2013 fabien casters
 */
 
 #include "Session.h"
@@ -43,7 +43,7 @@ void Session::HandleEnterGame(Packet& recvData)
     data << uint32(width * MAP_PRECISION);
     data << uint32(height * MAP_PRECISION);
     data << uint32(_player->GetModelId());
-    _player->UpdatePosition(5.0f, 5.0f, 0.0f, 0.0f);
+    _player->UpdatePosition(150.0f, 150.0f, 0.0f, 0.0f);
     _player->WritePosition(data);
 
     SendPacket(data);
