@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Fri May 10 13:40:34 2013 fabien casters
-** Last update Wed May 15 13:09:33 2013 fabien casters
+** Last update Wed May 15 13:44:23 2013 vincent leroy
 */
 
 #ifndef VERTOR_H_
@@ -18,6 +18,7 @@ struct Vector
     float z;
 
     Vector(float x, float y, float z);
+    Vector();
 };
 
 #endif

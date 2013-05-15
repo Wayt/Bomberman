@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Wed May 15 13:18:18 2013 fabien casters
+## Last update Wed May 15 14:04:25 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -20,7 +20,7 @@ LDFLAGS	= -lGL -lGLU -lgdl_gl -L../Library -Wl,-rpath=../Library
 
 NAME	= bomberman
 
-SRCS	= main.cpp Bomberman.cpp Vector.cpp Camera.cpp
+SRCS	= main.cpp Bomberman.cpp Vector.cpp Camera.cpp Cube.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
