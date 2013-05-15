@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Wed May 15 16:25:29 2013 fabien casters
+## Last update Wed May 15 17:10:25 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -17,8 +17,14 @@ CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary
 CXXFLAGS	+= -fopenmp
 #CXXFLAGS	+= -ggdb3
 
+UNAME	:= $(shell uname -a)
+
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
+
+ifneq (, $(findstring ARCH, $(UNAME)))
+    LDFLAGS	+= -lSOIL
+endif
 
 NAME	= bomberman
 
