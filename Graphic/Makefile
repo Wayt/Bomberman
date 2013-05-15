@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Mon May 06 18:58:50 2013 fabien casters
+## Last update Wed May 15 13:18:18 2013 fabien casters
 ##
 
 CXX	= g++
@@ -13,14 +13,14 @@ CXX	= g++
 RM	= rm -f
 
 CXXFLAGS	+= -Wextra -Wall -Werror
-CXXFLAGS	+= -I. -I./Library
+CXXFLAGS	+= -I. -I../Library
 CXXFLAGS	+= -ggdb3
 
-LDFLAGS	= -lGL -lGLU -lgdl_gl -L./Library -Wl,-rpath=./Library
+LDFLAGS	= -lGL -lGLU -lgdl_gl -L../Library -Wl,-rpath=../Library
 
 NAME	= bomberman
 
-SRCS	= main.cpp Bomberman.cpp
+SRCS	= main.cpp Bomberman.cpp Vector.cpp Camera.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
