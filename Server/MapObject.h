@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Tue May 14 17:32:22 2013 maxime ginters
+** Last update Wed May 15 14:18:25 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -14,6 +14,7 @@
 #include "Shared.h"
 #include "Packet.hpp"
 #include "Position.h"
+#include "MotionMaster.hpp"
 
 class MapGrid;
 class Map;
@@ -35,6 +36,7 @@ class MapObject : public Position
 {
 public:
     explicit MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name);
+    virtual ~MapObject();
 
     void SetInWorld(bool in_world = true);
     bool IsInWorld() const;
@@ -47,6 +49,9 @@ public:
 
     void BuildObjectCreateForPlayer(Packet& data) const;
     uint64 GetGUID() const;
+
+    MotionMaster const* GetMotionMaster() const;
+    MotionMaster* GetMotionMaster();
 protected:
     uint32 _modelId;
     bool _isInWorld;
@@ -55,6 +60,7 @@ protected:
     Map* _map;
     TypeId _typeId;
     uint64 const _guid;
+    MotionMaster* _motionMaster;
 };
 
 #endif /* !MAPOBJECT_H_ */

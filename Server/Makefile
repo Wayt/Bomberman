@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Tue May 14 17:33:12 2013 maxime ginters
+## Last update Wed May 15 13:46:37 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -24,7 +24,7 @@ NAME	= bomberman
 SRCS	= Main.cpp Server.cpp SessionSocketAcceptor.cpp Session.cpp SessionSocket.cpp SessionSocketMgr.cpp \
 		  Opcodes.cpp SessionHandler.cpp Map.cpp MapObject.cpp Player.cpp \
 		  Client.cpp ClientSocket.cpp ClientHandler.cpp \
-		  Position.cpp
+		  Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

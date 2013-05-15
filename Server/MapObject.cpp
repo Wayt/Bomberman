@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Tue May 14 17:32:57 2013 maxime ginters
+** Last update Wed May 15 14:22:54 2013 maxime ginters
 */
 
 #include "MapObject.h"
@@ -13,8 +13,15 @@
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : Position(),
     _modelId(modelId), _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
-    _guid(guid)
-{}
+    _guid(guid), _motionMaster(NULL)
+{
+    _motionMaster = new MotionMaster(this);
+}
+
+MapObject::~MapObject()
+{
+    delete _motionMaster;
+}
 
 void MapObject::SetInWorld(bool in_world)
 {
@@ -52,6 +59,7 @@ void MapObject::SetGrid(MapGrid* grid)
 void MapObject::SetMap(Map* map)
 {
     _map = map;
+    SetInWorld(_map == NULL ? false : true);
 }
 
 TypeId MapObject::GetTypeId() const
@@ -73,4 +81,15 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << float(GetPositionY());
     data << float(GetPositionZ());
     data << float(GetOrientation());
+}
+
+
+MotionMaster const* MapObject::GetMotionMaster() const
+{
+    return _motionMaster;
+}
+
+MotionMaster* MapObject::GetMotionMaster()
+{
+    return _motionMaster;
 }

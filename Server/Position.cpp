@@ -5,10 +5,11 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Tue May 14 17:43:51 2013 maxime ginters
+** Last update Wed May 15 13:44:49 2013 maxime ginters
 */
 
 #include "Position.h"
+#include <cmath>
 
 Position::Position() :
     _posX(0.0f), _posY(0.0f),
@@ -84,6 +85,26 @@ void Position::WritePosition(Packet& data) const
     data << float(_posY);
     data << float(_posZ);
     data << float(_orr);
+}
+
+float Position::GetDistance2d(Position const* other) const
+{
+    return GetDistance2d(this, other);
+}
+
+float Position::GetDistance2d(Position const* pos1, Position const* pos2)
+{
+    float x1, y1, x2, y2;
+    pos1->GetPosition(x1, y1);
+    pos2->GetPosition(x2, y2);
+    return GetDistance2d(x1, y1, x2, y2);
+}
+
+float Position::GetDistance2d(float x1, float y1, float x2, float y2)
+{
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+    return std::sqrt(dx * dx + dy * dy);
 }
 
 std::ostream& operator<<(std::ostream& stream, Position const& pos)
