@@ -5,16 +5,18 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:32 2013 fabien casters
-** Last update Wed May 15 16:13:32 2013 fabien casters
+** Last update Wed May 15 18:28:37 2013 fabien casters
 */
 
 #ifndef GAMEMONITOR_H_
 # define GAMEMONITOR_H_
 
 #include "Camera.h"
-#include "Cube.h"
+#include "Model.h"
 #include "Game.hpp"
 #include "Shared.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
 
 
 class Client;
@@ -34,7 +36,6 @@ private:
     uint32 _width;
     uint32 _height;
     Camera _cam;
-    Cube _cube;
 };
 
 #endif
