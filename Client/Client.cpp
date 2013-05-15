@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed May 15 15:44:25 2013 maxime ginters
+** Last update Wed May 15 15:51:25 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -16,7 +16,11 @@ Client::Client(std::string const& name) :
 {}
 
 Client::~Client()
-{}
+{
+    std::map<uint64, ClientObject*>::iterator itr;
+    for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
+        delete itr->second;
+}
 
 bool Client::Start(std::string const& addr, std::string const& port)
 {
