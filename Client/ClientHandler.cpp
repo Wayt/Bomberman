@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Tue May 14 17:55:17 2013 maxime ginters
+** Last update Wed May 15 15:43:55 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -36,6 +36,7 @@ void Client::HandleSendObject(Packet& recvData)
     recvData >> count;
 
     std::cout << "RECEIV " << count << " OBJECT(S)" << std::endl;
+    ClientObject* obj = NULL;
     for (uint32 i = 0; i < count; ++i)
     {
         uint64 guid;
@@ -49,6 +50,9 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> y;
         recvData >> z;
         recvData >> o;
+        obj = new ClientObject(guid, modelid, name);
+        obj->UpdatePosition(x, y, z, o);
+        AddObject(obj);
         std::cout << "OBJECT : " << name << " guid : " << guid << std::endl;
         // read object;
     }

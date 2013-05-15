@@ -5,15 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed May 15 14:58:19 2013 maxime ginters
+** Last update Wed May 15 15:44:25 2013 maxime ginters
 */
 
 #include "Client.h"
 
 Client::Client(std::string const& name) :
     _name(name), _guid(0), _pos(), _modelId(0), _ioservice(), _status(STATUS_NO_AUTHED),
-    _socket(this),
-    _NetThreads(), _recvQueue()
+    _socket(this), _NetThreads(), _recvQueue(), _clientObjectMap()
 {}
 
 Client::~Client()
@@ -114,4 +113,15 @@ void Client::QueuePacket(Packet* packet)
 void Client::SendPacket(Packet const& packet)
 {
     _socket.SendPacket(&packet);
+}
+
+void Client::AddObject(ClientObject* obj)
+{
+    std::map<uint64, ClientObject*>::const_iterator itr = _clientObjectMap.find(obj->GetGUID());
+    if (itr != _clientObjectMap.end())
+    {
+        sLog->error("Error : try to add an existing object");
+        return;
+    }
+    _clientObjectMap.insert(std::make_pair<uint64, ClientObject*>(obj->GetGUID(), obj));
 }
