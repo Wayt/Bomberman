@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Wed May 15 16:18:46 2013 fabien casters
+** Last update Wed May 15 17:25:43 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -47,6 +47,8 @@ public:
 
     void AddObject(ClientObject* obj);
 
+    std::map<uint64, ClientObject*> const& GetObjectMap() const;
+
 private:
     void Update(uint32 const diff);
 
@@ -61,6 +63,7 @@ private:
     LockedQueue<Packet> _recvQueue;
     GameMonitor* _gameMonitor;
     std::map<uint64, ClientObject*> _clientObjectMap;
+    RunnablePool<GameMonitor> _gameMonitorThread;
 };
 
 #endif /* !CLIENT_H_ */

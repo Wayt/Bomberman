@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed May 15 15:43:55 2013 maxime ginters
+** Last update Wed May 15 17:27:46 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -60,6 +60,11 @@ void Client::HandleSendObject(Packet& recvData)
 
 void Client::HandleAddToMap(Packet& recvData)
 {
+    if (_gameMonitor)
+    {
+        sLog->error("Error : receiv add to map but already in map");
+        return;
+    }
     uint32 width, height;
 
     recvData >> width;
@@ -69,6 +74,8 @@ void Client::HandleAddToMap(Packet& recvData)
 
     std::cout << "Map size : " << width << " / " << height << " pos : " << _pos << std::endl;
     // Process add to map
-
     _status = STATUS_INGAME;
+
+    _gameMonitor = new GameMonitor(this, width, height);
+    _gameMonitorThread.CreateThread(*_gameMonitor);
 }
