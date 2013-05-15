@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Wed May 15 16:07:05 2013 fabien casters
+** Last update Wed May 15 16:18:46 2013 fabien casters
 */
 
 #ifndef CLIENT_H_
@@ -17,6 +17,7 @@
 #include "ClientSocket.h"
 #include "Position.h"
 #include "GameMonitor.h"
+#include "ClientObject.h"
 
 #define CLIENT_SLEEP_TIME 20
 
@@ -44,6 +45,8 @@ public:
     void HandleSendObject(Packet& recvData);
     void HandleAddToMap(Packet& recvData);
 
+    void AddObject(ClientObject* obj);
+
 private:
     void Update(uint32 const diff);
 
@@ -57,6 +60,7 @@ private:
     RunnablePool<boost::asio::io_service> _NetThreads;
     LockedQueue<Packet> _recvQueue;
     GameMonitor* _gameMonitor;
+    std::map<uint64, ClientObject*> _clientObjectMap;
 };
 
 #endif /* !CLIENT_H_ */
