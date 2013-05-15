@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Wed May 15 14:58:18 2013 maxime ginters
+** Last update Wed May 15 16:07:05 2013 fabien casters
 */
 
 #ifndef CLIENT_H_
@@ -16,6 +16,7 @@
 #include "Shared.h"
 #include "ClientSocket.h"
 #include "Position.h"
+#include "GameMonitor.h"
 
 #define CLIENT_SLEEP_TIME 20
 
@@ -55,6 +56,7 @@ private:
     ClientSocket _socket;
     RunnablePool<boost::asio::io_service> _NetThreads;
     LockedQueue<Packet> _recvQueue;
+    GameMonitor* _gameMonitor;
 };
 
 #endif /* !CLIENT_H_ */

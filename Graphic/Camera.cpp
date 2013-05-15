@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 15 12:59:41 2013 fabien casters
-** Last update Wed May 15 14:09:21 2013 vincent leroy
+** Last update Wed May 15 15:42:21 2013 fabien casters
 */
 
 #include "Camera.h"
@@ -13,7 +13,7 @@
 #include <GL/glu.h>
 
 Camera::Camera() :
-    _pos(90.0f, 90.0f, 90.0f), _rot(0.0f, 0.0f, 0.0f)
+    _pos(80.0f, 20.0f, 30.0f), _rot(0.0f, 0.0f, 0.0f)
 {
 
 }

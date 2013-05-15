@@ -5,14 +5,14 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:42:37 2013 fabien casters
-** Last update Mon May 06 18:52:53 2013 fabien casters
+** Last update Wed May 15 16:15:25 2013 fabien casters
 */
 
-#include "Bomberman.h"
+#include "GameMonitor.h"
 
 int main()
 {
-    Bomberman b;
+    GameMonitor b(NULL, 50, 50);
     b.run();
     return (0);
 }

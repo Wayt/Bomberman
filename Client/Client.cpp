@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed May 15 14:58:19 2013 maxime ginters
+** Last update Wed May 15 16:09:40 2013 fabien casters
 */
 
 #include "Client.h"
@@ -13,7 +13,8 @@
 Client::Client(std::string const& name) :
     _name(name), _guid(0), _pos(), _modelId(0), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this),
-    _NetThreads(), _recvQueue()
+    _NetThreads(), _recvQueue(),
+    _gameMonitor(NULL)
 {}
 
 Client::~Client()

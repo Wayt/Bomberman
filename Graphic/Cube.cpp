@@ -5,12 +5,13 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Wed May 15 14:17:07 2013 vincent leroy
+** Last update Wed May 15 15:51:00 2013 fabien casters
 */
 
 #include "Cube.h"
 
-Cube::Cube()
+Cube::Cube(float x, float y, float z, float o) :
+    AObject(x, y, z, o)
 {
 }
 
@@ -24,42 +25,41 @@ void Cube::update(gdl::GameClock const&, gdl::Input &)
 
 void Cube::draw()
 {
-    glBegin(GL_LINES);
-    glColor3ub(255, 0, 0); // Rouge
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 20.0, 0.0);
-    glColor3ub(0, 0, 255); // Bleu
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(20.0, 0.0, 0.0);
-    glColor3ub(0, 255, 0); // Vert
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.0, 20.0);
-    glEnd();
-    return ;
+    float size = 5.0f;
 
     glBegin(GL_QUADS);
 
     glColor3f(1.0f, 0.5f, 0.75f);
 
-    glVertex3f(-150.0f, 150.0f, 150.0f);
-    glVertex3f(-150.0f, -150.0f, 150.0f);
-    glVertex3f(150.0f, -150.0f, 150.0f);
-    glVertex3f(150.0f, 150.0f, 150.0f);
+    glVertex3f(_pos.x - size / 2, _pos.y - size / 2.f, 0);
+    glVertex3f(_pos.x - size / 2, _pos.y + size / 2.f, 0);
+    glVertex3f(_pos.x - size / 2, _pos.y + size / 2.f, size);
+    glVertex3f(_pos.x - size / 2, _pos.y - size / 2.f, size);
 
-    glVertex3f(-150.0f, 150.0f, -150.0f);
-    glVertex3f(-150.0f, -150.0f, -150.0f);
-    glVertex3f(-150.0f, -150.0f, 150.0f);
-    glVertex3f(-150.0f, 150.0f, 150.0f);
+    glVertex3f(_pos.x - size / 2, _pos.y - size / 2.f, 0);
+    glVertex3f(_pos.x - size / 2, _pos.y + size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y + size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y - size / 2.f, 0);
 
-    glVertex3f(150.0f, 150.0f, -150.0f);
-    glVertex3f(150.0f, -150.0f, -150.0f);
-    glVertex3f(-150.0f, -150.0f, -150.0f);
-    glVertex3f(-150.0f, 150.0f, -150.0f);
+    glVertex3f(_pos.x - size / 2, _pos.y + size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y + size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y + size / 2.f, size);
+    glVertex3f(_pos.x - size / 2, _pos.y + size / 2.f, size);
 
-    glVertex3f(150.0f, 150.0f, 150.0f);
-    glVertex3f(150.0f, -150.0f, 150.0f);
-    glVertex3f(150.0f, -150.0f, -150.0f);
-    glVertex3f(150.0f, 150.0f, -150.0f);
+    glVertex3f(_pos.x - size / 2, _pos.y - size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y - size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y - size / 2.f, size);
+    glVertex3f(_pos.x - size / 2, _pos.y - size / 2.f, size);
+
+    glVertex3f(_pos.x - size / 2, _pos.y - size / 2.f, size);
+    glVertex3f(_pos.x - size / 2, _pos.y + size / 2.f, size);
+    glVertex3f(_pos.x + size / 2, _pos.y + size / 2.f, size);
+    glVertex3f(_pos.x + size / 2, _pos.y - size / 2.f, size);
+
+    glVertex3f(_pos.x + size / 2, _pos.y - size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y + size / 2.f, 0);
+    glVertex3f(_pos.x + size / 2, _pos.y + size / 2.f, size);
+    glVertex3f(_pos.x + size / 2, _pos.y - size / 2.f, size);
 
     glEnd();
 }

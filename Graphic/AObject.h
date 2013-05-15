@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 15 13:22:32 2013 fabien casters
-** Last update Wed May 15 14:33:35 2013 vincent leroy
+** Last update Wed May 15 15:37:35 2013 fabien casters
 */
 
 #ifndef AOBJECT_H_
@@ -35,7 +35,7 @@ public:
     virtual void update(gdl::GameClock const &, gdl::Input &) = 0;
     virtual void draw() = 0;
 
-private:
+protected:
     Vector _pos;
     Vector _rot;
 };
