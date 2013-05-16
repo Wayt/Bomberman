@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Wed May 15 14:10:08 2013 maxime ginters
+** Last update Thu May 16 18:32:16 2013 maxime ginters
 */
 
 #ifndef MOTIONMASTER_H_
@@ -18,9 +18,9 @@ class MapObject;
 
 enum MovementTypes
 {
-    MOVEMENT_NONE       = 0,
-    MOVEMENT_IDLE       = 1,
-    MOVEMENT_PLAYER     = 2,
+    MOVEMENTTYPE_NONE       = 0,
+    MOVEMENTTYPE_IDLE       = 1,
+    MOVEMENTTYPE_PLAYER     = 2,
 };
 
 class AMovement

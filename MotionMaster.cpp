@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Wed May 15 14:16:31 2013 maxime ginters
+** Last update Thu May 16 18:32:53 2013 maxime ginters
 */
 
 #include "MotionMaster.hpp"
@@ -30,18 +30,18 @@ MotionMaster::MotionMaster(MapObject* obj) :
 {
     _amovementMap.insert(
             std::make_pair<MovementTypes, AMovement* (MotionMaster::*)() const>(
-            MOVEMENT_IDLE, &MotionMaster::create<MovementIdle>)
+            MOVEMENTTYPE_IDLE, &MotionMaster::create<MovementIdle>)
             );
     _amovementMap.insert(
             std::make_pair<MovementTypes, AMovement* (MotionMaster::*)() const>(
-            MOVEMENT_PLAYER, &MotionMaster::create<MovementPlayer>)
+            MOVEMENTTYPE_PLAYER, &MotionMaster::create<MovementPlayer>)
             );
 }
 
 MotionMaster::~MotionMaster()
 {
     if (_moveGen)
-        _moveGen->Abort(MOVEMENT_NONE);
+        _moveGen->Abort(MOVEMENTTYPE_NONE);
     delete _moveGen;
 }
 
@@ -67,7 +67,7 @@ void MotionMaster::Initialize(MovementTypes moveType)
 MovementTypes MotionMaster::GetMovementType() const
 {
     if (!_moveGen)
-        return MOVEMENT_NONE;
+        return MOVEMENTTYPE_NONE;
     return _moveGen->GetType();
 }
 
