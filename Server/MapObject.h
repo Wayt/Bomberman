@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Thu May 16 19:57:57 2013 maxime ginters
+** Last update Thu May 16 20:03:38 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -54,6 +54,8 @@ public:
     MotionMaster* GetMotionMaster();
 
     virtual void SendPacket(Packet const& data);
+
+    Map* GetMap();
 protected:
     uint32 _modelId;
     bool _isInWorld;

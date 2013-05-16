@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Thu May 16 20:01:40 2013 maxime ginters
+** Last update Thu May 16 20:03:06 2013 maxime ginters
 */
 
 #include "Session.h"
@@ -78,7 +78,7 @@ void Session::HandleMovement(Packet& recvData)
         default:
             break;
     }
-    _player->ReadPosition(data);
+    _player->ReadPosition(recvData);
 
     _player->GetMap()->GridUpdater(_player, GRIDUPDATE_MOVEFLAGS, UPDATE_FULL);
 }

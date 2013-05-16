@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu May 16 19:18:19 2013 maxime ginters
+** Last update Thu May 16 20:15:17 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -246,4 +246,12 @@ void Client::UpdateNotPressed(gdl::Keys::Key key)
         default:
             break;
     }
+}
+
+ClientObject* Client::GetObject(uint64 guid)
+{
+    std::map<uint64, ClientObject*>::const_iterator itr = _clientObjectMap.find(guid);
+    if (itr == _clientObjectMap.end())
+        return NULL;
+    return itr->second;
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu May 16 17:49:12 2013 maxime ginters
+** Last update Thu May 16 20:16:39 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -85,4 +85,22 @@ void Client::HandleAddToMap(Packet& recvData)
 
     _gameMonitor = new GameMonitor(this, width, height);
     _gameMonitorThread.CreateThread(*_gameMonitor);
+}
+
+void Client::HandleUpdateMoveflags(Packet& recvData)
+{
+    uint64 guid;
+    uint32 flags;
+    recvData >> guid;
+    recvData >> flags;
+
+    ClientObject* obj = GetObject(guid);
+    if (!obj)
+    {
+        sLog->error("Error: receiv SMSG_UPDATE_MOVEFLAGS for an unknow guid");
+        return;
+    }
+
+    obj->SetMovementFlags(flags);
+    obj->ReadPosition(recvData);
 }

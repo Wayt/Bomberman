@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Thu May 16 19:13:50 2013 vincent leroy
+** Last update Thu May 16 20:05:12 2013 maxime ginters
 */
 
 #ifndef POSITION_H_
@@ -45,6 +45,7 @@ public:
 
     float GetDistance2d(Position const* other) const;
 
+    uint32 GetMovementFlags() const;
     void SetMovementFlags(uint32 flags);
     bool AddMovementFlag(uint32 flag);
     bool RemoveMovementFlag(uint32 flag);

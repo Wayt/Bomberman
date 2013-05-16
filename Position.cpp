@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Thu May 16 19:14:27 2013 vincent leroy
+** Last update Thu May 16 20:05:18 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -139,6 +139,11 @@ float Position::GetDistance2d(float x1, float y1, float x2, float y2)
     float dx = x2 - x1;
     float dy = y2 - y1;
     return std::sqrt(dx * dx + dy * dy);
+}
+
+uint32 Position::GetMovementFlags() const
+{
+    return _movementFlags;
 }
 
 std::ostream& operator<<(std::ostream& stream, Position const& pos)
