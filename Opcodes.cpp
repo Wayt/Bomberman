@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Tue May 14 17:22:46 2013 maxime ginters
+** Last update Thu May 16 19:02:31 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -21,6 +21,10 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
         {SMSG_SEND_OBJECT, STATUS_INGAME, NULL, &Client::HandleSendObject},
         {CMSG_ENTER_GAME, STATUS_AUTHED, &Session::HandleEnterGame, NULL},
         {SMSG_ADD_TO_MAP, STATUS_AUTHED, NULL, &Client::HandleAddToMap},
+        {CMSG_MOVE_FORWARD, STATUS_INGAME, &Session::HandleMovement, NULL},
+        {CMSG_MOVE_BACKWARD, STATUS_INGAME, &Session::HandleMovement, NULL},
+        {CMSG_MOVE_TURN_LEFT, STATUS_INGAME, &Session::HandleMovement, NULL},
+        {CMSG_MOVE_TURN_RIGHT, STATUS_INGAME, &Session::HandleMovement, NULL},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}
     };
 

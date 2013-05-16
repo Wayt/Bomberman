@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Wed May 15 18:36:15 2013 fabien casters
+** Last update Thu May 16 17:25:17 2013 maxime ginters
 */
 
 #include <iostream>
@@ -13,7 +13,8 @@
 #include "Client.h"
 
 GameMonitor::GameMonitor(Client *cli, uint32 width, uint32 height) :
-    _client(cli), _width(width), _height(height), _cam()
+    _client(cli), _width(width), _height(height), _cam(),
+    _keyVector(gdl::Keys::Count, false)
 {
 }
 
@@ -26,6 +27,8 @@ void GameMonitor::initialize(void)
 void GameMonitor::update(void)
 {
     _cam.update(gameClock_, input_);
+    for (uint32 i = 0; i < gdl::Keys::Count; ++i)
+        _keyVector[i] = input_.isKeyDown((gdl::Keys::Key)i);
 }
 
 void GameMonitor::draw(void)
@@ -63,4 +66,9 @@ void GameMonitor::draw(void)
 
 void GameMonitor::unload(void)
 {
+}
+
+void GameMonitor::getKeyVector(std::vector<bool>& vec) const
+{
+    vec = _keyVector;
 }

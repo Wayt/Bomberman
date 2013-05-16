@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Wed May 15 17:37:17 2013 fabien casters
+** Last update Thu May 16 17:47:32 2013 maxime ginters
 */
 
 #include "Shared.h"
@@ -20,8 +20,8 @@ int main(int ac, char **av)
 
     if (ac == 3)
     {
-        Client cli("Wayt");
-        if (!cli.Start(av[1], av[2]))
+        Client cli;
+        if (!cli.Start(av[1], av[2], "Wayt"))
         {
             std::cout << "Fail to init cli" << std::endl;
             return 1;

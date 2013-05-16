@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Wed May 15 18:22:06 2013 fabien casters
+## Last update Thu May 16 17:30:28 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -15,7 +15,7 @@ RM	= rm -f
 CXXFLAGS	+= -Wextra -Wall -Werror
 CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary
 CXXFLAGS	+= -fopenmp
-#CXXFLAGS	+= -ggdb3
+CXXFLAGS	+= -ggdb3
 
 UNAME	:= $(shell uname -a)
 

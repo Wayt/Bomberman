@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Tue May 14 17:21:21 2013 maxime ginters
+** Last update Thu May 16 19:01:52 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -36,6 +36,11 @@ enum Opcodes
     SMSG_SEND_OBJECT    = 0x0004,
     CMSG_ENTER_GAME     = 0x0005,
     SMSG_ADD_TO_MAP     = 0x0006,
+    // Movements
+    CMSG_MOVE_FORWARD   = 0x0007,
+    CMSG_MOVE_BACKWARD  = 0x0008,
+    CMSG_MOVE_TURN_LEFT = 0x0009,
+    CMSG_MOVE_TURN_RIGHT= 0x000A,
 };
 
 class Packet;

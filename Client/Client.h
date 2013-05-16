@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Wed May 15 17:25:43 2013 maxime ginters
+** Last update Thu May 16 18:25:22 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -18,6 +18,7 @@
 #include "Position.h"
 #include "GameMonitor.h"
 #include "ClientObject.h"
+#include "Input.hpp"
 
 #define CLIENT_SLEEP_TIME 20
 
@@ -26,10 +27,10 @@ using boost::asio::ip::tcp;
 class Client : public Runnable
 {
 public:
-    explicit Client(std::string const& name);
+    explicit Client();
     virtual ~Client();
 
-    bool Start(std::string const& addr, std::string const& port);
+    bool Start(std::string const& addr, std::string const& port, std::string const& name);
     void operator()();
     void Stop();
     void Join();
@@ -51,11 +52,13 @@ public:
 
 private:
     void Update(uint32 const diff);
+    void UpdateMovementFlags(std::vector<bool> const& keys);
+    void SendMovementPacket(MovementFlags move, bool add);
+    void UpdatePressed(gdl::Keys::Key key);
+    void UpdateNotPressed(gdl::Keys::Key key);
 
-    std::string _name;
-    uint64 _guid;
-    Position _pos;
-    uint32 _modelId;
+    ClientObject* _player;
+
     boost::asio::io_service _ioservice;
     OpcodeStatus _status;
     ClientSocket _socket;

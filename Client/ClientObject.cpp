@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Wed May 15 18:36:25 2013 fabien casters
+** Last update Thu May 16 17:51:57 2013 maxime ginters
 */
 
 #include "ClientObject.h"
@@ -27,4 +27,20 @@ Model &ClientObject::GetModel()
 void ClientObject::SetMovementFlags(uint32 flags)
 {
     _movementFlags = flags;
+}
+
+bool ClientObject::AddMovementFlag(uint32 flag)
+{
+    if (_movementFlags & flag)
+        return false;
+    _movementFlags |= flag;
+    return true;
+}
+
+bool ClientObject::RemoveMovementFlag(uint32 flag)
+{
+    if (!(_movementFlags & flag))
+        return false;
+    _movementFlags &= ~flag;
+    return true;
 }

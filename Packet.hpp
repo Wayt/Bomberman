@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 08 17:23:17 2013 maxime ginters
-** Last update Mon May 13 16:24:31 2013 maxime ginters
+** Last update Thu May 16 18:38:42 2013 maxime ginters
 */
 
 #ifndef PACKET_H_
@@ -50,7 +50,7 @@ class Packet
 {
 public:
     Packet(Opcodes code, uint32 size = PACKET_DEFAULT_SIZE) :
-        _rpos(2), _wpos(2)
+        _rpos(4), _wpos(2)
     {
         _storage.reserve(size + 4);
         *this << uint16(code);
@@ -64,9 +64,29 @@ public:
         append(buff, size);
     }
 
+    Packet(uint32 size = PACKET_DEFAULT_SIZE) :
+        _rpos(4), _wpos(4)
+    {
+        _storage.reserve(size + 4);
+    }
+
+    void SetOpcode(Opcodes code)
+    {
+        uint16 opcode = swap_endian(code);
+        append((uint8*)&opcode, 2, 2);
+
+    }
+
     Packet& operator<<(uint8 value)
     {
         append<uint8>(value);
+        return *this;
+    }
+
+    Packet& operator<<(bool value)
+    {
+        uint8 val = value ? 1 : 0;
+        append<uint8>(val);
         return *this;
     }
 
@@ -147,6 +167,13 @@ public:
     Packet& operator>>(uint8& value)
     {
         value = read<uint8>();
+        return *this;
+    }
+
+    Packet& operator>>(bool& value)
+    {
+        uint8 val = read<uint8>();
+        value = (val == 0 ? false : true);
         return *this;
     }
 
@@ -233,6 +260,13 @@ private:
         memcpy(&_storage[_wpos], data, size);
         _wpos += size;
         update_size();
+    }
+
+    void append(const uint8* data, uint32 size, uint16 pos)
+    {
+        if (_storage.size() < pos + size)
+            _storage.resize(pos + size);
+        memcpy(&_storage[pos], data, size);
     }
 
     void update_size()
