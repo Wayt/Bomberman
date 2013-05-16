@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Thu May 16 19:01:52 2013 maxime ginters
+** Last update Thu May 16 19:26:37 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -29,18 +29,19 @@ enum LoginResponses
 
 enum Opcodes
 {
-    NULL_OPCODE         = 0x0000,
-    SMSG_TEST           = 0x0001,
-    CMSG_LOGIN_PLAYER   = 0x0002,
-    SMSG_LOGIN_RESPONSE = 0x0003,
-    SMSG_SEND_OBJECT    = 0x0004,
-    CMSG_ENTER_GAME     = 0x0005,
-    SMSG_ADD_TO_MAP     = 0x0006,
+    NULL_OPCODE             = 0x0000,
+    SMSG_TEST               = 0x0001,
+    CMSG_LOGIN_PLAYER       = 0x0002,
+    SMSG_LOGIN_RESPONSE     = 0x0003,
+    SMSG_SEND_OBJECT        = 0x0004,
+    CMSG_ENTER_GAME         = 0x0005,
+    SMSG_ADD_TO_MAP         = 0x0006,
     // Movements
-    CMSG_MOVE_FORWARD   = 0x0007,
-    CMSG_MOVE_BACKWARD  = 0x0008,
-    CMSG_MOVE_TURN_LEFT = 0x0009,
-    CMSG_MOVE_TURN_RIGHT= 0x000A,
+    CMSG_MOVE_FORWARD       = 0x0007,
+    CMSG_MOVE_BACKWARD      = 0x0008,
+    CMSG_MOVE_TURN_LEFT     = 0x0009,
+    CMSG_MOVE_TURN_RIGHT    = 0x000A,
+    SMSG_UPDATE_MOVEFLAGS   = 0x000B,
 };
 
 class Packet;

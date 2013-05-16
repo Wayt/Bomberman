@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Tue May 14 17:26:13 2013 maxime ginters
+** Last update Thu May 16 20:00:58 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -22,7 +22,8 @@
 enum GridUpdaterActions
 {
     GRIDUPDATE_ACTIVE   = 0x0001,
-    GRIDUPDATE_SENDOBJ  = 0x0002
+    GRIDUPDATE_SENDOBJ  = 0x0002,
+    GRIDUPDATE_MOVEFLAGS= 0x0004,
 };
 
 enum GridUpdaterFlags

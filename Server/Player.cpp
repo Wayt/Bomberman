@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Tue May 14 17:13:29 2013 maxime ginters
+** Last update Thu May 16 19:57:12 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -32,4 +32,9 @@ void Player::SetGrid(MapGrid* grid)
 Session* Player::GetSession()
 {
     return _session;
+}
+
+void Player::SendPacket(Packet const& data)
+{
+    _session->SendPacket(data);
 }

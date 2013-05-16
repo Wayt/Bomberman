@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed May 15 17:34:47 2013 fabien casters
+** Last update Thu May 16 19:59:51 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -148,6 +148,17 @@ void MapGrid::UpdateForPlayer(Player* player, uint16 action)
         for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
             (*itr)->BuildObjectCreateForPlayer(data);
         player->GetSession()->SendPacket(data);
+    }
+    if (action & GRIDUPDATE_MOVEFLAGS)
+    {
+        std::list<MapObject*>::const_iterator itr;
+        Packet data(SMSG_UPDATE_MOVEFLAGS);
+        data << uint64(player->GetGUID());
+        data << uint32(player->GetMovementFlags());
+        player->WritePosition(data);
+        for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+            if ((*itr) != player)
+                (*itr)->SendPacket(data);
     }
 }
 

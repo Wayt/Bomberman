@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Thu May 16 19:02:48 2013 maxime ginters
+** Last update Thu May 16 20:01:40 2013 maxime ginters
 */
 
 #include "Session.h"
@@ -60,18 +60,25 @@ void Session::HandleMovement(Packet& recvData)
     switch (recvData.GetOpcode())
     {
         case CMSG_MOVE_FORWARD:
+            _player->UpdateMovementFlag(MOVEMENT_FORWARD, add);
             std::cout << "EN AVANT " << add << std::endl;
             break;
         case CMSG_MOVE_BACKWARD:
+            _player->UpdateMovementFlag(MOVEMENT_BACKWARD, add);
             std::cout << "EN ARRIERE " << add << std::endl;
             break;
         case CMSG_MOVE_TURN_LEFT:
+            _player->UpdateMovementFlag(MOVEMENT_TURN_LEFT, add);
             std::cout << "EN GAUCHE " << add << std::endl;
             break;
         case CMSG_MOVE_TURN_RIGHT:
+            _player->UpdateMovementFlag(MOVEMENT_TURN_RIGHT, add);
             std::cout << "EN DROITE " << add << std::endl;
             break;
         default:
             break;
     }
+    _player->ReadPosition(data);
+
+    _player->GetMap()->GridUpdater(_player, GRIDUPDATE_MOVEFLAGS, UPDATE_FULL);
 }

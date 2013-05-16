@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 08 17:23:17 2013 maxime ginters
-** Last update Thu May 16 18:38:42 2013 maxime ginters
+** Last update Thu May 16 19:15:58 2013 maxime ginters
 */
 
 #ifndef PACKET_H_
@@ -72,9 +72,10 @@ public:
 
     void SetOpcode(Opcodes code)
     {
-        uint16 opcode = swap_endian(code);
-        append((uint8*)&opcode, 2, 2);
-
+        uint16 saved = _wpos;
+        _wpos = 2;
+        *this << uint16(code);
+        _wpos = saved;
     }
 
     Packet& operator<<(uint8 value)
@@ -260,13 +261,6 @@ private:
         memcpy(&_storage[_wpos], data, size);
         _wpos += size;
         update_size();
-    }
-
-    void append(const uint8* data, uint32 size, uint16 pos)
-    {
-        if (_storage.size() < pos + size)
-            _storage.resize(pos + size);
-        memcpy(&_storage[pos], data, size);
     }
 
     void update_size()
