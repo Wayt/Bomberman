@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:19 2013 maxime ginters
-** Last update Wed May 15 13:53:27 2013 maxime ginters
+** Last update Thu May 16 19:20:43 2013 vincent leroy
 */
 
 #ifndef MOVEMENTPLAYER_H_
@@ -16,7 +16,7 @@
 class MovementPlayer : public AMovement
 {
 public:
-    MovementPlayer(MapObject* obj);
+    MovementPlayer(Position* obj);
 
     void Initialize();
     void Update(uint32 const diff);

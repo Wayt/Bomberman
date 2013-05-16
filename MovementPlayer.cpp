@@ -5,13 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Thu May 16 18:39:04 2013 maxime ginters
+** Last update Thu May 16 19:20:22 2013 vincent leroy
 */
 
 #include "MovementPlayer.h"
-#include "MapObject.h"
+#include "Position.h"
 
-MovementPlayer::MovementPlayer(MapObject* obj) :
+MovementPlayer::MovementPlayer(Position* obj) :
     AMovement(obj, MOVEMENTTYPE_PLAYER)
 {}
 

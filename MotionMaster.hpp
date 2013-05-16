@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Thu May 16 18:32:16 2013 maxime ginters
+** Last update Thu May 16 19:19:38 2013 vincent leroy
 */
 
 #ifndef MOTIONMASTER_H_
@@ -14,7 +14,7 @@
 #include <map>
 #include "Shared.h"
 
-class MapObject;
+class Position;
 
 enum MovementTypes
 {
@@ -26,7 +26,7 @@ enum MovementTypes
 class AMovement
 {
 public:
-    AMovement(MapObject* obj, MovementTypes type);
+    AMovement(Position* obj, MovementTypes type);
     virtual ~AMovement();
 
     virtual void Initialize() = 0;
@@ -36,14 +36,14 @@ public:
     MovementTypes GetType() const;
 
 protected:
-    MapObject* _owner;
+    Position* _owner;
     MovementTypes _type;
 };
 
 class MotionMaster
 {
 public:
-    MotionMaster(MapObject* obj);
+    MotionMaster(Position* obj);
     virtual ~MotionMaster();
 
     void Initialize(MovementTypes moveType);
@@ -58,7 +58,7 @@ private:
         return new T(_owner);
     }
 
-    MapObject* _owner;
+    Position* _owner;
     std::map<MovementTypes, AMovement* (MotionMaster::*)() const> _amovementMap;
     AMovement* _moveGen;
 };

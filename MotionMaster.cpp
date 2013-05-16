@@ -5,15 +5,15 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Thu May 16 18:32:53 2013 maxime ginters
+** Last update Thu May 16 19:21:11 2013 vincent leroy
 */
 
 #include "MotionMaster.hpp"
-#include "MapObject.h"
+#include "Position.h"
 #include "MovementIdle.h"
 #include "MovementPlayer.h"
 
-AMovement::AMovement(MapObject* obj, MovementTypes type) :
+AMovement::AMovement(Position* obj, MovementTypes type) :
     _owner(obj), _type(type)
 {}
 
@@ -25,7 +25,7 @@ MovementTypes AMovement::GetType() const
     return _type;
 }
 
-MotionMaster::MotionMaster(MapObject* obj) :
+MotionMaster::MotionMaster(Position* obj) :
     _owner(obj), _amovementMap(), _moveGen(NULL)
 {
     _amovementMap.insert(

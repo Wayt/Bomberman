@@ -5,13 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:28:45 2013 maxime ginters
-** Last update Thu May 16 18:38:58 2013 maxime ginters
+** Last update Thu May 16 19:20:33 2013 vincent leroy
 */
 
 #include "MovementIdle.h"
-#include "MapObject.h"
+#include "Position.h"
 
-MovementIdle::MovementIdle(MapObject* obj) :
+MovementIdle::MovementIdle(Position* obj) :
     AMovement(obj, MOVEMENTTYPE_IDLE)
 {}
 

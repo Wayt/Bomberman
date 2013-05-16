@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Thu May 16 18:52:07 2013 maxime ginters
+** Last update Thu May 16 19:13:50 2013 vincent leroy
 */
 
 #ifndef POSITION_H_
@@ -45,6 +45,12 @@ public:
 
     float GetDistance2d(Position const* other) const;
 
+    void SetMovementFlags(uint32 flags);
+    bool AddMovementFlag(uint32 flag);
+    bool RemoveMovementFlag(uint32 flag);
+    bool UpdateMovementFlag(uint32 flag, bool add);
+    bool HasMovementFlag(uint32 flag) const;
+
     static float GetDistance2d(Position const* pos1, Position const* pos2);
     static float GetDistance2d(float x1, float y1, float x2, float y2);
 
@@ -53,6 +59,7 @@ private:
     float _posY;
     float _posZ;
     float _orr;
+    uint32 _movementFlags;
 };
 
 std::ostream& operator<<(std::ostream& stream, Position const& pos);

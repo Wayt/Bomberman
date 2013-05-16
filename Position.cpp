@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Wed May 15 13:44:49 2013 maxime ginters
+** Last update Thu May 16 19:14:27 2013 vincent leroy
 */
 
 #include "Position.h"
@@ -90,6 +90,40 @@ void Position::WritePosition(Packet& data) const
 float Position::GetDistance2d(Position const* other) const
 {
     return GetDistance2d(this, other);
+}
+
+void Position::SetMovementFlags(uint32 flags)
+{
+    _movementFlags = flags;
+}
+
+bool Position::AddMovementFlag(uint32 flag)
+{
+    if (_movementFlags & flag)
+        return false;
+    _movementFlags |= flag;
+    return true;
+}
+
+bool Position::RemoveMovementFlag(uint32 flag)
+{
+    if (!(_movementFlags & flag))
+        return false;
+    _movementFlags &= ~flag;
+    return true;
+}
+
+bool Position::UpdateMovementFlag(uint32 flag, bool add)
+{
+    if (add)
+        return AddMovementFlag(flag);
+    else
+        return RemoveMovementFlag(flag);
+}
+
+bool Position::HasMovementFlag(uint32 flag) const
+{
+    return (_movementFlags & flag);
 }
 
 float Position::GetDistance2d(Position const* pos1, Position const* pos2)
