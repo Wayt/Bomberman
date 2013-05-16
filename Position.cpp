@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Thu May 16 19:14:27 2013 vincent leroy
+** Last update Thu May 16 20:46:11 2013 vincent leroy
 */
 
 #include "Position.h"
@@ -13,7 +13,8 @@
 
 Position::Position() :
     _posX(0.0f), _posY(0.0f),
-    _posZ(0.0f), _orr(0.0f)
+    _posZ(0.0f), _orr(0.0f),
+    _speed(0.0f), _movementFlags(0)
 {}
 
 
@@ -71,6 +72,13 @@ void Position::UpdatePosition(float x, float y, float z, float o)
     _orr = o;
 }
 
+void Position::UpdatePosition(float x, float y, float o)
+{
+    _posX = x;
+    _posY = y;
+    _orr = o;
+}
+
 void Position::ReadPosition(Packet& data)
 {
     data >> _posX;
@@ -124,6 +132,26 @@ bool Position::UpdateMovementFlag(uint32 flag, bool add)
 bool Position::HasMovementFlag(uint32 flag) const
 {
     return (_movementFlags & flag);
+}
+
+void Position::SetSpeed(float speed)
+{
+    _speed = speed;
+}
+
+float Position::GetSpeed() const
+{
+    return _speed;
+}
+
+void Position::SetSpeedOr(float speed_or)
+{
+    _speed_or = speed_or;
+}
+
+float Position::GetSpeedOr() const
+{
+    return _speed_or;
 }
 
 float Position::GetDistance2d(Position const* pos1, Position const* pos2)

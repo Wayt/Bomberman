@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Thu May 16 19:13:50 2013 vincent leroy
+** Last update Thu May 16 20:45:58 2013 vincent leroy
 */
 
 #ifndef POSITION_H_
@@ -39,6 +39,7 @@ public:
     void GetPosition(float& x, float& y, float& z, float& o) const;
     Position const* GetPosition() const;
     void UpdatePosition(float x, float y, float z, float o);
+    void UpdatePosition(float x, float y, float o);
 
     void ReadPosition(Packet& data);
     void WritePosition(Packet& data) const;
@@ -51,6 +52,11 @@ public:
     bool UpdateMovementFlag(uint32 flag, bool add);
     bool HasMovementFlag(uint32 flag) const;
 
+    void SetSpeed(float speed);
+    float GetSpeed() const;
+    void SetSpeedOr(float speed_or);
+    float GetSpeedOr() const;
+
     static float GetDistance2d(Position const* pos1, Position const* pos2);
     static float GetDistance2d(float x1, float y1, float x2, float y2);
 
@@ -59,6 +65,8 @@ private:
     float _posY;
     float _posZ;
     float _orr;
+    float _speed;
+    float _speed_or;
     uint32 _movementFlags;
 };
 
