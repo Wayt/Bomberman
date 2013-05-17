@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu May 16 19:02:08 2013 maxime ginters
+** Last update Thu May 16 20:15:17 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -162,45 +162,40 @@ void Client::UpdateMovementFlags(std::vector<bool> const& keys)
 
 void Client::SendMovementPacket(MovementFlags move, bool add)
 {
+    Packet data;
     switch (move)
     {
         case MOVEMENT_FORWARD:
             {
-            std::cout << "SEND AVANT" << std::endl;
-            Packet data(CMSG_MOVE_FORWARD, 1);
-            data << uint8(add);
-            SendPacket(data);
-            break;
+                std::cout << "SEND AVANT" << std::endl;
+                data.SetOpcode(CMSG_MOVE_FORWARD);
+                break;
             }
         case MOVEMENT_BACKWARD:
             {
-            std::cout << "SEND ARRIERE" << std::endl;
-            Packet data(CMSG_MOVE_BACKWARD, 1);
-            data << uint8(add);
-            SendPacket(data);
-            break;
+                std::cout << "SEND ARRIERE" << std::endl;
+                data.SetOpcode(CMSG_MOVE_BACKWARD);
+                break;
             }
         case MOVEMENT_TURN_LEFT:
             {
-            std::cout << "SEND GAUCHE" << std::endl;
-            Packet data(CMSG_MOVE_TURN_LEFT, 1);
-            data << uint8(add);
-            SendPacket(data);
-            break;
+                std::cout << "SEND GAUCHE" << std::endl;
+                data.SetOpcode(CMSG_MOVE_TURN_LEFT);
+                break;
             }
         case MOVEMENT_TURN_RIGHT:
             {
-            std::cout << "SEND DROITE" << std::endl;
-            Packet data(CMSG_MOVE_TURN_RIGHT, 1);
-            data << uint8(add);
-            SendPacket(data);
-            break;
+                std::cout << "SEND DROITE" << std::endl;
+                data.SetOpcode(CMSG_MOVE_TURN_RIGHT);
+                break;
             }
         default:
             return;
 
     }
-
+    data << uint8(add);
+    _player->WritePosition(data);
+    SendPacket(data);
 }
 
 void Client::UpdatePressed(gdl::Keys::Key key)
@@ -251,4 +246,12 @@ void Client::UpdateNotPressed(gdl::Keys::Key key)
         default:
             break;
     }
+}
+
+ClientObject* Client::GetObject(uint64 guid)
+{
+    std::map<uint64, ClientObject*>::const_iterator itr = _clientObjectMap.find(guid);
+    if (itr == _clientObjectMap.end())
+        return NULL;
+    return itr->second;
 }

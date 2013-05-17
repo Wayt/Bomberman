@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu May 16 18:25:22 2013 maxime ginters
+** Last update Thu May 16 20:14:14 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -45,10 +45,12 @@ public:
     void HandleLoginResponse(Packet& recvData);
     void HandleSendObject(Packet& recvData);
     void HandleAddToMap(Packet& recvData);
+    void HandleUpdateMoveflags(Packet& recvData);
 
     void AddObject(ClientObject* obj);
 
     std::map<uint64, ClientObject*> const& GetObjectMap() const;
+    ClientObject* GetObject(uint64 guid);
 
 private:
     void Update(uint32 const diff);
@@ -56,6 +58,7 @@ private:
     void SendMovementPacket(MovementFlags move, bool add);
     void UpdatePressed(gdl::Keys::Key key);
     void UpdateNotPressed(gdl::Keys::Key key);
+
 
     ClientObject* _player;
 
