@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 17 17:47:51 2013 maxime ginters
+** Last update Fri May 17 17:51:05 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -112,9 +112,6 @@ void Client::Update(uint32 const diff)
     {
         std::vector<bool> keys(gdl::Keys::Count, false);
         _gameMonitor->getKeyVector(keys);
-        for (uint32 i = 0; i < gdl::Keys::Count; ++i)
-            if (keys[i] == true)
-                std::cout << "KEY DOWN " << i << std::endl;
         UpdateMovementFlags(keys);
 
         std::map<uint64, ClientObjectPtr>::iterator itr;
