@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Fri May 17 13:32:48 2013 vincent leroy
+** Last update Fri May 17 17:42:29 2013 maxime ginters
 */
 
 #ifndef POSITION_H_
@@ -23,6 +23,9 @@ enum MovementFlags
     MOVEMENT_TURN_RIGHT = 0x00000008,
     MOVEMENT_STRAF_LEFT = 0x00000010,
     MOVEMENT_STRAF_RIGHT= 0x00000020,
+
+    MOVEMENT_MOVING     = (MOVEMENT_FORWARD | MOVEMENT_BACKWARD | \
+                            MOVEMENT_STRAF_LEFT | MOVEMENT_STRAF_RIGHT),
 };
 
 class Position

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Fri May 17 14:11:49 2013 maxime ginters
+** Last update Fri May 17 17:49:14 2013 maxime ginters
 */
 
 #include "Session.h"
@@ -74,6 +74,12 @@ void Session::HandleMovement(Packet& recvData)
         case CMSG_MOVE_TURN_RIGHT:
             _player->UpdateMovementFlag(MOVEMENT_TURN_RIGHT, add);
             std::cout << "EN DROITE " << add << std::endl;
+            break;
+        case CMSG_MOVE_STRAF_LEFT:
+            _player->UpdateMovementFlag(MOVEMENT_STRAF_LEFT, add);
+            break;
+        case CMSG_MOVE_STRAF_RIGHT:
+            _player->UpdateMovementFlag(MOVEMENT_STRAF_RIGHT, add);
             break;
         default:
             break;

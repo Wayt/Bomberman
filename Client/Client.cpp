@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 17 17:11:12 2013 maxime ginters
+** Last update Fri May 17 17:47:51 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -203,6 +203,18 @@ void Client::SendMovementPacket(MovementFlags move, bool add)
                 data.SetOpcode(CMSG_MOVE_TURN_RIGHT);
                 break;
             }
+        case MOVEMENT_STRAF_LEFT:
+            {
+                std::cout << "SEND STRAFT GAUCHE" << std::endl;
+                data.SetOpcode(CMSG_MOVE_STRAF_LEFT);
+                break;
+            }
+        case MOVEMENT_STRAF_RIGHT:
+            {
+                std::cout << "SEND STRAFT DROITE" << std::endl;
+                data.SetOpcode(CMSG_MOVE_STRAF_RIGHT);
+                break;
+            }
         default:
             return;
 
@@ -232,6 +244,14 @@ void Client::UpdatePressed(gdl::Keys::Key key)
             if (_player->AddMovementFlag(MOVEMENT_TURN_LEFT))
                 SendMovementPacket(MOVEMENT_TURN_LEFT, true);
             break;
+        case gdl::Keys::Q:
+            if (_player->AddMovementFlag(MOVEMENT_STRAF_LEFT))
+                SendMovementPacket(MOVEMENT_STRAF_LEFT, true);
+            break;
+        case gdl::Keys::E:
+            if (_player->AddMovementFlag(MOVEMENT_STRAF_RIGHT))
+                SendMovementPacket(MOVEMENT_STRAF_RIGHT, true);
+            break;
         default:
             break;
     }
@@ -256,6 +276,14 @@ void Client::UpdateNotPressed(gdl::Keys::Key key)
         case gdl::Keys::A:
             if (_player->RemoveMovementFlag(MOVEMENT_TURN_LEFT))
                 SendMovementPacket(MOVEMENT_TURN_LEFT, false);
+            break;
+        case gdl::Keys::Q:
+            if (_player->RemoveMovementFlag(MOVEMENT_STRAF_LEFT))
+                SendMovementPacket(MOVEMENT_STRAF_LEFT, false);
+            break;
+        case gdl::Keys::E:
+            if (_player->RemoveMovementFlag(MOVEMENT_STRAF_RIGHT))
+                SendMovementPacket(MOVEMENT_STRAF_RIGHT, false);
             break;
         default:
             break;

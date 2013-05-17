@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Fri May 17 16:21:19 2013 maxime ginters
+** Last update Fri May 17 17:45:58 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -25,6 +25,8 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
         {CMSG_MOVE_BACKWARD, STATUS_INGAME, &Session::HandleMovement, NULL},
         {CMSG_MOVE_TURN_LEFT, STATUS_INGAME, &Session::HandleMovement, NULL},
         {CMSG_MOVE_TURN_RIGHT, STATUS_INGAME, &Session::HandleMovement, NULL},
+        {CMSG_MOVE_STRAF_LEFT, STATUS_INGAME, &Session::HandleMovement, NULL},
+        {CMSG_MOVE_STRAF_RIGHT, STATUS_INGAME, &Session::HandleMovement, NULL},
         {SMSG_UPDATE_MOVEFLAGS, STATUS_INGAME, NULL, &Client::HandleUpdateMoveflags},
         {SMSG_DEL_OBJECT, STATUS_INGAME, NULL, &Client::HandleDeleteObject},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}

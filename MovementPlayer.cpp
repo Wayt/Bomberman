@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Fri May 17 14:19:56 2013 vincent leroy
+** Last update Fri May 17 17:42:47 2013 maxime ginters
 */
 
 #include <cmath>
@@ -32,15 +32,10 @@ void MovementPlayer::Update(uint32 const diff)
     float dx = 0.f;
     float dy = 0.f;
 
-    if (_owner->HasMovementFlag(MOVEMENT_FORWARD))
+    if (_owner->HasMovementFlag(MOVEMENT_MOVING))
     {
         dx = dist * cos(angle);
         dy = dist * sin(angle);
-    }
-    else if (_owner->HasMovementFlag(MOVEMENT_BACKWARD))
-    {
-        dx = (-dist / 2) * cos(angle);
-        dy = (-dist / 2) * sin(angle);
     }
 
     if (_owner->HasMovementFlag(MOVEMENT_TURN_LEFT))
@@ -81,5 +76,7 @@ float MovementPlayer::getAngle() const
         else
             angle = M_PI + M_PI_2;
     }
+    else
+        angle = (_owner->HasMovementFlag(MOVEMENT_BACKWARD) ? M_PI : 0.f);
     return angle;
 }
