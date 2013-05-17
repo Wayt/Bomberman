@@ -5,9 +5,10 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Fri May 17 16:15:42 2013 maxime ginters
+** Last update Fri May 17 19:55:37 2013 maxime ginters
 */
 
+#include <iostream>
 #include "MapObject.h"
 #include "Map.h"
 
@@ -114,4 +115,13 @@ void MapObject::Update(uint32 const diff)
 {
     if (_motionMaster)
         _motionMaster->Update(diff);
+}
+
+void MapObject::HandlePositionChange()
+{
+    if (!IsInWorld())
+        return;
+
+    if (_map)
+        _map->UpdateObjectGrid(this);
 }

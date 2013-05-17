@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Fri May 17 16:15:01 2013 maxime ginters
+** Last update Fri May 17 19:55:02 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -43,8 +43,8 @@ enum GridUpdaterFlags
 
 struct GridUpdateOrder
 {
-    float y;
     float x;
+    float y;
     uint8 flags;
 };
 
@@ -60,7 +60,7 @@ public:
     void UpdateForMapObject(MapObject* player, uint16 action);
     void BroadcastToGrid(Packet& pkt, MapObject* except = NULL);
 
-    void Update(uint32 const diff);
+    void AddObjectForUpdate(std::list<MapObject*>& list);
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
@@ -84,6 +84,8 @@ public:
     void GetWidthAndHeight(uint32& width, uint32& height) const;
 
     void Update(uint32 const diff);
+
+    void UpdateObjectGrid(MapObject* obj);
 
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Fri May 17 17:42:29 2013 maxime ginters
+** Last update Fri May 17 18:14:26 2013 maxime ginters
 */
 
 #ifndef POSITION_H_
@@ -43,6 +43,8 @@ public:
     Position const* GetPosition() const;
     void UpdatePosition(float x, float y, float z, float o);
     void UpdatePosition(float x, float y, float o);
+
+    virtual void HandlePositionChange();
 
     void ReadPosition(Packet& data);
     void WritePosition(Packet& data) const;

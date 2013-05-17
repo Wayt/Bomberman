@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Fri May 17 16:01:54 2013 maxime ginters
+** Last update Fri May 17 19:17:18 2013 maxime ginters
 */
 
 #include "Player.h"

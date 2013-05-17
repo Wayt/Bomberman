@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 17 16:23:26 2013 maxime ginters
+** Last update Fri May 17 19:53:26 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -163,7 +163,9 @@ void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
             Packet data(SMSG_SEND_OBJECT);
             data << uint32(_objectList.size());
             for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+            {
                 (*itr)->BuildObjectCreateForPlayer(data);
+            }
             obj->SendPacket(data);
         }
     }
@@ -192,11 +194,11 @@ void MapGrid::BroadcastToGrid(Packet& pkt, MapObject* except)
                 (*itr)->SendPacket(pkt);
 }
 
-void MapGrid::Update(uint32 const diff)
+void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list)
 {
     std::list<MapObject*>::const_iterator itr;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
-        (*itr)->Update(diff);
+        list.push_back(*itr);
 }
 
 MapGrid* Map::GetGridAt(float x, float y)
@@ -241,7 +243,7 @@ uint8 Map::BuildGridUpdaterFlags(MapGrid* old, MapGrid* newGrid) const
         return 0;
 
     uint8 flags = 0;
-    flags |= (oldY < newY ? UPDATE_DOWN : (oldY > newY ? UPDATE_UP : 0));
+    flags |= (oldY < newY ? UPDATE_UP : (oldY > newY ? UPDATE_DOWN : 0));
     flags |= (oldX < newX ? UPDATE_RIGHT : (oldX > newX ? UPDATE_LEFT : 0));
     return flags;
 }
@@ -253,13 +255,13 @@ void Map::GridUpdater(MapObject* obj, uint16 action, uint8 updateFlags)
 
     static GridUpdateOrder updater[] = {
         {-GRID_SIZE, -GRID_SIZE, UPDATE_DOWN | UPDATE_LEFT},
-        {-GRID_SIZE, 0, UPDATE_DOWN},
-        {-GRID_SIZE, GRID_SIZE, UPDATE_DOWN | UPDATE_RIGHT},
-        {0, -GRID_SIZE, UPDATE_LEFT},
+        {-GRID_SIZE, 0, UPDATE_LEFT},
+        {-GRID_SIZE, GRID_SIZE, UPDATE_UP | UPDATE_LEFT},
+        {0, -GRID_SIZE, UPDATE_DOWN},
         {0, 0, UPDATE_CURRENT},
-        {0, GRID_SIZE, UPDATE_RIGHT},
-        {GRID_SIZE, -GRID_SIZE, UPDATE_UP | UPDATE_LEFT},
-        {GRID_SIZE, 0, UPDATE_UP},
+        {0, GRID_SIZE, UPDATE_UP},
+        {GRID_SIZE, -GRID_SIZE, UPDATE_DOWN | UPDATE_RIGHT},
+        {GRID_SIZE, 0, UPDATE_RIGHT},
         {GRID_SIZE, GRID_SIZE, UPDATE_UP | UPDATE_RIGHT}
     };
 
@@ -279,7 +281,23 @@ void Map::GetWidthAndHeight(uint32& width, uint32& height) const
 
 void Map::Update(uint32 const diff)
 {
+    std::list<MapObject*> toUpdate;
     std::map<std::pair<float, float>, MapGrid*>::iterator itr;
     for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
-        itr->second->Update(diff);
+        if (itr->second->IsActive())
+            itr->second->AddObjectForUpdate(toUpdate);
+
+    std::list<MapObject*>::iterator itr2;
+    for (itr2 = toUpdate.begin(); itr2 != toUpdate.end(); ++itr2)
+        (*itr2)->Update(diff);
+}
+
+void Map::UpdateObjectGrid(MapObject* obj)
+{
+    float x, y;
+    obj->GetPosition(x, y);
+
+    MapGrid* grid = GetGridAt(x, y);
+    if (grid != obj->GetGrid())
+        grid->AddObject(obj);
 }

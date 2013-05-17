@@ -5,9 +5,10 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Fri May 17 17:42:47 2013 maxime ginters
+** Last update Fri May 17 19:15:07 2013 maxime ginters
 */
 
+#include <iostream>
 #include <cmath>
 #include "MovementPlayer.h"
 #include "Position.h"
@@ -44,6 +45,8 @@ void MovementPlayer::Update(uint32 const diff)
         o -= _owner->GetSpeedOr() * diff / 1000.f;
 
     _owner->UpdatePosition(x + dx, y + dy, o);
+
+    _owner->HandlePositionChange();
 }
 
 void MovementPlayer::Finish()

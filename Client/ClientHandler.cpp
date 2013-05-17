@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Fri May 17 17:04:21 2013 maxime ginters
+** Last update Fri May 17 19:00:56 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -55,13 +55,11 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> y;
         recvData >> z;
         recvData >> o;
-        if (guid != _player->GetGUID() && modelid == 0)
-        {
-            ClientObjectPtr obj(new ClientObject(guid, modelid, name));
-            obj->UpdatePosition(x, y, z, o);
-            AddObject(obj);
-            std::cout << "OBJECT : " << name << " guid : " << guid << std::endl;
-        }
+
+        ClientObjectPtr obj(new ClientObject(guid, modelid, name));
+        obj->UpdatePosition(x, y, z, o);
+        AddObject(obj);
+        //std::cout << "OBJECT : " << name << " guid : " << guid << std::endl;
     }
 }
 

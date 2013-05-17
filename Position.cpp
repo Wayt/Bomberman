@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Fri May 17 13:49:32 2013 maxime ginters
+** Last update Fri May 17 18:30:09 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -14,7 +14,7 @@
 Position::Position() :
     _posX(0.0f), _posY(0.0f),
     _posZ(0.0f), _orr(0.0f),
-    _speed(1.0f), _speed_or(1.0f),
+    _speed(5.0f), _speed_or(1.0f),
     _movementFlags(0)
 {}
 
@@ -75,9 +75,7 @@ void Position::UpdatePosition(float x, float y, float z, float o)
 
 void Position::UpdatePosition(float x, float y, float o)
 {
-    _posX = x;
-    _posY = y;
-    _orr = o;
+    UpdatePosition(x, y, _posZ, o);
 }
 
 void Position::ReadPosition(Packet& data)
@@ -179,4 +177,8 @@ std::ostream& operator<<(std::ostream& stream, Position const& pos)
 {
     stream << "X : " << pos.GetPositionX() << " - Y : " << pos.GetPositionY() << " - Z : " << pos.GetPositionZ() << " - O : " << pos.GetOrientation();
     return stream;
+}
+
+void Position::HandlePositionChange()
+{
 }

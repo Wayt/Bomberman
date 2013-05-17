@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Fri May 17 15:53:26 2013 maxime ginters
+** Last update Fri May 17 18:15:06 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -59,6 +59,8 @@ public:
     MapGrid* GetGrid();
 
     virtual void Update(uint32 const diff);
+
+    void HandlePositionChange();
 protected:
     uint32 _modelId;
     bool _isInWorld;

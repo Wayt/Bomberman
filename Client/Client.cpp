@@ -5,14 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 17 17:51:05 2013 maxime ginters
+** Last update Fri May 17 18:06:09 2013 maxime ginters
 */
 
 #include "Input.hpp"
 #include "Client.h"
 
 Client::Client() :
-    _player(NULL), _ioservice(), _status(STATUS_NO_AUTHED),
+    _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
     _gameMonitorThread()
 {}
