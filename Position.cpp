@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Fri May 17 13:33:03 2013 vincent leroy
+** Last update Fri May 17 13:49:32 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -14,7 +14,8 @@
 Position::Position() :
     _posX(0.0f), _posY(0.0f),
     _posZ(0.0f), _orr(0.0f),
-    _speed(0.0f), _movementFlags(0)
+    _speed(1.0f), _speed_or(1.0f),
+    _movementFlags(0)
 {}
 
 

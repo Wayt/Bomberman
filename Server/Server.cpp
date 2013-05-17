@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Tue May 14 17:01:14 2013 maxime ginters
+** Last update Fri May 17 13:41:48 2013 maxime ginters
 */
 
 #include <iostream>
@@ -79,6 +79,9 @@ void Server::AddSession(Session* sess)
 void Server::Update(uint32 const diff)
 {
     UpdateSessions(diff);
+
+    if (_map)
+        _map->Update(diff);
 }
 
 void Server::UpdateSessions(uint32 const diff)

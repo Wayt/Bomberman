@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Thu May 16 20:03:06 2013 maxime ginters
+** Last update Fri May 17 14:11:49 2013 maxime ginters
 */
 
 #include "Session.h"
@@ -44,7 +44,7 @@ void Session::HandleEnterGame(Packet& recvData)
     Packet data(SMSG_ADD_TO_MAP, 20);
     data << uint32(width * MAP_PRECISION);
     data << uint32(height * MAP_PRECISION);
-    _player->UpdatePosition(150.0f, 150.0f, 0.0f, 0.0f);
+    _player->UpdatePosition(5.0f, 5.0f, 0.0f, 0.0f);
     _player->WritePosition(data);
 
     SendPacket(data);
@@ -81,4 +81,6 @@ void Session::HandleMovement(Packet& recvData)
     _player->ReadPosition(recvData);
 
     _player->GetMap()->GridUpdater(_player, GRIDUPDATE_MOVEFLAGS, UPDATE_FULL);
+
+    std::cout << "POS : " << *_player->GetPosition() << std::endl;
 }

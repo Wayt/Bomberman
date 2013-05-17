@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Thu May 16 20:00:58 2013 maxime ginters
+** Last update Fri May 17 13:42:29 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -57,6 +57,8 @@ public:
     void RemoveObject(MapObject* obj);
 
     void UpdateForPlayer(Player* player, uint16 action);
+
+    void Update(uint32 const diff);
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
@@ -77,6 +79,8 @@ public:
     uint64 MakeNewGuid();
 
     void GetWidthAndHeight(uint32& width, uint32& height) const;
+
+    void Update(uint32 const diff);
 
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;
