@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 17 14:24:35 2013 maxime ginters
+** Last update Fri May 17 16:29:43 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -147,6 +147,17 @@ void Client::AddObject(ClientObject* obj)
         return;
     }
     _clientObjectMap.insert(std::make_pair<uint64, ClientObject*>(obj->GetGUID(), obj));
+}
+
+void Client::RemoveObject(ClientObject* obj)
+{
+    std::map<uint64, ClientObject*>::iterator itr = _clientObjectMap.find(obj->GetGUID());
+    if (itr == _clientObjectMap.end())
+    {
+        sLog->error("Error : try to remove an unknow object");
+        return;
+    }
+    _clientObjectMap.erase(itr);
 }
 
 std::map<uint64, ClientObject*> const& Client::GetObjectMap() const

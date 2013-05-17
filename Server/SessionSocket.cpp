@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:18 2013 maxime ginters
-** Last update Mon May 13 16:46:40 2013 maxime ginters
+** Last update Fri May 17 15:48:14 2013 maxime ginters
 */
 
 #include "SessionSocket.h"
@@ -70,6 +70,8 @@ void SessionSocket::HandleInput(boost::system::error_code const& error, std::siz
 
 void SessionSocket::SendPacket(Packet const* packet)
 {
+    if (_session && _session->IsClosing())
+        return;
     _socket.write_some(boost::asio::buffer(packet->content(), packet->size()));
 }
 

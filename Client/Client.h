@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Fri May 17 14:07:08 2013 maxime ginters
+** Last update Fri May 17 16:27:19 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -46,8 +46,10 @@ public:
     void HandleSendObject(Packet& recvData);
     void HandleAddToMap(Packet& recvData);
     void HandleUpdateMoveflags(Packet& recvData);
+    void HandleDeleteObject(Packet& recvData);
 
     void AddObject(ClientObject* obj);
+    void RemoveObject(ClientObject* obj);
 
     std::map<uint64, ClientObject*> const& GetObjectMap() const;
     ClientObject* GetObject(uint64 guid);

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Fri May 17 14:26:49 2013 maxime ginters
+** Last update Fri May 17 16:27:13 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -104,4 +104,19 @@ void Client::HandleUpdateMoveflags(Packet& recvData)
     obj->ReadPosition(recvData);
 
     std::cout << "Object : " << obj->GetGUID() << " POS : " << *obj->GetPosition() << std::endl;
+}
+
+void Client::HandleDeleteObject(Packet& recvData)
+{
+    uint64 guid;
+    recvData >> guid;
+
+    ClientObject* obj = GetObject(guid);
+    if (!obj)
+    {
+        sLog->error("Error: receiv SMSG_UPDATE_MOVEFLAGS for an unknow guid");
+        return;
+    }
+
+    RemoveObject(obj);
 }

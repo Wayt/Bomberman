@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:52:15 2013 maxime ginters
-** Last update Tue May 14 17:08:40 2013 maxime ginters
+** Last update Fri May 17 15:49:55 2013 maxime ginters
 */
 
 #include <iostream>
@@ -37,6 +37,8 @@ void Session::QueuePacket(Packet* pkt)
 
 void Session::SendPacket(Packet const& pkt)
 {
+    if (_closing)
+        return;
     _socket->SendPacket(&pkt);
 }
 
@@ -45,9 +47,17 @@ void Session::Close()
     _closing = true;
 }
 
+bool Session::IsClosing() const
+{
+    return _closing;
+}
+
 void Session::HandleLogout()
 {
     std::cout << "Logout session" << std::endl;
+    if (_player)
+        _player->HandleLogout();
+    delete _player;
     _socket->Close();
     delete _socket;
     _socket = NULL;

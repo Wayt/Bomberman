@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Fri May 17 15:39:48 2013 maxime ginters
+** Last update Fri May 17 15:53:26 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -56,6 +56,7 @@ public:
     virtual void SendPacket(Packet const& data);
 
     Map* GetMap();
+    MapGrid* GetGrid();
 
     virtual void Update(uint32 const diff);
 protected:

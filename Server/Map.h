@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Fri May 17 13:42:29 2013 maxime ginters
+** Last update Fri May 17 16:15:01 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -24,6 +24,7 @@ enum GridUpdaterActions
     GRIDUPDATE_ACTIVE   = 0x0001,
     GRIDUPDATE_SENDOBJ  = 0x0002,
     GRIDUPDATE_MOVEFLAGS= 0x0004,
+    GRIDUPDATE_DELOBJ   = 0x0008,
 };
 
 enum GridUpdaterFlags
@@ -56,7 +57,8 @@ public:
     void AddObject(MapObject* obj);
     void RemoveObject(MapObject* obj);
 
-    void UpdateForPlayer(Player* player, uint16 action);
+    void UpdateForMapObject(MapObject* player, uint16 action);
+    void BroadcastToGrid(Packet& pkt, MapObject* except = NULL);
 
     void Update(uint32 const diff);
 private:
@@ -72,9 +74,10 @@ public:
     static Map* CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density);
 
     void AddObject(MapObject* obj);
+    void RemoveObject(MapObject* obj);
 
     uint8 BuildGridUpdaterFlags(MapGrid* old, MapGrid* newGrid) const;
-    void GridUpdater(Player* player, uint16 action, uint8 updateFlags);
+    void GridUpdater(MapObject* obj, uint16 action, uint8 updateFlags);
 
     uint64 MakeNewGuid();
 

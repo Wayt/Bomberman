@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 17 14:33:22 2013 maxime ginters
+** Last update Fri May 17 16:23:26 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -113,7 +113,17 @@ void Map::AddObject(MapObject* obj)
 
     obj->SetMap(this);
     grid->AddObject(obj);
-    obj->SetInWorld();
+}
+
+void Map::RemoveObject(MapObject* obj)
+{
+    if (MapGrid* grid = obj->GetGrid())
+    {
+        grid->RemoveObject(obj);
+        GridUpdater(obj, GRIDUPDATE_DELOBJ, UPDATE_FULL);
+    }
+    obj->SetGrid(NULL);
+    obj->SetMap(NULL);
 }
 
 MapGrid::MapGrid() :
@@ -136,36 +146,50 @@ void MapGrid::RemoveObject(MapObject* obj)
     _objectList.remove(obj);
 }
 
-void MapGrid::UpdateForPlayer(Player* player, uint16 action)
+void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
 {
     if (action & GRIDUPDATE_ACTIVE)
         _isActive = true;
     if (action & GRIDUPDATE_SENDOBJ)
     {
-        std::list<MapObject*>::const_iterator itr;
-        Packet data(SMSG_SEND_OBJECT);
         Packet data2(SMSG_SEND_OBJECT);
         data2 << uint32(1);
-        player->BuildObjectCreateForPlayer(data2);
-        data << uint32(_objectList.size());
-        for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+        obj->BuildObjectCreateForPlayer(data2);
+        BroadcastToGrid(data2, obj);
+
+        if (obj->GetTypeId() == TYPEID_PLAYER)
         {
-            (*itr)->BuildObjectCreateForPlayer(data);
-            (*itr)->SendPacket(data2);
+            std::list<MapObject*>::const_iterator itr;
+            Packet data(SMSG_SEND_OBJECT);
+            data << uint32(_objectList.size());
+            for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+                (*itr)->BuildObjectCreateForPlayer(data);
+            obj->SendPacket(data);
         }
-        player->GetSession()->SendPacket(data);
     }
     if (action & GRIDUPDATE_MOVEFLAGS)
     {
-        std::list<MapObject*>::const_iterator itr;
-        Packet data(SMSG_UPDATE_MOVEFLAGS);
-        data << uint64(player->GetGUID());
-        data << uint32(player->GetMovementFlags());
-        player->WritePosition(data);
-        for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
-            if ((*itr) != player)
-                (*itr)->SendPacket(data);
+        Packet data(SMSG_UPDATE_MOVEFLAGS, 12 + 4 + 4 + 4 + 4);
+        data << uint64(obj->GetGUID());
+        data << uint32(obj->GetMovementFlags());
+        obj->WritePosition(data);
+        BroadcastToGrid(data, obj);
     }
+    if (action & GRIDUPDATE_DELOBJ)
+    {
+        Packet data(SMSG_DEL_OBJECT, 8);
+        data << uint64(obj->GetGUID());
+        BroadcastToGrid(data, obj);
+    }
+}
+
+void MapGrid::BroadcastToGrid(Packet& pkt, MapObject* except)
+{
+    std::list<MapObject*>::const_iterator itr;
+    for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+            if ((*itr) != except)
+                (*itr)->SendPacket(pkt);
 }
 
 void MapGrid::Update(uint32 const diff)
@@ -222,10 +246,10 @@ uint8 Map::BuildGridUpdaterFlags(MapGrid* old, MapGrid* newGrid) const
     return flags;
 }
 
-void Map::GridUpdater(Player* player, uint16 action, uint8 updateFlags)
+void Map::GridUpdater(MapObject* obj, uint16 action, uint8 updateFlags)
 {
     float x, y;
-    player->GetPosition(x, y);
+    obj->GetPosition(x, y);
 
     static GridUpdateOrder updater[] = {
         {-GRID_SIZE, -GRID_SIZE, UPDATE_DOWN | UPDATE_LEFT},
@@ -243,7 +267,7 @@ void Map::GridUpdater(Player* player, uint16 action, uint8 updateFlags)
     {
         if (updater[i].flags & updateFlags)
             if (MapGrid* grid = GetGridAt(x + updater[i].x, y + updater[i].y))
-                grid->UpdateForPlayer(player, action);
+                    grid->UpdateForMapObject(obj, action);
     }
 }
 

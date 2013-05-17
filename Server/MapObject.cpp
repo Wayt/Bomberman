@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Fri May 17 13:58:06 2013 maxime ginters
+** Last update Fri May 17 16:15:42 2013 maxime ginters
 */
 
 #include "MapObject.h"
@@ -103,6 +103,11 @@ void MapObject::SendPacket(Packet const& data)
 Map* MapObject::GetMap()
 {
     return _map;
+}
+
+MapGrid* MapObject::GetGrid()
+{
+    return _currGrid;
 }
 
 void MapObject::Update(uint32 const diff)

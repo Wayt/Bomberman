@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Thu May 16 19:26:37 2013 maxime ginters
+** Last update Fri May 17 16:20:54 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -42,6 +42,8 @@ enum Opcodes
     CMSG_MOVE_TURN_LEFT     = 0x0009,
     CMSG_MOVE_TURN_RIGHT    = 0x000A,
     SMSG_UPDATE_MOVEFLAGS   = 0x000B,
+
+    SMSG_DEL_OBJECT         = 0x000C,
 };
 
 class Packet;
