@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu May 16 20:14:14 2013 maxime ginters
+** Last update Fri May 17 14:07:08 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -51,6 +51,7 @@ public:
 
     std::map<uint64, ClientObject*> const& GetObjectMap() const;
     ClientObject* GetObject(uint64 guid);
+    ClientObject* GetPlayer();
 
 private:
     void Update(uint32 const diff);

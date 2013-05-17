@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu May 16 19:59:51 2013 maxime ginters
+** Last update Fri May 17 13:44:48 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -162,6 +162,13 @@ void MapGrid::UpdateForPlayer(Player* player, uint16 action)
     }
 }
 
+void MapGrid::Update(uint32 const diff)
+{
+    std::list<MapObject*>::const_iterator itr;
+    for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+        (*itr)->Update(diff);
+}
+
 MapGrid* Map::GetGridAt(float x, float y)
 {
     x = (float)((uint32)x - ((uint32)x % GRID_SIZE));
@@ -238,4 +245,11 @@ void Map::GetWidthAndHeight(uint32& width, uint32& height) const
 {
     width = _width;
     height = _height;
+}
+
+void Map::Update(uint32 const diff)
+{
+    std::map<std::pair<float, float>, MapGrid*>::iterator itr;
+    for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->Update(diff);
 }

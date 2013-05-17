@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Thu May 16 17:25:17 2013 maxime ginters
+** Last update Fri May 17 14:08:01 2013 maxime ginters
 */
 
 #include <iostream>
@@ -61,6 +61,9 @@ void GameMonitor::draw(void)
     std::map<uint64, ClientObject *>::const_iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetModel().draw();
+    if (ClientObject* obj = _client->GetPlayer())
+        obj->GetModel().draw();
+
     window_.display();
 }
 

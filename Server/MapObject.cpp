@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu May 16 20:03:53 2013 maxime ginters
+** Last update Fri May 17 13:58:06 2013 maxime ginters
 */
 
 #include "MapObject.h"
@@ -16,6 +16,7 @@ MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const
     _guid(guid), _motionMaster(NULL)
 {
     _motionMaster = new MotionMaster(this);
+    _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
 }
 
 MapObject::~MapObject()
@@ -102,4 +103,10 @@ void MapObject::SendPacket(Packet const& data)
 Map* MapObject::GetMap()
 {
     return _map;
+}
+
+void MapObject::Update(uint32 const diff)
+{
+    if (_motionMaster)
+        _motionMaster->Update(diff);
 }

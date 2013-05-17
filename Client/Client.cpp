@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu May 16 20:15:17 2013 maxime ginters
+** Last update Fri May 17 14:07:24 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -119,6 +119,8 @@ void Client::Update(uint32 const diff)
             if (keys[i] == true)
                 std::cout << "KEY DOWN " << i << std::endl;
         UpdateMovementFlags(keys);
+
+        _player->Update(diff);
     }
 }
 
@@ -254,4 +256,9 @@ ClientObject* Client::GetObject(uint64 guid)
     if (itr == _clientObjectMap.end())
         return NULL;
     return itr->second;
+}
+
+ClientObject* Client::GetPlayer()
+{
+    return _player;
 }
