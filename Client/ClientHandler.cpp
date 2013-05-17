@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Fri May 17 16:27:13 2013 maxime ginters
+** Last update Fri May 17 17:04:21 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -57,7 +57,7 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> o;
         if (guid != _player->GetGUID() && modelid == 0)
         {
-            ClientObject* obj = new ClientObject(guid, modelid, name);
+            ClientObjectPtr obj(new ClientObject(guid, modelid, name));
             obj->UpdatePosition(x, y, z, o);
             AddObject(obj);
             std::cout << "OBJECT : " << name << " guid : " << guid << std::endl;
@@ -93,7 +93,7 @@ void Client::HandleUpdateMoveflags(Packet& recvData)
     recvData >> guid;
     recvData >> flags;
 
-    ClientObject* obj = GetObject(guid);
+    ClientObjectPtr obj = GetObject(guid);
     if (!obj)
     {
         sLog->error("Error: receiv SMSG_UPDATE_MOVEFLAGS for an unknow guid");
@@ -111,7 +111,7 @@ void Client::HandleDeleteObject(Packet& recvData)
     uint64 guid;
     recvData >> guid;
 
-    ClientObject* obj = GetObject(guid);
+    ClientObjectPtr obj = GetObject(guid);
     if (!obj)
     {
         sLog->error("Error: receiv SMSG_UPDATE_MOVEFLAGS for an unknow guid");

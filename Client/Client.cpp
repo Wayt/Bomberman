@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 17 16:29:43 2013 maxime ginters
+** Last update Fri May 17 17:11:12 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -19,11 +19,8 @@ Client::Client() :
 
 Client::~Client()
 {
-    std::map<uint64, ClientObject*>::iterator itr;
-    for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
-        delete itr->second;
+    std::map<uint64, ClientObjectPtr>::iterator itr;
     delete _gameMonitor;
-    delete _player;
 }
 
 bool Client::Start(std::string const& addr, std::string const& port, std::string const& name)
@@ -120,7 +117,7 @@ void Client::Update(uint32 const diff)
                 std::cout << "KEY DOWN " << i << std::endl;
         UpdateMovementFlags(keys);
 
-        std::map<uint64, ClientObject*>::iterator itr;
+        std::map<uint64, ClientObjectPtr>::iterator itr;
         for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
             itr->second->Update(diff);
 
@@ -138,20 +135,20 @@ void Client::SendPacket(Packet const& packet)
     _socket.SendPacket(&packet);
 }
 
-void Client::AddObject(ClientObject* obj)
+void Client::AddObject(ClientObjectPtr obj)
 {
-    std::map<uint64, ClientObject*>::const_iterator itr = _clientObjectMap.find(obj->GetGUID());
+    std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.find(obj->GetGUID());
     if (itr != _clientObjectMap.end())
     {
         sLog->error("Error : try to add an existing object");
         return;
     }
-    _clientObjectMap.insert(std::make_pair<uint64, ClientObject*>(obj->GetGUID(), obj));
+    _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));
 }
 
-void Client::RemoveObject(ClientObject* obj)
+void Client::RemoveObject(ClientObjectPtr obj)
 {
-    std::map<uint64, ClientObject*>::iterator itr = _clientObjectMap.find(obj->GetGUID());
+    std::map<uint64, ClientObjectPtr>::iterator itr = _clientObjectMap.find(obj->GetGUID());
     if (itr == _clientObjectMap.end())
     {
         sLog->error("Error : try to remove an unknow object");
@@ -160,7 +157,7 @@ void Client::RemoveObject(ClientObject* obj)
     _clientObjectMap.erase(itr);
 }
 
-std::map<uint64, ClientObject*> const& Client::GetObjectMap() const
+std::map<uint64, ClientObjectPtr>& Client::GetObjectMap()
 {
     return _clientObjectMap;
 }
@@ -265,15 +262,15 @@ void Client::UpdateNotPressed(gdl::Keys::Key key)
     }
 }
 
-ClientObject* Client::GetObject(uint64 guid)
+ClientObjectPtr Client::GetObject(uint64 guid)
 {
-    std::map<uint64, ClientObject*>::const_iterator itr = _clientObjectMap.find(guid);
+    std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.find(guid);
     if (itr == _clientObjectMap.end())
         return NULL;
     return itr->second;
 }
 
-ClientObject* Client::GetPlayer()
+ClientObjectPtr Client::GetPlayer()
 {
     return _player;
 }

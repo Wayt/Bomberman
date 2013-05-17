@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Fri May 17 13:55:09 2013 maxime ginters
+** Last update Fri May 17 16:51:45 2013 maxime ginters
 */
 
 #ifndef CLIENTOBJECT_H_
@@ -14,6 +14,8 @@
 #include "Model.h"
 #include "Position.h"
 #include "MotionMaster.hpp"
+
+typedef SharedPtr<ClientObject> ClientObjectPtr;
 
 class ClientObject : public Position
 {

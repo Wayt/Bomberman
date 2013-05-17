@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Fri May 17 14:08:01 2013 maxime ginters
+** Last update Fri May 17 17:16:24 2013 maxime ginters
 */
 
 #include <iostream>
@@ -57,11 +57,12 @@ void GameMonitor::draw(void)
     glVertex3f(_width, 0.0f, 0.0f);
     glEnd();
 
-    std::map<uint64, ClientObject *> const &map = _client->GetObjectMap();
-    std::map<uint64, ClientObject *>::const_iterator iter;
+    std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
+    std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetModel().draw();
-    if (ClientObject* obj = _client->GetPlayer())
+    ClientObjectPtr obj = _client->GetPlayer();
+    if (obj.get())
         obj->GetModel().draw();
 
     window_.display();

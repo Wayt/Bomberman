@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Fri May 17 16:27:19 2013 maxime ginters
+** Last update Fri May 17 17:10:57 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -48,12 +48,12 @@ public:
     void HandleUpdateMoveflags(Packet& recvData);
     void HandleDeleteObject(Packet& recvData);
 
-    void AddObject(ClientObject* obj);
-    void RemoveObject(ClientObject* obj);
+    void AddObject(ClientObjectPtr obj);
+    void RemoveObject(ClientObjectPtr obj);
 
-    std::map<uint64, ClientObject*> const& GetObjectMap() const;
-    ClientObject* GetObject(uint64 guid);
-    ClientObject* GetPlayer();
+    std::map<uint64, ClientObjectPtr>& GetObjectMap();
+    ClientObjectPtr GetObject(uint64 guid);
+    ClientObjectPtr GetPlayer();
 
 private:
     void Update(uint32 const diff);
@@ -63,7 +63,7 @@ private:
     void UpdateNotPressed(gdl::Keys::Key key);
 
 
-    ClientObject* _player;
+    ClientObjectPtr _player;
 
     boost::asio::io_service _ioservice;
     OpcodeStatus _status;
@@ -71,7 +71,7 @@ private:
     RunnablePool<boost::asio::io_service> _NetThreads;
     LockedQueue<Packet> _recvQueue;
     GameMonitor* _gameMonitor;
-    std::map<uint64, ClientObject*> _clientObjectMap;
+    std::map<uint64, ClientObjectPtr> _clientObjectMap;
     RunnablePool<GameMonitor> _gameMonitorThread;
 };
 
