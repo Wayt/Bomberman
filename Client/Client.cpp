@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 17 14:07:24 2013 maxime ginters
+** Last update Fri May 17 14:24:35 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -119,6 +119,10 @@ void Client::Update(uint32 const diff)
             if (keys[i] == true)
                 std::cout << "KEY DOWN " << i << std::endl;
         UpdateMovementFlags(keys);
+
+        std::map<uint64, ClientObject*>::iterator itr;
+        for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
+            itr->second->Update(diff);
 
         _player->Update(diff);
     }

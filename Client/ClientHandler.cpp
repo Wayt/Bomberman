@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Fri May 17 14:09:49 2013 maxime ginters
+** Last update Fri May 17 14:26:49 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -55,12 +55,12 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> y;
         recvData >> z;
         recvData >> o;
-        if (guid != _player->GetGUID())
+        if (guid != _player->GetGUID() && modelid == 0)
         {
-            /*ClientObject* obj = new ClientObject(guid, modelid, name);
+            ClientObject* obj = new ClientObject(guid, modelid, name);
             obj->UpdatePosition(x, y, z, o);
             AddObject(obj);
-            std::cout << "OBJECT : " << name << " guid : " << guid << std::endl;*/
+            std::cout << "OBJECT : " << name << " guid : " << guid << std::endl;
         }
     }
 }
@@ -102,4 +102,6 @@ void Client::HandleUpdateMoveflags(Packet& recvData)
 
     obj->SetMovementFlags(flags);
     obj->ReadPosition(recvData);
+
+    std::cout << "Object : " << obj->GetGUID() << " POS : " << *obj->GetPosition() << std::endl;
 }

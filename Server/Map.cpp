@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 17 13:44:48 2013 maxime ginters
+** Last update Fri May 17 14:33:22 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -144,9 +144,15 @@ void MapGrid::UpdateForPlayer(Player* player, uint16 action)
     {
         std::list<MapObject*>::const_iterator itr;
         Packet data(SMSG_SEND_OBJECT);
+        Packet data2(SMSG_SEND_OBJECT);
+        data2 << uint32(1);
+        player->BuildObjectCreateForPlayer(data2);
         data << uint32(_objectList.size());
         for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+        {
             (*itr)->BuildObjectCreateForPlayer(data);
+            (*itr)->SendPacket(data2);
+        }
         player->GetSession()->SendPacket(data);
     }
     if (action & GRIDUPDATE_MOVEFLAGS)
