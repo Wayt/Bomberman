@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Fri May 17 19:08:21 2013 maxime ginters
+** Last update Sat May 18 13:20:49 2013 maxime ginters
 */
 
 #include "Session.h"
@@ -86,9 +86,24 @@ void Session::HandleMovement(Packet& recvData)
         default:
             break;
     }
+    Position pos;
+    _player->GetPosition(pos);
+
     _player->ReadPosition(recvData);
 
-    _player->GetMap()->GridUpdater(_player, GRIDUPDATE_MOVEFLAGS, UPDATE_FULL);
+    std::cout << "OLD POS : " << pos << std::endl;
+    std::cout << "NEW POS : " << *_player->GetPosition() << std::endl;
+    std::cout << "Decalage : " << _player->GetDistance2d(&pos) << std::endl;
 
-    std::cout << "POS : " << *_player->GetPosition() << " GRID : " << _player->GetGrid() << std::endl;
+    if (_player->GetDistance2d(&pos) >= 0.5f)
+    {
+        float x, y, z, o;
+        pos.GetPosition(x, y, z, o);
+        _player->UpdatePosition(x, y, z, o);
+        Packet data(SMSG_FORCE_POSITION, 4 + 4 + 4 + 4);
+        _player->WritePosition(data);
+        SendPacket(data);
+    }
+
+    _player->GetMap()->GridUpdater(_player, GRIDUPDATE_MOVEFLAGS, UPDATE_FULL);
 }

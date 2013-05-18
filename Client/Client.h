@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Sat May 18 12:57:10 2013 maxime ginters
+** Last update Sat May 18 13:19:40 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -59,6 +59,7 @@ public:
     void HandleAddToMap(Packet& recvData);
     void HandleUpdateMoveflags(Packet& recvData);
     void HandleDeleteObject(Packet& recvData);
+    void HandleForcePosition(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
@@ -73,7 +74,6 @@ private:
     void SendMovementPacket(MovementFlags move, bool add);
     void UpdatePressed(gdl::Keys::Key key);
     void UpdateNotPressed(gdl::Keys::Key key);
-
 
     ClientObjectPtr _player;
 

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Fri May 17 19:00:56 2013 maxime ginters
+** Last update Sat May 18 13:25:39 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -117,4 +117,10 @@ void Client::HandleDeleteObject(Packet& recvData)
     }
 
     RemoveObject(obj);
+}
+
+void Client::HandleForcePosition(Packet& recvData)
+{
+    sLog->out("Forcing player position ...");
+    _player->ReadPosition(recvData);
 }

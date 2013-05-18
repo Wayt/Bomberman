@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Fri May 17 18:30:09 2013 maxime ginters
+** Last update Sat May 18 13:10:02 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -63,6 +63,11 @@ void Position::GetPosition(float& x, float& y, float& z, float& o) const
 Position const* Position::GetPosition() const
 {
     return this;
+}
+
+void Position::GetPosition(Position& pos) const
+{
+    GetPosition(pos._posX, pos._posY, pos._posZ, pos._orr);
 }
 
 void Position::UpdatePosition(float x, float y, float z, float o)

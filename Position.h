@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Fri May 17 18:14:26 2013 maxime ginters
+** Last update Sat May 18 13:09:20 2013 maxime ginters
 */
 
 #ifndef POSITION_H_
@@ -41,6 +41,7 @@ public:
     void GetPosition(float& x, float& y, float& z) const;
     void GetPosition(float& x, float& y, float& z, float& o) const;
     Position const* GetPosition() const;
+    void GetPosition(Position& pos) const;
     void UpdatePosition(float x, float y, float z, float o);
     void UpdatePosition(float x, float y, float o);
 
