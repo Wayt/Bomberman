@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Fri May 17 17:10:57 2013 maxime ginters
+** Last update Sat May 18 12:57:10 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -24,10 +24,22 @@
 
 using boost::asio::ip::tcp;
 
+enum KeysMap
+{
+    KEYMAP_US   = 0,
+    KEYMAP_FR   = 1
+};
+
+struct KeysBinds
+{
+    gdl::Keys::Key key[2]; // 0 US - 1 FR
+    MovementFlags movement;
+};
+
 class Client : public Runnable
 {
 public:
-    explicit Client();
+    explicit Client(KeysMap kmap = KEYMAP_US);
     virtual ~Client();
 
     bool Start(std::string const& addr, std::string const& port, std::string const& name);
@@ -73,6 +85,7 @@ private:
     GameMonitor* _gameMonitor;
     std::map<uint64, ClientObjectPtr> _clientObjectMap;
     RunnablePool<GameMonitor> _gameMonitorThread;
+    KeysMap _keymap;
 };
 
 #endif /* !CLIENT_H_ */
