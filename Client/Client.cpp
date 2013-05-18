@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Sat May 18 13:02:51 2013 maxime ginters
+** Last update Sat May 18 13:37:48 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -112,7 +112,7 @@ void Client::Update(uint32 const diff)
     {
         std::vector<bool> keys(gdl::Keys::Count, false);
         _gameMonitor->getKeyVector(keys);
-        UpdateMovementFlags(keys);
+        UpdateInput(keys);
 
         std::map<uint64, ClientObjectPtr>::iterator itr;
         for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
@@ -159,7 +159,7 @@ std::map<uint64, ClientObjectPtr>& Client::GetObjectMap()
     return _clientObjectMap;
 }
 
-void Client::UpdateMovementFlags(std::vector<bool> const& keys)
+void Client::UpdateInput(std::vector<bool> const& keys)
 {
     static KeysBinds binds[6] = {
         {gdl::Keys::W, gdl::Keys::Z, MOVEMENT_FORWARD},
@@ -173,24 +173,36 @@ void Client::UpdateMovementFlags(std::vector<bool> const& keys)
     uint32 size = keys.size();
     for (uint32 i = 0; i < size; ++i)
     {
-       for (uint8 j = 0; j < 6; ++j)
-       {
-           if (binds[j].key[_keymap] == (gdl::Keys::Key)i)
-           {
-               if (keys[i])
-               {
-                   if (_player->AddMovementFlag(binds[j].movement))
-                       SendMovementPacket(binds[j].movement, true);
-               }
-               else
-               {
-                   if (_player->RemoveMovementFlag(binds[j].movement))
-                       SendMovementPacket(binds[j].movement, false);
-               }
-               break;
-           }
+        if ((gdl::Keys::Key)i == gdl::Keys::Space)
+        {
+            if (keys[i] && !_spaceAction)
+            {
+                HandleSpaceAction();
+                _spaceAction = true;
+            }
+            else if (!keys[i])
+                _spaceAction = false;
 
-       }
+        }
+        else
+            for (uint8 j = 0; j < 6; ++j)
+            {
+                if (binds[j].key[_keymap] == (gdl::Keys::Key)i)
+                {
+                    if (keys[i])
+                    {
+                        if (_player->AddMovementFlag(binds[j].movement))
+                            SendMovementPacket(binds[j].movement, true);
+                    }
+                    else
+                    {
+                        if (_player->RemoveMovementFlag(binds[j].movement))
+                            SendMovementPacket(binds[j].movement, false);
+                    }
+                    break;
+                }
+
+            }
     }
 }
 
@@ -244,72 +256,6 @@ void Client::SendMovementPacket(MovementFlags move, bool add)
     SendPacket(data);
 }
 
-void Client::UpdatePressed(gdl::Keys::Key key)
-{
-    switch (key)
-    {
-        case gdl::Keys::W:
-            if (_player->AddMovementFlag(MOVEMENT_FORWARD))
-                SendMovementPacket(MOVEMENT_FORWARD, true);
-            break;
-        case gdl::Keys::D:
-            if (_player->AddMovementFlag(MOVEMENT_TURN_RIGHT))
-                SendMovementPacket(MOVEMENT_TURN_RIGHT, true);
-            break;
-        case gdl::Keys::S:
-            if (_player->AddMovementFlag(MOVEMENT_BACKWARD))
-                SendMovementPacket(MOVEMENT_BACKWARD, true);
-            break;
-        case gdl::Keys::A:
-            if (_player->AddMovementFlag(MOVEMENT_TURN_LEFT))
-                SendMovementPacket(MOVEMENT_TURN_LEFT, true);
-            break;
-        case gdl::Keys::Q:
-            if (_player->AddMovementFlag(MOVEMENT_STRAF_LEFT))
-                SendMovementPacket(MOVEMENT_STRAF_LEFT, true);
-            break;
-        case gdl::Keys::E:
-            if (_player->AddMovementFlag(MOVEMENT_STRAF_RIGHT))
-                SendMovementPacket(MOVEMENT_STRAF_RIGHT, true);
-            break;
-        default:
-            break;
-    }
-}
-
-void Client::UpdateNotPressed(gdl::Keys::Key key)
-{
-    switch (key)
-    {
-        case gdl::Keys::W:
-            if (_player->RemoveMovementFlag(MOVEMENT_FORWARD))
-                SendMovementPacket(MOVEMENT_FORWARD, false);
-            break;
-        case gdl::Keys::D:
-            if (_player->RemoveMovementFlag(MOVEMENT_TURN_RIGHT))
-                SendMovementPacket(MOVEMENT_TURN_RIGHT, false);
-            break;
-        case gdl::Keys::S:
-            if (_player->RemoveMovementFlag(MOVEMENT_BACKWARD))
-                SendMovementPacket(MOVEMENT_BACKWARD, false);
-            break;
-        case gdl::Keys::A:
-            if (_player->RemoveMovementFlag(MOVEMENT_TURN_LEFT))
-                SendMovementPacket(MOVEMENT_TURN_LEFT, false);
-            break;
-        case gdl::Keys::Q:
-            if (_player->RemoveMovementFlag(MOVEMENT_STRAF_LEFT))
-                SendMovementPacket(MOVEMENT_STRAF_LEFT, false);
-            break;
-        case gdl::Keys::E:
-            if (_player->RemoveMovementFlag(MOVEMENT_STRAF_RIGHT))
-                SendMovementPacket(MOVEMENT_STRAF_RIGHT, false);
-            break;
-        default:
-            break;
-    }
-}
-
 ClientObjectPtr Client::GetObject(uint64 guid)
 {
     std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.find(guid);
@@ -321,4 +267,10 @@ ClientObjectPtr Client::GetObject(uint64 guid)
 ClientObjectPtr Client::GetPlayer()
 {
     return _player;
+}
+
+void Client::HandleSpaceAction()
+{
+    Packet data(CMSG_DROP_BOMB, 0);
+    SendPacket(data);
 }

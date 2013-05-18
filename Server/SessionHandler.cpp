@@ -5,9 +5,10 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Sat May 18 13:20:49 2013 maxime ginters
+** Last update Sat May 18 13:59:41 2013 maxime ginters
 */
 
+#include "Bomb.h"
 #include "Session.h"
 #include "Map.h"
 #include "Server.h"
@@ -106,4 +107,16 @@ void Session::HandleMovement(Packet& recvData)
     }
 
     _player->GetMap()->GridUpdater(_player, GRIDUPDATE_MOVEFLAGS, UPDATE_FULL);
+}
+
+void Session::HandleDropBomb(Packet& recvData)
+{
+    (void)recvData;
+    float x, y, z, o;
+    _player->GetPosition(x, y, z, o);
+
+    Bomb* bomb = new Bomb(_player->GetMap()->MakeNewGuid(), _player, 5000);
+    bomb->UpdatePosition(x, y, z, o);
+    _player->GetMap()->AddObject(bomb);
+    std::cout << "BOMB PLANTED" << std::endl;
 }

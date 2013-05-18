@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Fri May 17 18:15:06 2013 maxime ginters
+** Last update Sat May 18 14:00:02 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -61,6 +61,9 @@ public:
     virtual void Update(uint32 const diff);
 
     void HandlePositionChange();
+
+    MapObject* GetOwner();
+    void SetOwner(MapObject* obj);
 protected:
     uint32 _modelId;
     bool _isInWorld;
@@ -70,6 +73,7 @@ protected:
     TypeId _typeId;
     uint64 const _guid;
     MotionMaster* _motionMaster;
+    MapObject* _owner;
 };
 
 #endif /* !MAPOBJECT_H_ */

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Fri May 17 19:17:18 2013 maxime ginters
+** Last update Sat May 18 14:04:53 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -25,7 +25,7 @@ void Player::SetGrid(MapGrid* grid)
     if (_map && grid)
     {
         uint8 flags = _map->BuildGridUpdaterFlags(oldGrid, _currGrid);
-        _map->GridUpdater(this, GRIDUPDATE_ACTIVE | GRIDUPDATE_SENDOBJ, flags);
+        _map->GridUpdater(this, GRIDUPDATE_ACTIVE, flags);
     }
 }
 

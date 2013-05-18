@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Fri May 17 19:55:37 2013 maxime ginters
+** Last update Sat May 18 13:45:06 2013 maxime ginters
 */
 
 #include <iostream>
@@ -14,7 +14,7 @@
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : Position(),
     _modelId(modelId), _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
-    _guid(guid), _motionMaster(NULL)
+    _guid(guid), _motionMaster(NULL), _owner(NULL)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -124,4 +124,14 @@ void MapObject::HandlePositionChange()
 
     if (_map)
         _map->UpdateObjectGrid(this);
+}
+
+MapObject* MapObject::GetOwner()
+{
+    return _owner;
+}
+
+void MapObject::SetOwner(MapObject* obj)
+{
+    _owner = obj;
 }

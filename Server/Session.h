@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:47:46 2013 maxime ginters
-** Last update Fri May 17 15:48:33 2013 maxime ginters
+** Last update Sat May 18 13:38:47 2013 maxime ginters
 */
 
 #ifndef SESSION_H_
@@ -40,6 +40,7 @@ public:
     void HandleLoginPlayer(Packet& recvData);
     void HandleEnterGame(Packet& recvData);
     void HandleMovement(Packet& recvData);
+    void HandleDropBomb(Packet& recvData);
 
 private:
     SessionSocket* _socket;

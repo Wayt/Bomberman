@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 17 19:53:26 2013 maxime ginters
+** Last update Sat May 18 14:04:41 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -113,6 +113,8 @@ void Map::AddObject(MapObject* obj)
 
     obj->SetMap(this);
     grid->AddObject(obj);
+
+    GridUpdater(obj, GRIDUPDATE_SENDOBJ, UPDATE_FULL);
 }
 
 void Map::RemoveObject(MapObject* obj)
