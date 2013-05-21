@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Fri May 17 19:55:02 2013 maxime ginters
+** Last update Sun May 19 15:44:14 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -61,6 +61,7 @@ public:
     void BroadcastToGrid(Packet& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list);
+    void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
@@ -87,9 +88,12 @@ public:
 
     void UpdateObjectGrid(MapObject* obj);
 
+    void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;
     MapGrid* GetGridAt(float x, float y);
+    MapGrid const* GetGridAt(float x, float y) const;
 
     std::map<std::pair<float, float>, MapGrid*> _mapGridMap;
     uint64 _nextGuid;

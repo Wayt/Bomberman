@@ -5,13 +5,15 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:40:51 2013 maxime ginters
-** Last update Sat May 18 13:54:21 2013 maxime ginters
+** Last update Sun May 19 15:45:22 2013 maxime ginters
 */
 
 #ifndef BOMB_H_
 # define BOMB_H_
 
 #include "MapObject.h"
+
+#define BOMB_RANGE 10
 
 class Bomb : public MapObject
 {

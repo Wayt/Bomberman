@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Sat May 18 14:00:33 2013 maxime ginters
+** Last update Sun May 19 15:46:15 2013 maxime ginters
 */
 
 #include <iostream>
@@ -36,6 +36,12 @@ void Bomb::Update(uint32 const diff)
 void Bomb::HandleBoum()
 {
     std::cout << "BOUM" << std::endl;
+    std::list<MapObject*> objList;
+    GetObjectListInRange(BOMB_RANGE, objList);
+
+    for (std::list<MapObject*>::const_iterator itr = objList.begin(); itr != objList.end(); ++itr)
+        std::cout << "BOUM ON : " << (*itr)->GetName() << std::endl;
+
     if (_map)
         _map->RemoveObject(this);
     delete this;

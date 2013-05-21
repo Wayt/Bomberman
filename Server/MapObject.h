@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Sat May 18 14:00:02 2013 maxime ginters
+** Last update Sun May 19 15:41:22 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -64,6 +64,8 @@ public:
 
     MapObject* GetOwner();
     void SetOwner(MapObject* obj);
+
+    void GetObjectListInRange(float range, std::list<MapObject*>& list) const;
 protected:
     uint32 _modelId;
     bool _isInWorld;

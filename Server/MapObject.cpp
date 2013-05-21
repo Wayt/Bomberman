@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Sat May 18 13:45:06 2013 maxime ginters
+** Last update Sun May 19 15:42:17 2013 maxime ginters
 */
 
 #include <iostream>
@@ -53,9 +53,16 @@ void MapObject::SetGrid(MapGrid* grid)
         return;
     }
 
+    MapGrid*  oldGrid = _currGrid;
     if (_currGrid)
         _currGrid->RemoveObject(this);
     _currGrid = grid;
+
+    if (_map && grid)
+    {
+        uint8 flags = _map->BuildGridUpdaterFlags(oldGrid, _currGrid);
+        _map->GridUpdater(this, GRIDUPDATE_SENDOBJ, flags);
+    }
 }
 
 void MapObject::SetMap(Map* map)
@@ -134,4 +141,11 @@ MapObject* MapObject::GetOwner()
 void MapObject::SetOwner(MapObject* obj)
 {
     _owner = obj;
+}
+
+void MapObject::GetObjectListInRange(float range, std::list<MapObject*>& list) const
+{
+    if (!_map)
+        return;
+    _map->GetObjectListInRange(this, range, list);
 }
