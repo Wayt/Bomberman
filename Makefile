@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Sat May 18 13:59:13 2013 maxime ginters
+## Last update Tue May 21 18:07:56 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -13,7 +13,7 @@ CXX	= g++
 RM	= rm -f
 
 CXXFLAGS	+= -Wextra -Wall -Werror
-CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary
+CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary -IServer/AI
 CXXFLAGS	+= -fopenmp
 CXXFLAGS	+= -ggdb3
 
@@ -21,6 +21,7 @@ UNAME	:= $(shell uname -a)
 
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
+LDFLAGS	+= -llua5.1 -lluabind
 
 ifneq (, $(findstring ARCH, $(UNAME)))
     LDFLAGS	+= -lSOIL
@@ -32,7 +33,7 @@ SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cp
 		  Opcodes.cpp \
 		  Server/SessionHandler.cpp Server/Map.cpp Server/MapObject.cpp Server/Player.cpp \
 		  Server/Server.cpp Server/SessionSocketAcceptor.cpp Server/Session.cpp Server/SessionSocket.cpp \
-		  Server/SessionSocketMgr.cpp Server/Bomb.cpp \
+		  Server/SessionSocketMgr.cpp Server/Bomb.cpp Server/Object.cpp Server/AI/ObjectAI.cpp \
 		  Client/Client.cpp Client/ClientSocket.cpp Client/ClientHandler.cpp Client/ClientObject.cpp \
 		  Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/Model.cpp
 

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue Apr 16 15:10:46 2013 maxime ginters
-** Last update Mon May 06 13:58:25 2013 maxime ginters
+** Last update Tue May 21 18:55:58 2013 maxime ginters
 */
 
 #ifndef LOG_H_
@@ -30,6 +30,7 @@ public:
     void out(const char* str, ...);
     void error(const char* str, ...);
     void debug(const char* str, ...);
+    void print(const char* str);
 
 private:
     std::ofstream _stream;

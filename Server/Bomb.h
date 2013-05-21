@@ -5,22 +5,20 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:40:51 2013 maxime ginters
-** Last update Sun May 19 15:45:22 2013 maxime ginters
+** Last update Tue May 21 18:18:27 2013 maxime ginters
 */
 
 #ifndef BOMB_H_
 # define BOMB_H_
 
-#include "MapObject.h"
+#include "Object.h"
 
 #define BOMB_RANGE 10
 
-class Bomb : public MapObject
+class Bomb : public Object
 {
 public:
     explicit Bomb(uint64 guid, MapObject* owner, uint32 mstimer);
-
-    void Update(uint32 const diff);
 
     void HandleBoum();
 private:

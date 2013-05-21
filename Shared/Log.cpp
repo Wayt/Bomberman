@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue Apr 16 15:10:46 2013 maxime ginters
-** Last update Mon May 13 17:03:30 2013 maxime ginters
+** Last update Tue May 21 18:56:23 2013 maxime ginters
 */
 
 #include <ctime>
@@ -97,4 +97,9 @@ void Log::debug(const char* str, ...)
     _debug << st << ": " << buff << std::endl;
     std::cout << "DEBUG : " << buff << std::endl;
     _debugMutex.unlock();
+}
+
+void Log::print(const char* str)
+{
+    std::cout << str << std::endl;
 }

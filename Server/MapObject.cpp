@@ -5,12 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Sun May 19 15:42:17 2013 maxime ginters
+** Last update Tue May 21 18:38:48 2013 maxime ginters
 */
 
 #include <iostream>
 #include "MapObject.h"
 #include "Map.h"
+#include "ObjectAI.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : Position(),
     _modelId(modelId), _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
@@ -149,3 +150,9 @@ void MapObject::GetObjectListInRange(float range, std::list<MapObject*>& list) c
         return;
     _map->GetObjectListInRange(this, range, list);
 }
+
+ObjectAI* MapObject::GetAI()
+{
+    return NULL;
+}
+

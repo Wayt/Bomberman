@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Tue May 21 17:28:43 2013 maxime ginters
+** Last update Tue May 21 19:04:50 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -15,9 +15,11 @@
 #include "Packet.hpp"
 #include "Position.h"
 #include "MotionMaster.hpp"
+#include "ObjectAI.h"
 
 class MapGrid;
 class Map;
+class ObjectAI;
 
 enum ModelIds
 {
@@ -66,6 +68,9 @@ public:
     void SetOwner(MapObject* obj);
 
     void GetObjectListInRange(float range, std::list<MapObject*>& list) const;
+
+    virtual ObjectAI* GetAI();
+
 protected:
     uint32 _modelId;
     bool _isInWorld;
