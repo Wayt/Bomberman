@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Fri May 17 16:51:45 2013 maxime ginters
+** Last update Tue May 21 15:25:09 2013 fabien casters
 */
 
 #ifndef CLIENTOBJECT_H_
@@ -24,6 +24,7 @@ public:
     virtual ~ClientObject();
 
     uint64 GetGUID() const;
+    uint32 GetModelId() const;
     Model &GetModel();
 
     void Update(uint32 const diff);

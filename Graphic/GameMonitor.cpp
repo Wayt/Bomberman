@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Fri May 17 17:16:24 2013 maxime ginters
+** Last update Tue May 21 14:57:36 2013 fabien casters
 */
 
 #include <iostream>
@@ -26,7 +26,7 @@ void GameMonitor::initialize(void)
 
 void GameMonitor::update(void)
 {
-    _cam.update(gameClock_, input_);
+    _cam.update(_client->GetPlayer());
     for (uint32 i = 0; i < gdl::Keys::Count; ++i)
         _keyVector[i] = input_.isKeyDown((gdl::Keys::Key)i);
 }

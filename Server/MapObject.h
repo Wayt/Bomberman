@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Sun May 19 15:41:22 2013 maxime ginters
+** Last update Tue May 21 17:28:43 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_

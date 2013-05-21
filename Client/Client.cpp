@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Sat May 18 13:37:48 2013 maxime ginters
+** Last update Sun May 19 20:13:40 2013 vincent leroy
 */
 
 #include "Input.hpp"
@@ -162,12 +162,12 @@ std::map<uint64, ClientObjectPtr>& Client::GetObjectMap()
 void Client::UpdateInput(std::vector<bool> const& keys)
 {
     static KeysBinds binds[6] = {
-        {gdl::Keys::W, gdl::Keys::Z, MOVEMENT_FORWARD},
-        {gdl::Keys::S, gdl::Keys::S, MOVEMENT_BACKWARD},
-        {gdl::Keys::A, gdl::Keys::Z, MOVEMENT_TURN_LEFT},
-        {gdl::Keys::D, gdl::Keys::D, MOVEMENT_TURN_RIGHT},
-        {gdl::Keys::Q, gdl::Keys::A, MOVEMENT_STRAF_LEFT},
-        {gdl::Keys::E, gdl::Keys::E, MOVEMENT_STRAF_RIGHT},
+        {{gdl::Keys::W, gdl::Keys::Z}, MOVEMENT_FORWARD},
+        {{gdl::Keys::S, gdl::Keys::S}, MOVEMENT_BACKWARD},
+        {{gdl::Keys::A, gdl::Keys::Q}, MOVEMENT_TURN_LEFT},
+        {{gdl::Keys::D, gdl::Keys::D}, MOVEMENT_TURN_RIGHT},
+        {{gdl::Keys::Q, gdl::Keys::A}, MOVEMENT_STRAF_LEFT},
+        {{gdl::Keys::E, gdl::Keys::E}, MOVEMENT_STRAF_RIGHT},
     };
 
     uint32 size = keys.size();

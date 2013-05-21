@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Sun May 19 15:44:14 2013 maxime ginters
+** Last update Tue May 21 17:29:02 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -48,6 +48,12 @@ struct GridUpdateOrder
     uint8 flags;
 };
 
+struct GridUpdaterFunction
+{
+    uint8 flag;
+    void (MapGrid::*update)(MapObject*);
+};
+
 class MapGrid
 {
 public:
@@ -58,6 +64,10 @@ public:
     void RemoveObject(MapObject* obj);
 
     void UpdateForMapObject(MapObject* player, uint16 action);
+    void GridUpdateActive(MapObject *obj);
+    void GridUpdateSendObject(MapObject *obj);
+    void GridUpdateMoveFlags(MapObject *obj);
+    void GridUpdateDelObj(MapObject *obj);
     void BroadcastToGrid(Packet& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list);
