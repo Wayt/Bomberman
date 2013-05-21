@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Fri May 17 14:02:52 2013 maxime ginters
+** Last update Tue May 21 15:25:07 2013 fabien casters
 */
 
 #include "ClientObject.h"
@@ -25,6 +25,11 @@ ClientObject::~ClientObject()
 uint64 ClientObject::GetGUID() const
 {
     return _guid;
+}
+
+uint32 ClientObject::GetModelId() const
+{
+    return _modelId;
 }
 
 Model &ClientObject::GetModel()

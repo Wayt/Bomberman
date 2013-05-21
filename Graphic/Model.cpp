@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Wed May 15 18:35:35 2013 fabien casters
+** Last update Tue May 21 15:26:22 2013 fabien casters
 */
 
 #include <GL/gl.h>
@@ -26,7 +26,10 @@ void Model::draw()
 
     glBegin(GL_QUADS);
 
-    glColor3f(1.0f, 0.5f, 0.75f);
+    if (_object->GetModelId() == 0)
+        glColor3f(1.0f, 0.5f, 0.75f);
+    else
+        glColor3f(0.0f, 0.0f, 0.0f);
 
     glVertex3f(x - size / 2, y - size / 2.f, 0);
     glVertex3f(x - size / 2, y + size / 2.f, 0);

@@ -5,12 +5,13 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 15 12:59:41 2013 fabien casters
-** Last update Wed May 15 17:53:05 2013 fabien casters
+** Last update Tue May 21 15:42:31 2013 fabien casters
 */
 
 #include "Camera.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <iostream>
 
 Camera::Camera() :
     _pos(0, -70.0f, 30.0f), _rot(0.0f, 0.0f, 0.0f)
@@ -22,15 +23,22 @@ void Camera::initialize()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.0f, 800.0f / 600.0f, 1.0f, 3000.0f);
-    gluLookAt(_pos.x, _pos.y, _pos.z, 20.f, 20.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+    gluPerspective(90.0f, 800.0f / 600.0f, 1.0f, 3000.0f);
+    //gluLookAt(_pos.x, _pos.y, _pos.z, 20.f, 20.0f, 0.0f, 0.0f, 0.0f, 1.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 }
 
-void Camera::update(gdl::GameClock const &, gdl::Input &)
+void Camera::update(ClientObjectPtr player)
 {
-    // TODO
+    if (!player.get())
+        return;
+    float x, y, z, o;
+    player->GetPosition(x, y, z, o);
+    //std::cout << x << " " << y << " " << z << std::endl; 
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(x + -20.0f, y, 60.0f, x, y, 0.0f, 0.0f, 0.0f, 1.0f);
 }
