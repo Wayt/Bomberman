@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:32 2013 fabien casters
-** Last update Thu May 16 17:24:50 2013 maxime ginters
+** Last update Wed May 22 17:08:06 2013 fabien casters
 */
 
 #ifndef GAMEMONITOR_H_
@@ -13,7 +13,7 @@
 
 #include <vector>
 #include "Camera.h"
-#include "Model.h"
+#include "GraphicObject.h"
 #include "Game.hpp"
 #include "Shared.h"
 #include <GL/gl.h>

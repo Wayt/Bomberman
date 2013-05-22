@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Tue May 21 14:57:36 2013 fabien casters
+** Last update Wed May 22 18:57:26 2013 fabien casters
 */
 
 #include <iostream>
@@ -26,6 +26,14 @@ void GameMonitor::initialize(void)
 
 void GameMonitor::update(void)
 {
+    std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
+    std::map<uint64, ClientObjectPtr>::iterator iter;
+    for(iter = map.begin(); iter != map.end(); ++iter)
+        iter->second->GetGraphicObject().update(gameClock_);
+    ClientObjectPtr obj = _client->GetPlayer();
+    if (obj.get())
+        obj->GetGraphicObject().update(gameClock_);
+
     _cam.update(_client->GetPlayer());
     for (uint32 i = 0; i < gdl::Keys::Count; ++i)
         _keyVector[i] = input_.isKeyDown((gdl::Keys::Key)i);
@@ -50,7 +58,7 @@ void GameMonitor::draw(void)
     glEnd();
 
     glBegin(GL_QUADS);
-    glColor3ub(0, 0, 255); // Bleu
+    glColor3ub(0x99, 0x6F, 0x3A);
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, _height, 0.0f);
     glVertex3f(_width, _height, 0.0f);
@@ -60,10 +68,10 @@ void GameMonitor::draw(void)
     std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
-        iter->second->GetModel().draw();
+        iter->second->GetGraphicObject().draw();
     ClientObjectPtr obj = _client->GetPlayer();
     if (obj.get())
-        obj->GetModel().draw();
+        obj->GetGraphicObject().draw();
 
     window_.display();
 }

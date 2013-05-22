@@ -5,13 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Tue May 21 15:25:09 2013 fabien casters
+** Last update Wed May 22 17:32:58 2013 fabien casters
 */
 
 #ifndef CLIENTOBJECT_H_
 # define CLIENTOBJECT_H_
 
-#include "Model.h"
+#include "GraphicObject.h"
 #include "Position.h"
 #include "MotionMaster.hpp"
 
@@ -25,7 +25,7 @@ public:
 
     uint64 GetGUID() const;
     uint32 GetModelId() const;
-    Model &GetModel();
+    GraphicObject &GetGraphicObject();
 
     void Update(uint32 const diff);
 
@@ -33,7 +33,7 @@ private:
     uint64 _guid;
     uint32 _modelId;
     std::string _name;
-    Model _model;
+    GraphicObject _graphicObject;
     MotionMaster* _motionMaster;
 };
 

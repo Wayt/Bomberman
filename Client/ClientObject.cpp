@@ -5,13 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Tue May 21 15:25:07 2013 fabien casters
+** Last update Wed May 22 16:46:48 2013 fabien casters
 */
 
 #include "ClientObject.h"
 
 ClientObject::ClientObject(uint64 guid, uint32 modelid, std::string const& name) :
-    Position(), _guid(guid), _modelId(modelid), _name(name), _model(this), _motionMaster(NULL)
+    Position(), _guid(guid), _modelId(modelid), _name(name), _graphicObject(this), _motionMaster(NULL)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelid == 0 ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -32,9 +32,9 @@ uint32 ClientObject::GetModelId() const
     return _modelId;
 }
 
-Model &ClientObject::GetModel()
+GraphicObject &ClientObject::GetGraphicObject()
 {
-    return _model;
+    return _graphicObject;
 }
 
 void ClientObject::Update(uint32 const diff)
