@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Tue May 21 18:58:06 2013 maxime ginters
+** Last update Wed May 22 13:40:25 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
@@ -57,9 +57,16 @@ bool ObjectAI::ReloadLua()
         return false;
     }
 
-    LUA_RUNTIME_PROTECT(
-            luabind::call_function<void>(_luastate, "LoadScript", _me)
-    );
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["LoadScript"])
+            f(_me);
+    }
+    catch (std::exception const&)
+    {
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+
     return true;
 }
 
@@ -68,7 +75,13 @@ void ObjectAI::UpdateAI(uint32 const diff)
     if (!_luastate)
         return;
 
-    LUA_RUNTIME_PROTECT(
-            luabind::call_function<void>(_luastate, "UpdateAI", _me, diff)
-    );
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["UpdateAI"])
+            f(_me, diff);
+    }
+    catch (std::exception const&)
+    {
+        LUA_RUNTIME_ERROR(_luastate);
+    }
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Tue May 21 18:48:07 2013 maxime ginters
+** Last update Wed May 22 13:35:42 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
@@ -24,14 +24,7 @@ extern "C"
 #include <string>
 #include "Shared.h"
 
-#define LUA_RUNTIME_PROTECT(a) try { \
-                                a; \
-                                } catch (std::exception const& e) \
-                                { \
-                                    (void)e; \
-                                    sLog->error("LUA ERROR: %s", lua_tostring(_luastate, -1)); \
-                                }
-
+#define LUA_RUNTIME_ERROR(a) sLog->error("LUA ERROR: %s", lua_tostring(a, -1))
 
 class Object;
 
