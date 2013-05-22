@@ -13,3 +13,6 @@
 !Library
 !Graphic
 !Server/AI
+!Assets
+!Assets/*
+!*.fbx
