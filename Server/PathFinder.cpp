@@ -5,13 +5,13 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 13:39:00 2013 vincent leroy
-** Last update Thu May 23 16:34:46 2013 maxime ginters
+** Last update Thu May 23 16:35:24 2013 maxime ginters
 */
 
 #include "PathFinder.h"
 
 PathFinder::PathFinder() :
-    _queue(), _finding(), _cond(), _mutex()
+    _queue(), _finding()
 {
     for (int i = 0; i < PATHFINDING_THREAD_COUNT; ++i)
     {
