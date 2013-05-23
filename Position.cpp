@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Thu May 23 16:13:06 2013 fabien casters
+** Last update Thu May 23 17:04:52 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -186,4 +186,12 @@ std::ostream& operator<<(std::ostream& stream, Position const& pos)
 
 void Position::HandlePositionChange()
 {
+}
+
+void Position::GetXYAt(float range, float angle, float& destx, float& desty) const
+{
+    angle += _orr;
+
+    destx = _posX + range * cos(angle);
+    desty = _posY + range * sin(angle);
 }

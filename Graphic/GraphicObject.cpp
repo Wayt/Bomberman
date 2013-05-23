@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Thu May 23 16:24:19 2013 fabien casters
+** Last update Thu May 23 16:49:46 2013 maxime ginters
 */
 
 #include <cmath>
@@ -42,7 +42,7 @@ void GraphicObject::draw()
     glTranslatef(x, y, 0.0f);
     glRotatef(90, 1.0f, 0.0f, 0.0f);
     glRotatef(((o * 180.0f) / M_PI) + 90, 0.0f, 1.0f, 0.0f);
-    glScalef(0.02f, 0.02f, 0.02f);
+    glScalef(0.002f, 0.002f, 0.002f);
     _model->draw();
     glPopMatrix();
 }
