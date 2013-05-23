@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Thu May 23 15:56:41 2013 maxime ginters
+## Last update Thu May 23 16:07:47 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -22,7 +22,9 @@ UNAME	:= $(shell uname -a)
 
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
-LDFLAGS	+= -llua5.1 -llua -lluabind
+LDFLAGS	+= -llua
+LDFLAGS	+= -llua5.1
+LDFLAGS	+= -lluabind
 LDFLAGS	+= -lSOIL
 
 NAME	= bomberman
@@ -33,7 +35,8 @@ SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cp
 		  Server/Server.cpp Server/SessionSocketAcceptor.cpp Server/Session.cpp Server/SessionSocket.cpp \
 		  Server/SessionSocketMgr.cpp Server/Bomb.cpp Server/Object.cpp Server/AI/ObjectAI.cpp \
 		  Client/Client.cpp Client/ClientSocket.cpp Client/ClientHandler.cpp Client/ClientObject.cpp \
-		  Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/GraphicObject.cpp Graphic/ModelFactory.cpp
+		  Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/GraphicObject.cpp Graphic/ModelFactory.cpp \
+		  Server/PathFinder.cpp Server/PathFindingRunnable.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
