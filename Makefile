@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Tue May 21 18:07:56 2013 maxime ginters
+## Last update Thu May 23 15:56:41 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -16,16 +16,14 @@ CXXFLAGS	+= -Wextra -Wall -Werror
 CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary -IServer/AI
 CXXFLAGS	+= -fopenmp
 CXXFLAGS	+= -ggdb3
+CXXFLAGS	+= -I/usr/include/lua5.1
 
 UNAME	:= $(shell uname -a)
 
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
-LDFLAGS	+= -llua5.1 -lluabind
-
-ifneq (, $(findstring ARCH, $(UNAME)))
-    LDFLAGS	+= -lSOIL
-endif
+LDFLAGS	+= -llua5.1 -llua -lluabind
+LDFLAGS	+= -lSOIL
 
 NAME	= bomberman
 
@@ -35,7 +33,7 @@ SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cp
 		  Server/Server.cpp Server/SessionSocketAcceptor.cpp Server/Session.cpp Server/SessionSocket.cpp \
 		  Server/SessionSocketMgr.cpp Server/Bomb.cpp Server/Object.cpp Server/AI/ObjectAI.cpp \
 		  Client/Client.cpp Client/ClientSocket.cpp Client/ClientHandler.cpp Client/ClientObject.cpp \
-		  Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/Model.cpp
+		  Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/GraphicObject.cpp Graphic/ModelFactory.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
