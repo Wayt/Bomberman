@@ -14,5 +14,8 @@
 !Graphic
 !Server/AI
 !Assets
+!Assets/marvin.fbm
+!Assets/bomb.fbm
 !Assets/*
 !*.fbx
+!*.tga

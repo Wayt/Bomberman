@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Sat May 18 13:10:02 2013 maxime ginters
+** Last update Thu May 23 16:13:06 2013 fabien casters
 */
 
 #include "Position.h"
