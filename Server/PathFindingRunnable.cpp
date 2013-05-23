@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu May 23 15:31:04 2013 vincent leroy
+** Last update Thu May 23 16:34:42 2013 maxime ginters
 */
 
 #include "PathFinder.h"
@@ -40,7 +40,7 @@ void PathFindingRunnable::operator()()
             findPath(path, request);
             request->callback(path);
         }
-        sPathFinder->requestFinished(request);
+        delete request;
     }
 }
 

@@ -5,15 +5,15 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 13:39:00 2013 vincent leroy
-** Last update Thu May 23 15:33:09 2013 vincent leroy
+** Last update Thu May 23 16:34:46 2013 maxime ginters
 */
 
 #include "PathFinder.h"
 
 PathFinder::PathFinder() :
-    _queue(), _finding()
+    _queue(), _finding(), _cond(), _mutex()
 {
-    for (int i = 0; i < NB_PATHFINDING; ++i)
+    for (int i = 0; i < PATHFINDING_THREAD_COUNT; ++i)
     {
         _finding[i] = new PathFindingRunnable();
         _finding[i]->run();
@@ -22,6 +22,11 @@ PathFinder::PathFinder() :
 
 PathFinder::~PathFinder()
 {
+    for (int i = 0; i < PATHFINDING_THREAD_COUNT; ++i)
+    {
+        _finding[i]->stop();
+        _finding[i]->join();
+    }
 }
 
 void PathFinder::addRequest(const PathFinderRequest &request)
@@ -34,7 +39,3 @@ PathFinderRequest* PathFinder::takeRequest()
     return _queue.get();
 }
 
-void PathFinder::requestFinished(PathFinderRequest *request)
-{
-    delete request;
-}
