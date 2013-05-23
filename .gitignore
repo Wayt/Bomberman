@@ -19,3 +19,5 @@
 !Assets/*
 !*.fbx
 !*.tga
+!Scripts
+!*.lua
