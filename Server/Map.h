@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Tue May 21 17:29:02 2013 maxime ginters
+** Last update Thu May 23 18:58:31 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -13,11 +13,14 @@
 
 #include <map>
 #include "Shared.h"
-#include "MapObject.h"
-#include "Player.h"
+#include "Packet.hpp"
+#include "luabind.h"
 
 #define MAP_PRECISION 5
 #define GRID_SIZE (MAP_PRECISION * 10)
+
+class MapObject;
+class Player;
 
 enum GridUpdaterActions
 {
@@ -48,12 +51,6 @@ struct GridUpdateOrder
     uint8 flags;
 };
 
-struct GridUpdaterFunction
-{
-    uint8 flag;
-    void (MapGrid::*update)(MapObject*);
-};
-
 class MapGrid
 {
 public:
@@ -75,6 +72,12 @@ public:
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
+
+    struct GridUpdaterFunction
+    {
+        uint8 flag;
+        void (MapGrid::*update)(MapObject*);
+    };
 };
 
 class Map
@@ -99,6 +102,8 @@ public:
     void UpdateObjectGrid(MapObject* obj);
 
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+
+    static void RegisterLua(lua_State* state);
 
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;

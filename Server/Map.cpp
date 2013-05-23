@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Tue May 21 17:29:15 2013 maxime ginters
+** Last update Thu May 23 18:58:16 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -13,6 +13,8 @@
 #include <algorithm>
 #include "Map.h"
 #include "Session.h"
+#include "MapObject.h"
+#include "Player.h"
 
 Map::Map(uint32 width, uint32 height) :
     _mapGridMap(), _nextGuid(1), _width(width), _height(height)
@@ -347,4 +349,12 @@ void Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapO
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
                 grid->GetObjectListInRange(obj, range, list);
+}
+
+void Map::RegisterLua(lua_State* state)
+{
+    luabind::module(state) [
+        luabind::class_<Map>("Map")
+        .def("RemoveObject", &Map::RemoveObject)
+        ];
 }

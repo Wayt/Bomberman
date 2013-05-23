@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed May 22 17:59:36 2013 fabien casters
+** Last update Thu May 23 18:53:19 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -15,10 +15,9 @@
 #include "Packet.hpp"
 #include "Position.h"
 #include "MotionMaster.hpp"
-#include "ObjectAI.h"
+#include "Map.h"
 
 class MapGrid;
-class Map;
 class ObjectAI;
 
 enum ModelIds

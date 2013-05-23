@@ -5,20 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Thu May 23 15:54:21 2013 maxime ginters
+** Last update Thu May 23 18:48:02 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
 # define OBJECTAI_H_
 
-extern "C"
-{
-  #include "lua.h"
-  #include "lualib.h"
-  #include "lauxlib.h"
-}
-
-#include "luabind/luabind.hpp"
+#include "luabind.h"
 
 #include <iostream>
 #include <string>

@@ -5,15 +5,20 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Tue May 21 18:41:38 2013 maxime ginters
+** Last update Thu May 23 19:02:00 2013 maxime ginters
 */
 
 #include "Object.h"
+#include "ObjectAI.h"
 
 Object::Object(uint64 guid, uint32 modelId, std::string const& name) : MapObject(guid, modelId, TYPEID_OBJECT, name),
     _AI(NULL)
 {
+}
 
+Object::~Object()
+{
+    delete _AI;
 }
 
 ObjectAI* Object::GetAI()
@@ -50,10 +55,18 @@ void Object::Update(uint32 const diff)
         GetAI()->UpdateAI(diff);
 }
 
+void Object::Despawn()
+{
+    if (GetMap())
+        GetMap()->RemoveObject(this);
+    delete this;
+}
+
 void Object::RegisterLua(lua_State* state)
 {
     luabind::module(state) [
         luabind::class_<Object>("Object")
         .def("GetName", &Object::GetName)
+        .def("Despawn", &Object::Despawn)
         ];
 }

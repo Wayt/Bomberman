@@ -5,11 +5,12 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Wed May 22 13:40:25 2013 maxime ginters
+** Last update Thu May 23 18:33:21 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
 #include "Object.h"
+#include "Map.h"
 
 ObjectAI::ObjectAI(Object* obj, std::string const& file) : _me(obj),
     _file(file), _luastate(NULL)
@@ -28,6 +29,7 @@ bool ObjectAI::Initialize()
     {
         luabind::open(_luastate);
         Object::RegisterLua(_luastate);
+        Map::RegisterLua(_luastate);
         luabind::module(_luastate) [
             luabind::class_<Log>("Log")
             .def("print", &Log::print)
