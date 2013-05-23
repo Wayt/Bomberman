@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Wed May 22 13:35:42 2013 maxime ginters
+** Last update Thu May 23 15:54:21 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
@@ -13,9 +13,9 @@
 
 extern "C"
 {
-  #include "lua5.1/lua.h"
-  #include "lua5.1/lualib.h"
-  #include "lua5.1/lauxlib.h"
+  #include "lua.h"
+  #include "lualib.h"
+  #include "lauxlib.h"
 }
 
 #include "luabind/luabind.hpp"
