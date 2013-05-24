@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu May 23 19:02:00 2013 maxime ginters
+** Last update Fri May 24 20:20:12 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -62,11 +62,17 @@ void Object::Despawn()
     delete this;
 }
 
+void Object::DoAction(uint32 id)
+{
+    (void)id;
+}
+
 void Object::RegisterLua(lua_State* state)
 {
     luabind::module(state) [
         luabind::class_<Object>("Object")
         .def("GetName", &Object::GetName)
         .def("Despawn", &Object::Despawn)
+        .def("DoAction", &Object::DoAction)
         ];
 }

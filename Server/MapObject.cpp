@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu May 23 18:41:50 2013 maxime ginters
+** Last update Fri May 24 20:09:50 2013 maxime ginters
 */
 
 #include <iostream>
@@ -149,6 +149,13 @@ void MapObject::GetObjectListInRange(float range, std::list<MapObject*>& list) c
     if (!_map)
         return;
     _map->GetObjectListInRange(this, range, list);
+}
+
+std::list<MapObject*> MapObject::GetObjectListInRange(float range)
+{
+    std::list<MapObject*> list;
+    GetObjectListInRange(range, list);
+    return list;
 }
 
 ObjectAI* MapObject::GetAI()

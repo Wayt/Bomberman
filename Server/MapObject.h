@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Thu May 23 18:53:19 2013 maxime ginters
+** Last update Fri May 24 20:10:20 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -67,6 +67,7 @@ public:
     void SetOwner(MapObject* obj);
 
     void GetObjectListInRange(float range, std::list<MapObject*>& list) const;
+    std::list<MapObject*> GetObjectListInRange(float range);
 
     virtual ObjectAI* GetAI();
 

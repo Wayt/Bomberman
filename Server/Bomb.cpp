@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Fri May 24 19:37:22 2013 maxime ginters
+** Last update Fri May 24 20:22:53 2013 maxime ginters
 */
 
 #include <iostream>
@@ -19,3 +19,19 @@ Bomb::Bomb(uint64 guid, MapObject* obj) :
     InitializeAI("Scripts/bomb.lua");
 }
 
+void Bomb::DoAction(uint32 id)
+{
+    switch (id)
+    {
+        case 1:
+            HandleExplode();
+            break;
+        default:
+            break;
+    }
+}
+
+void Bomb::HandleExplode()
+{
+    std::cout << "BOUM" << std::endl;
+}
