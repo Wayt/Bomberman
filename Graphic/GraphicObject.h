@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:13 2013 vincent leroy
-** Last update Wed May 22 17:16:37 2013 fabien casters
+** Last update Fri May 24 13:58:24 2013 maxime ginters
 */
 
 #ifndef GRAPHICOBJECT_H_
@@ -22,6 +22,9 @@ public:
     GraphicObject(ClientObject const *);
     void update(gdl::GameClock const &);
     void draw();
+
+    bool IsLoaded() const;
+    void Load();
 private:
     ClientObject const *_object;
     gdl::Model *_model;

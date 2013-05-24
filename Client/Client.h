@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Sat May 18 13:35:53 2013 maxime ginters
+** Last update Fri May 24 13:21:40 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -71,7 +71,10 @@ public:
 private:
     void Update(uint32 const diff);
     void UpdateInput(std::vector<bool> const& keys);
+    void HandleKeyDown(gdl::Keys::Key key);
+    void HandleKeyUp(gdl::Keys::Key key);
     void SendMovementPacket(MovementFlags move, bool add);
+    KeysBinds const* GetKeyBinds() const;
 
     void HandleSpaceAction();
 
@@ -86,8 +89,6 @@ private:
     std::map<uint64, ClientObjectPtr> _clientObjectMap;
     RunnablePool<GameMonitor> _gameMonitorThread;
     KeysMap _keymap;
-
-    bool _spaceAction;
 };
 
 #endif /* !CLIENT_H_ */

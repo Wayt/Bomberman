@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Thu May 23 16:49:46 2013 maxime ginters
+** Last update Fri May 24 14:00:48 2013 maxime ginters
 */
 
 #include <cmath>
@@ -19,7 +19,16 @@
 GraphicObject::GraphicObject(ClientObject const *o) :
     _object(o), _model(NULL)
 {
-    _model = sModelFactory->load(o->GetModelId());
+}
+
+bool GraphicObject::IsLoaded() const
+{
+    return _model != NULL;
+}
+
+void GraphicObject::Load()
+{
+    _model = sModelFactory->load(_object->GetModelId());
     gdl::Model::cut_animation(*_model, "Take 001", 0, 0, "Idle");
     gdl::Model::cut_animation(*_model, "Take 001", 0, 30, "Start run");
     gdl::Model::cut_animation(*_model, "Take 001", 35, 53, "Run");
@@ -28,6 +37,9 @@ GraphicObject::GraphicObject(ClientObject const *o) :
 
 void GraphicObject::update(gdl::GameClock const &clock)
 {
+    if (!IsLoaded())
+        Load();
+
     if (_object->HasMovementFlag(MOVEMENT_FORWARD))
         _model->play("Run");
     _model->update(clock);
@@ -35,6 +47,9 @@ void GraphicObject::update(gdl::GameClock const &clock)
 
 void GraphicObject::draw()
 {
+    if (!IsLoaded())
+        Load();
+
     float x, y, z, o;
     _object->GetPosition(x, y, z, o);
 
