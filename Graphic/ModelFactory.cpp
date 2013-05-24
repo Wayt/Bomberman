@@ -5,20 +5,82 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:26 2013 fabien casters
-** Last update Thu May 23 16:18:08 2013 fabien casters
+** Last update Fri May 24 17:30:52 2013 vincent leroy
 */
+
+#include <fstream>
 
 #include "Model.hpp"
 #include "ModelFactory.h"
 
-ModelFactory::ModelFactory()
+ModelFactory::ModelFactory() :
+    _models(),
+    _modelConfig()
 {
     _models[0] = "Assets/marvin.fbx";
-    _models[2] = "Assets/bomb.fbx";
-    _models[1] = "Assets/wall.fbx";
+    _models[1] = "Assets/marvin.fbx";
+    _models[2] = "Assets/marvin.fbx";
+}
+
+bool ModelFactory::init(const std::string &filename)
+{
+    std::ifstream ifs(filename.c_str());
+    if (!ifs.is_open())
+        return false;
+
+    std::string line;
+    while (std::getline(ifs, line))
+    {
+        modelConfig model;
+        std::vector<std::string> elems;
+        split(line, ';', elems);
+        if (elems.size() < 9)
+            continue;
+
+        uint32 nbAnim = addModel(model, elems);
+        for (uint32 i = 0; i < nbAnim && std::getline(ifs, line); ++i)
+        {
+            elems.clear();
+            split(line, ';', elems);
+            if (elems.size() < 3)
+                --i;
+            else
+                addAnimation(model, elems);
+        }
+
+        _modelConfig.push_back(model);
+    }
+
+    ifs.close();
+    return true;
 }
 
 gdl::Model *ModelFactory::load(uint32 id)
 {
     return new gdl::Model(gdl::Model::load(_models[id]));
+}
+
+uint32 ModelFactory::addModel(modelConfig &model, const std::vector<std::string> &elems)
+{
+    model.name = elems[0];
+    model.stackAnim = elems[1];
+    model.x = to<float>(elems[2].c_str());
+    model.y = to<float>(elems[3].c_str());
+    model.z = to<float>(elems[4].c_str());
+    model.scaleX = to<float>(elems[5].c_str());
+    model.scaleY = to<float>(elems[6].c_str());
+    model.scaleZ = to<float>(elems[7].c_str());
+
+    return to<uint32>(elems[8].c_str());
+}
+
+void ModelFactory::addAnimation(modelConfig &model, const std::vector<std::string> &elems)
+{
+    animationConfig animation;
+
+    animation.name = elems[0];
+    animation.begin = to<uint32>(elems[1].c_str());
+    animation.end = to<uint32>(elems[2].c_str());
+
+    model.animation.push_back(animation);
 }
