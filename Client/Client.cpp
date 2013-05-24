@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed May 22 17:32:45 2013 fabien casters
+** Last update Fri May 24 13:22:02 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -161,6 +161,21 @@ std::map<uint64, ClientObjectPtr>& Client::GetObjectMap()
 
 void Client::UpdateInput(std::vector<bool> const& keys)
 {
+    static std::vector<bool> prevKeys(gdl::Keys::Count, false);
+
+    uint32 size = keys.size();
+    for (uint32 i = 0; i < size; ++i)
+    {
+        if (keys[i] && !prevKeys[i])
+            HandleKeyDown((gdl::Keys::Key)i);
+        else if (!keys[i] && prevKeys[i])
+            HandleKeyUp((gdl::Keys::Key)i);
+        prevKeys[i] = keys[i];
+    }
+}
+
+KeysBinds const* Client::GetKeyBinds() const
+{
     static KeysBinds binds[6] = {
         {{gdl::Keys::W, gdl::Keys::Z}, MOVEMENT_FORWARD},
         {{gdl::Keys::S, gdl::Keys::S}, MOVEMENT_BACKWARD},
@@ -169,41 +184,7 @@ void Client::UpdateInput(std::vector<bool> const& keys)
         {{gdl::Keys::Q, gdl::Keys::A}, MOVEMENT_STRAF_LEFT},
         {{gdl::Keys::E, gdl::Keys::E}, MOVEMENT_STRAF_RIGHT},
     };
-
-    uint32 size = keys.size();
-    for (uint32 i = 0; i < size; ++i)
-    {
-        if ((gdl::Keys::Key)i == gdl::Keys::Space)
-        {
-            if (keys[i] && !_spaceAction)
-            {
-                HandleSpaceAction();
-                _spaceAction = true;
-            }
-            else if (!keys[i])
-                _spaceAction = false;
-
-        }
-        else
-            for (uint8 j = 0; j < 6; ++j)
-            {
-                if (binds[j].key[_keymap] == (gdl::Keys::Key)i)
-                {
-                    if (keys[i])
-                    {
-                        if (_player->AddMovementFlag(binds[j].movement))
-                            SendMovementPacket(binds[j].movement, true);
-                    }
-                    else
-                    {
-                        if (_player->RemoveMovementFlag(binds[j].movement))
-                            SendMovementPacket(binds[j].movement, false);
-                    }
-                    break;
-                }
-
-            }
-    }
+    return binds;
 }
 
 void Client::SendMovementPacket(MovementFlags move, bool add)
@@ -274,3 +255,45 @@ void Client::HandleSpaceAction()
     Packet data(CMSG_DROP_BOMB, 0);
     SendPacket(data);
 }
+
+void Client::HandleKeyDown(gdl::Keys::Key key)
+{
+    std::cout << "KEYDOWN : " << (uint32)key << std::endl;
+    switch (key)
+    {
+        case gdl::Keys::Space:
+                HandleSpaceAction();
+                break;
+        default:
+                break;
+
+    }
+
+    KeysBinds const* binds = GetKeyBinds();
+    for (uint8 j = 0; j < 6; ++j)
+    {
+        if (binds[j].key[_keymap] == key)
+        {
+
+            if (_player->AddMovementFlag(binds[j].movement))
+                SendMovementPacket(binds[j].movement, true);
+        }
+    }
+}
+
+void Client::HandleKeyUp(gdl::Keys::Key key)
+{
+    std::cout << "KEYUP : " << (uint32)key << std::endl;
+
+    KeysBinds const* binds = GetKeyBinds();
+    for (uint8 j = 0; j < 6; ++j)
+    {
+        if (binds[j].key[_keymap] == key)
+        {
+
+            if (_player->RemoveMovementFlag(binds[j].movement))
+                SendMovementPacket(binds[j].movement, false);
+        }
+    }
+}
+
