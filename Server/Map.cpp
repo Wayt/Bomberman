@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu May 23 18:58:16 2013 maxime ginters
+** Last update Fri May 24 19:18:04 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -327,6 +327,8 @@ void Map::UpdateObjectGrid(MapObject* obj)
     obj->GetPosition(x, y);
 
     MapGrid* grid = GetGridAt(x, y);
+    if (!grid)
+        return;
     if (grid != obj->GetGrid())
         grid->AddObject(obj);
 }
