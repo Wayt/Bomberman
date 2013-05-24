@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Fri May 24 14:00:48 2013 maxime ginters
+** Last update Fri May 24 18:49:53 2013 fabien casters
 */
 
 #include <cmath>
@@ -28,11 +28,7 @@ bool GraphicObject::IsLoaded() const
 
 void GraphicObject::Load()
 {
-    _model = sModelFactory->load(_object->GetModelId());
-    gdl::Model::cut_animation(*_model, "Take 001", 0, 0, "Idle");
-    gdl::Model::cut_animation(*_model, "Take 001", 0, 30, "Start run");
-    gdl::Model::cut_animation(*_model, "Take 001", 35, 53, "Run");
-    gdl::Model::cut_animation(*_model, "Take 001", 57, 120, "End Run");
+    _model = new gdl::Model(sModelFactory->load(_object->GetModelId()).model);
 }
 
 void GraphicObject::update(gdl::GameClock const &clock)
@@ -41,7 +37,7 @@ void GraphicObject::update(gdl::GameClock const &clock)
         Load();
 
     if (_object->HasMovementFlag(MOVEMENT_FORWARD))
-        _model->play("Run");
+        _model->play("FORWARD");
     _model->update(clock);
 }
 
