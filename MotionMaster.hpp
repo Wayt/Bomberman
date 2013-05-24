@@ -5,13 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Thu May 16 19:19:38 2013 vincent leroy
+** Last update Fri May 24 13:11:28 2013 vincent leroy
 */
 
 #ifndef MOTIONMASTER_H_
 # define MOTIONMASTER_H_
 
 #include <map>
+#include "PathFindingRunnable.h"
 #include "Shared.h"
 
 class Position;
@@ -21,6 +22,7 @@ enum MovementTypes
     MOVEMENTTYPE_NONE       = 0,
     MOVEMENTTYPE_IDLE       = 1,
     MOVEMENTTYPE_PLAYER     = 2,
+    MOVEMENTTYPE_POINT      = 3
 };
 
 class AMovement
@@ -33,6 +35,8 @@ public:
     virtual void Update(uint32 const diff) = 0;
     virtual void Finish() = 0;
     virtual void Abort(MovementTypes newType) = 0;
+    virtual void MovePoint(const point&);
+    virtual void MovePoint(const std::list<point> &);
     MovementTypes GetType() const;
 
 protected:
@@ -51,6 +55,8 @@ public:
     MovementTypes GetMovementType() const;
 
     void Update(uint32 const diff);
+    void MovePoint(const point &p);
+    void MovePoint(const std::list<point> &points);
 private:
     template<class T>
     AMovement* create() const

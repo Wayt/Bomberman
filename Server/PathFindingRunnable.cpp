@@ -5,13 +5,11 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu May 23 16:34:42 2013 maxime ginters
+** Last update Fri May 24 16:38:46 2013 vincent leroy
 */
 
 #include "PathFinder.h"
 #include "PathFindingRunnable.h"
-
-#define CARRE(x) ((x) * (x))
 
 PathFindingRunnable::PathFindingRunnable() :
     Runnable(),
@@ -31,14 +29,14 @@ void PathFindingRunnable::operator()()
         if (!request)
             continue;
 
-        if (request->callback)
+        if (request->callback || !request->object)
         {
             std::list<point> path;
 
             _open.clear();
             _close.clear();
             findPath(path, request);
-            request->callback(path);
+            (request->object->*request->callback)(path);
         }
         delete request;
     }

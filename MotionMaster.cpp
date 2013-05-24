@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Thu May 16 19:21:11 2013 vincent leroy
+** Last update Fri May 24 18:51:45 2013 vincent leroy
 */
 
 #include "MotionMaster.hpp"
@@ -18,6 +18,12 @@ AMovement::AMovement(Position* obj, MovementTypes type) :
 {}
 
 AMovement::~AMovement()
+{}
+
+void AMovement::MovePoint(const point&)
+{}
+
+void AMovement::MovePoint(const std::list<point>&)
 {}
 
 MovementTypes AMovement::GetType() const
@@ -47,6 +53,12 @@ MotionMaster::~MotionMaster()
 
 void MotionMaster::Initialize(MovementTypes moveType)
 {
+    if (_movGen && _movGen->GetType() == moveType)
+    {
+        _moveGen->Abort(moveType);
+        return;
+    }
+
     std::map<MovementTypes, AMovement* (MotionMaster::*)() const>::const_iterator itr;
     itr = _amovementMap.find(moveType);
     if (itr == _amovementMap.end())
@@ -76,4 +88,18 @@ void MotionMaster::Update(uint32 const diff)
     if (!_moveGen)
         return;
     _moveGen->Update(diff);
+}
+
+void MotionMaster::MovePoint(const point &p)
+{
+    Initialize(MOVEMENTTYPE_POINT);
+    if (_moveGen)
+        _moveGen->MovePoint(p);
+}
+
+void MotionMaster::MovePoint(const std::list<point> &points)
+{
+    Initialize(MOVEMENTTYPE_POINT);
+    if (_moveGen)
+        _moveGen->MovePoint(points);
 }

@@ -5,13 +5,14 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-n** Last update Fri May 24 18:17:50 2013 maxime ginters
+** Last update Fri May 24 18:59:01 2013 maxime ginters
 */
 
 #include <iostream>
 #include "GameMonitor.h"
 #include "Client.h"
 #include "Text.hpp"
+#include "ModelFactory.h"
 
 GameMonitor::GameMonitor(Client *cli, uint32 width, uint32 height) :
     _client(cli), _width(width), _height(height), _cam(),
@@ -23,6 +24,7 @@ void GameMonitor::initialize(void)
 {
     window_.create();
     _cam.initialize();
+    sModelFactory->init("models.cfg");
 }
 
 void GameMonitor::update(void)
