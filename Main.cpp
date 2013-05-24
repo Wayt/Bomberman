@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Fri May 24 19:03:57 2013 maxime ginters
+** Last update Fri May 24 19:08:18 2013 maxime ginters
 */
 
 #include "Shared.h"
@@ -28,7 +28,7 @@ int main(int ac, char **av)
 
         std::string kmap = "us";
         if (ac >= 2)
-            kmap == av[1];
+            kmap = av[1];
         Client cli(kmap == "fr" ? KEYMAP_FR : KEYMAP_US);
         if (!cli.Start("127.0.0.1", "9000", "Host"))
         {
@@ -43,7 +43,7 @@ int main(int ac, char **av)
     {
         std::string kmap = "us";
         if (ac >= 5)
-            kmap == av[4];
+            kmap = av[4];
         Client cli(kmap == "fr" ? KEYMAP_FR : KEYMAP_US);
         if (!cli.Start(av[1], av[2], av[3]))
         {
