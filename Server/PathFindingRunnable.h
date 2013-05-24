@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:15 2013 vincent leroy
-** Last update Thu May 23 15:27:41 2013 vincent leroy
+** Last update Fri May 24 16:37:31 2013 vincent leroy
 */
 
 #ifndef PATHFINGINGRUNNABLE_H_
@@ -16,6 +16,10 @@
 
 #include "Shared.h"
 
+#define CARRE(x) ((x) * (x))
+
+class AMovement;
+
 typedef std::pair<float, float> point;
 
 struct PathFinderRequest
@@ -25,7 +29,8 @@ struct PathFinderRequest
     uint32 height;
     point begin;
     point end;
-    void (*callback)(const std::list<point>&);
+    AMovement *object;
+    void (AMovement::*callback)(const std::list<point>&);
 };
 
 class PathFindingRunnable : public Runnable

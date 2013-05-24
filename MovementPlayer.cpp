@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Fri May 17 19:15:07 2013 maxime ginters
+** Last update Fri May 24 15:17:07 2013 vincent leroy
 */
 
 #include <iostream>
@@ -29,7 +29,7 @@ void MovementPlayer::Update(uint32 const diff)
     float y = _owner->GetPositionY();
     float o = _owner->GetOrientation();
     float dist = _owner->GetSpeed() * diff / 1000.f;
-    float angle = getAngle() + _owner->GetOrientation();
+    float angle = MovementPlayer::getAngle(_owner) + _owner->GetOrientation();
     float dx = 0.f;
     float dy = 0.f;
 
@@ -57,29 +57,29 @@ void MovementPlayer::Abort(MovementTypes newType)
     (void)newType;
 }
 
-float MovementPlayer::getAngle() const
+float MovementPlayer::getAngle(const Position *owner)
 {
     float angle = 0.f;
 
-    if (_owner->HasMovementFlag(MOVEMENT_STRAF_LEFT))
+    if (owner->HasMovementFlag(MOVEMENT_STRAF_LEFT))
     {
-        if (_owner->HasMovementFlag(MOVEMENT_FORWARD))
+        if (owner->HasMovementFlag(MOVEMENT_FORWARD))
             angle = M_PI_4;
-        else if (_owner->HasMovementFlag(MOVEMENT_BACKWARD))
+        else if (owner->HasMovementFlag(MOVEMENT_BACKWARD))
             angle = M_PI_2 + M_PI_4;
         else
             angle = M_PI_2;
     }
-    else if (_owner->HasMovementFlag(MOVEMENT_STRAF_RIGHT))
+    else if (owner->HasMovementFlag(MOVEMENT_STRAF_RIGHT))
     {
-        if (_owner->HasMovementFlag(MOVEMENT_FORWARD))
+        if (owner->HasMovementFlag(MOVEMENT_FORWARD))
             angle = M_PI + M_PI_2 + M_PI_4;
-        else if (_owner->HasMovementFlag(MOVEMENT_BACKWARD))
+        else if (owner->HasMovementFlag(MOVEMENT_BACKWARD))
             angle = M_PI + M_PI_4;
         else
             angle = M_PI + M_PI_2;
     }
     else
-        angle = (_owner->HasMovementFlag(MOVEMENT_BACKWARD) ? M_PI : 0.f);
+        angle = (owner->HasMovementFlag(MOVEMENT_BACKWARD) ? M_PI : 0.f);
     return angle;
 }
