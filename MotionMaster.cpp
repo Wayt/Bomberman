@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Fri May 24 18:51:45 2013 vincent leroy
+** Last update Fri May 24 19:00:01 2013 maxime ginters
 */
 
 #include "MotionMaster.hpp"
@@ -53,7 +53,7 @@ MotionMaster::~MotionMaster()
 
 void MotionMaster::Initialize(MovementTypes moveType)
 {
-    if (_movGen && _movGen->GetType() == moveType)
+    if (_moveGen && _moveGen->GetType() == moveType)
     {
         _moveGen->Abort(moveType);
         return;
