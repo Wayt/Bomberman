@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Sat May 18 13:36:47 2013 maxime ginters
+** Last update Fri May 24 18:24:39 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -48,6 +48,9 @@ enum Opcodes
     SMSG_DEL_OBJECT         = 0x000E,
     SMSG_FORCE_POSITION     = 0x000F,
     CMSG_DROP_BOMB          = 0x0010,
+
+    CMSG_SEND_GLOBALTEXT    = 0x0011,
+    SMSG_SEND_GLOBALTEXT    = 0x0012,
 };
 
 class Packet;

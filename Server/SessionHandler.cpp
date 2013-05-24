@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Thu May 23 19:05:37 2013 maxime ginters
+** Last update Fri May 24 18:29:34 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -120,4 +120,19 @@ void Session::HandleDropBomb(Packet& recvData)
     _player->GetMap()->AddObject(bomb);
     bomb->InitializeAI("Scripts/bomb.lua");
     std::cout << "BOMB PLANTED" << std::endl;
+}
+
+void Session::HandleGlobalChatText(Packet& recvData)
+{
+    std::string msg;
+    recvData >> msg;
+
+    std::stringstream ss;
+    ss << _player->GetName();
+    ss << " : ";
+    ss << msg;
+
+    Packet data(SMSG_SEND_GLOBALTEXT, ss.str().length());
+    data << ss.str();
+   _server->BroadcastToAll(data);
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 24 13:22:02 2013 maxime ginters
+** Last update Fri May 24 18:55:24 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -14,7 +14,7 @@
 Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
-    _gameMonitorThread(), _keymap(kmap)
+    _gameMonitorThread(), _keymap(kmap), _chatBox()
 {}
 
 Client::~Client()
@@ -256,14 +256,39 @@ void Client::HandleSpaceAction()
     SendPacket(data);
 }
 
+void Client::HandleSendChat()
+{
+    std::string str = _chatBox.GetInputString();
+    if (str.length() == 0)
+        return;
+    Packet data(CMSG_SEND_GLOBALTEXT, str.length());
+    data << str;
+    SendPacket(data);
+}
+
 void Client::HandleKeyDown(gdl::Keys::Key key)
 {
     std::cout << "KEYDOWN : " << (uint32)key << std::endl;
+    if (_chatBox.IsOpen() && key != gdl::Keys::Return)
+    {
+        _chatBox.HandleInput((int)key);
+        return;
+    }
+
     switch (key)
     {
         case gdl::Keys::Space:
                 HandleSpaceAction();
-                break;
+                return;
+        case gdl::Keys::Return:
+                if (_chatBox.IsOpen())
+                {
+                    _chatBox.EndInput();
+                    HandleSendChat();
+                }
+                else
+                    _chatBox.StartInput();
+                return;
         default:
                 break;
 
@@ -297,3 +322,7 @@ void Client::HandleKeyUp(gdl::Keys::Key key)
     }
 }
 
+ChatBox const& Client::GetChatBox() const
+{
+    return _chatBox;
+}

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Fri May 17 13:41:48 2013 maxime ginters
+** Last update Fri May 24 18:30:36 2013 maxime ginters
 */
 
 #include <iostream>
@@ -118,4 +118,15 @@ Map const* Server::GetMap() const
 Map* Server::GetMap()
 {
     return _map;
+}
+
+void Server::BroadcastToAll(Packet& pkt)
+{
+    std::list<Session*>::iterator itr = _sessionList.begin();
+    for (; itr != _sessionList.end(); ++itr)
+    {
+        if (Session* sess = (*itr))
+            if (sess->GetStatus() == STATUS_INGAME)
+                sess->SendPacket(pkt);
+    }
 }

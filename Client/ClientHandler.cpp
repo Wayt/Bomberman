@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu May 23 16:24:41 2013 fabien casters
+** Last update Fri May 24 18:31:48 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -127,4 +127,11 @@ void Client::HandleForcePosition(Packet& recvData)
 {
     sLog->out("Forcing player position ...");
     _player->ReadPosition(recvData);
+}
+
+void Client::HandleGlobalChatText(Packet& recvData)
+{
+    std::string msg;
+    recvData >> msg;
+    _chatBox.PushMessage(msg);
 }

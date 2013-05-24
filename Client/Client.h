@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Fri May 24 13:21:40 2013 maxime ginters
+** Last update Fri May 24 18:33:45 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -19,6 +19,7 @@
 #include "GameMonitor.h"
 #include "ClientObject.h"
 #include "Input.hpp"
+#include "ChatBox.h"
 
 #define CLIENT_SLEEP_TIME 20
 
@@ -60,6 +61,7 @@ public:
     void HandleUpdateMoveflags(Packet& recvData);
     void HandleDeleteObject(Packet& recvData);
     void HandleForcePosition(Packet& recvData);
+    void HandleGlobalChatText(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
@@ -67,6 +69,7 @@ public:
     std::map<uint64, ClientObjectPtr>& GetObjectMap();
     ClientObjectPtr GetObject(uint64 guid);
     ClientObjectPtr GetPlayer();
+    ChatBox const& GetChatBox() const;
 
 private:
     void Update(uint32 const diff);
@@ -77,6 +80,7 @@ private:
     KeysBinds const* GetKeyBinds() const;
 
     void HandleSpaceAction();
+    void HandleSendChat();
 
     ClientObjectPtr _player;
 
@@ -89,6 +93,7 @@ private:
     std::map<uint64, ClientObjectPtr> _clientObjectMap;
     RunnablePool<GameMonitor> _gameMonitorThread;
     KeysMap _keymap;
+    ChatBox _chatBox;
 };
 
 #endif /* !CLIENT_H_ */

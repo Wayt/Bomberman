@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:22:32 2013 maxime ginters
-** Last update Tue May 14 17:00:43 2013 maxime ginters
+** Last update Fri May 24 18:29:10 2013 maxime ginters
 */
 
 #ifndef SERVER_H_
@@ -38,6 +38,8 @@ public:
 
     Map const* GetMap() const;
     Map* GetMap();
+
+    void BroadcastToAll(Packet& pkt);
 
 private:
     void Update(uint32 const diff);
