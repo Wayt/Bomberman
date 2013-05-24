@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:40:51 2013 maxime ginters
-** Last update Tue May 21 18:18:27 2013 maxime ginters
+** Last update Fri May 24 19:36:50 2013 maxime ginters
 */
 
 #ifndef BOMB_H_
@@ -18,12 +18,9 @@
 class Bomb : public Object
 {
 public:
-    explicit Bomb(uint64 guid, MapObject* owner, uint32 mstimer);
+    explicit Bomb(uint64 guid, MapObject* owner);
 
-    void HandleBoum();
 private:
-    uint32 _timer;
-    bool _bommed;
 };
 
 #endif /* !BOMB_H_ */

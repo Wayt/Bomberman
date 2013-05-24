@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Fri May 24 18:29:34 2013 maxime ginters
+** Last update Fri May 24 19:35:51 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -115,10 +115,9 @@ void Session::HandleDropBomb(Packet& recvData)
     float x, y, z, o;
     _player->GetPosition(x, y, z, o);
 
-    Bomb* bomb = new Bomb(_player->GetMap()->MakeNewGuid(), _player, 5000);
-    bomb->UpdatePosition(x, y, z, o);
+    Bomb* bomb = new Bomb(_player->GetMap()->MakeNewGuid(), _player);
+    bomb->UpdatePosition(x, y, z, 0.0f);
     _player->GetMap()->AddObject(bomb);
-    bomb->InitializeAI("Scripts/bomb.lua");
     std::cout << "BOMB PLANTED" << std::endl;
 }
 
