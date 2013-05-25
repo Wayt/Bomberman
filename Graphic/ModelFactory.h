@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:23 2013 fabien casters
-** Last update Fri May 24 18:39:11 2013 fabien casters
+** Last update Sat May 25 15:39:37 2013 vincent leroy
 */
 
 #ifndef MODELFACTORY_H_
@@ -34,7 +34,7 @@ class ModelFactory : public Singleton<ModelFactory>
 public:
     ModelFactory();
 
-    bool init(const std::string &filename);
+    void init(const std::string &filename);
     modelConfig const &load(uint32);
 
 private:

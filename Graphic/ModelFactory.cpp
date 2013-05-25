@@ -5,10 +5,11 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:26 2013 fabien casters
-** Last update Fri May 24 19:47:18 2013 fabien casters
+** Last update Sat May 25 15:39:15 2013 vincent leroy
 */
 
 #include <fstream>
+#include <stdexcept>
 
 #include "Model.hpp"
 #include "ModelFactory.h"
@@ -18,11 +19,12 @@ ModelFactory::ModelFactory() :
 {
 }
 
-bool ModelFactory::init(const std::string &filename)
+void ModelFactory::init(const std::string &filename)
 {
     std::ifstream ifs(filename.c_str());
     if (!ifs.is_open())
-        return false;
+        throw std::logic_error("Unable to open file " + filename);
+
     std::string line;
     while (std::getline(ifs, line))
     {
@@ -45,7 +47,6 @@ bool ModelFactory::init(const std::string &filename)
         _modelConfig[modelId] = model;
     }
     ifs.close();
-    return true;
 }
 
 modelConfig const &ModelFactory::load(uint32 id)
