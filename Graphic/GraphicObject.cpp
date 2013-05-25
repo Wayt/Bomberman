@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Fri May 24 18:49:53 2013 fabien casters
+** Last update Fri May 24 19:47:19 2013 fabien casters
 */
 
 #include <cmath>
@@ -38,6 +38,10 @@ void GraphicObject::update(gdl::GameClock const &clock)
 
     if (_object->HasMovementFlag(MOVEMENT_FORWARD))
         _model->play("FORWARD");
+    else if (_object->HasMovementFlag(MOVEMENT_BACKWARD))
+        _model->play("BACKWARD", gdl::Anim::REVERT);
+    else if (_model->anim_is_ended("FORWARD") || _model->anim_is_ended("BACKWARD"))
+        _model->play("IDLE");
     _model->update(clock);
 }
 

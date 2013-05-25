@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:26 2013 fabien casters
-** Last update Fri May 24 18:48:25 2013 fabien casters
+** Last update Fri May 24 19:47:18 2013 fabien casters
 */
 
 #include <fstream>
@@ -23,7 +23,6 @@ bool ModelFactory::init(const std::string &filename)
     std::ifstream ifs(filename.c_str());
     if (!ifs.is_open())
         return false;
-
     std::string line;
     while (std::getline(ifs, line))
     {
@@ -32,7 +31,6 @@ bool ModelFactory::init(const std::string &filename)
         split(line, ';', elems);
         if (elems.size() < 10)
             continue;
-
         uint32 modelId = to<uint32>(elems[0].c_str());
         uint32 nbAnim = addModel(model, elems);
         for (uint32 i = 0; i < nbAnim && std::getline(ifs, line); ++i)
@@ -44,10 +42,8 @@ bool ModelFactory::init(const std::string &filename)
             else
                 addAnimation(model, elems);
         }
-
         _modelConfig[modelId] = model;
     }
-
     ifs.close();
     return true;
 }
@@ -67,7 +63,6 @@ uint32 ModelFactory::addModel(modelConfig &model, const std::vector<std::string>
     model.scaleX = to<float>(elems[6].c_str());
     model.scaleY = to<float>(elems[7].c_str());
     model.scaleZ = to<float>(elems[8].c_str());
-
     model.model = gdl::Model::load(model.name);
     return to<uint32>(elems[9].c_str());
 }
