@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Fri May 24 18:33:45 2013 maxime ginters
+** Last update Mon May 27 14:00:33 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -71,6 +71,8 @@ public:
     ClientObjectPtr GetPlayer();
     ChatBox const& GetChatBox() const;
 
+    void HandleReceivPong();
+
 private:
     void Update(uint32 const diff);
     void UpdateInput(std::vector<bool> const& keys);
@@ -94,6 +96,15 @@ private:
     RunnablePool<GameMonitor> _gameMonitorThread;
     KeysMap _keymap;
     ChatBox _chatBox;
+
+    enum PingData
+    {
+        PING_INTERVAL   = 0,
+        PING_TIME       = 1,
+        PING_LATENCY    = 2,
+        PING_SIZE       = 3
+    };
+    uint32 _pingData[PING_SIZE];
 };
 
 #endif /* !CLIENT_H_ */

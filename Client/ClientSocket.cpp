@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 14:26:06 2013 maxime ginters
-** Last update Mon May 13 17:05:15 2013 maxime ginters
+** Last update Mon May 27 14:00:51 2013 maxime ginters
 */
 
 #include <boost/bind.hpp>
@@ -25,6 +25,14 @@ bool ClientSocket::Connect(std::string const& addr, std::string const& port)
     try
     {
         boost::asio::connect(_socket, iterator);
+        size_t size = _socket.available();
+        if (size > 0)
+        {
+            std::cout << "AVAILABLE : " << size << std::endl;
+            uint8 buff[size];
+            boost::system::error_code ignored_ec;
+            read(_socket, boost::asio::buffer(buff, size), ignored_ec);
+        }
     }
     catch (boost::system::system_error& e)
     {
@@ -60,7 +68,14 @@ void ClientSocket::HandleInput(boost::system::error_code const& error, std::size
     boost::system::error_code ignored_ec;
     read(_socket, boost::asio::buffer(buff, size), ignored_ec);
 
-    _client->QueuePacket(new Packet(buff, size));
+    Packet* pkt = new Packet(buff, size);
+    if (pkt->GetOpcode() == SMSG_PONG)
+    {
+        _client->HandleReceivPong();
+        delete pkt;
+    }
+    else
+        _client->QueuePacket(pkt);
     _RegisterRead();
 }
 

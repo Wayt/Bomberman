@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Fri May 24 19:35:51 2013 maxime ginters
+** Last update Mon May 27 13:56:54 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -135,3 +135,4 @@ void Session::HandleGlobalChatText(Packet& recvData)
     data << ss.str();
    _server->BroadcastToAll(data);
 }
+

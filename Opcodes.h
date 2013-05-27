@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Fri May 24 18:24:39 2013 maxime ginters
+** Last update Mon May 27 13:43:54 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -51,6 +51,9 @@ enum Opcodes
 
     CMSG_SEND_GLOBALTEXT    = 0x0011,
     SMSG_SEND_GLOBALTEXT    = 0x0012,
+
+    CMSG_PING               = 0x0013,
+    SMSG_PONG               = 0x0014,
 };
 
 class Packet;

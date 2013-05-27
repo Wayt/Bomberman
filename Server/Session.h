@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:47:46 2013 maxime ginters
-** Last update Fri May 24 18:25:28 2013 maxime ginters
+** Last update Mon May 27 13:57:04 2013 maxime ginters
 */
 
 #ifndef SESSION_H_

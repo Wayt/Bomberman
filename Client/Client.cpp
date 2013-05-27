@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri May 24 19:54:39 2013 maxime ginters
+** Last update Mon May 27 14:01:17 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -21,8 +21,10 @@
 Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
-    _gameMonitorThread(), _keymap(kmap), _chatBox()
-{}
+    _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData()
+{
+    _pingData[PING_INTERVAL] = 5000;
+}
 
 Client::~Client()
 {
@@ -137,6 +139,16 @@ void Client::Update(uint32 const diff)
         }
 
         _player->Update(diff);
+
+        if (_pingData[PING_INTERVAL] <= diff)
+        {
+            Packet data(CMSG_PING, 0);
+            _pingData[PING_TIME] = GetMSTime();
+            SendPacket(data);
+            _pingData[PING_INTERVAL] = 5000;
+        }
+        else
+            _pingData[PING_INTERVAL] -= diff;
     }
 }
 
@@ -156,6 +168,7 @@ void Client::AddObject(ClientObjectPtr obj)
     if (itr != _clientObjectMap.end())
     {
         sLog->error("Error : try to add an existing object");
+        std::cout << "GUID : " << obj->GetGUID() << " - NAME : " << obj->GetName() << std::endl;
         return;
     }
     _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));
@@ -343,4 +356,10 @@ void Client::HandleKeyUp(gdl::Keys::Key key)
 ChatBox const& Client::GetChatBox() const
 {
     return _chatBox;
+}
+
+void Client::HandleReceivPong()
+{
+    _pingData[PING_LATENCY] = GetMSTimeDiffToNow(_pingData[PING_TIME]);
+    sLog->out("Latency : %u", _pingData[PING_LATENCY]);
 }

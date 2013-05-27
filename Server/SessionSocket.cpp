@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:18 2013 maxime ginters
-** Last update Fri May 17 15:48:14 2013 maxime ginters
+** Last update Mon May 27 13:59:44 2013 maxime ginters
 */
 
 #include "SessionSocket.h"
@@ -64,7 +64,15 @@ void SessionSocket::HandleInput(boost::system::error_code const& error, std::siz
     boost::system::error_code ignored_ec;
     read(_socket, boost::asio::buffer(buff, size), ignored_ec);
 
-    _session->QueuePacket(new Packet(buff, size));
+    Packet* pkt = new Packet(buff, size);
+    if (pkt->GetOpcode() == CMSG_PING)
+    {
+        Packet data(SMSG_PONG, 0);
+        SendPacket(&data);
+        delete pkt;
+    }
+    else
+        _session->QueuePacket(pkt);
     _RegisterRead();
 }
 
@@ -82,4 +90,3 @@ void SessionSocket::_RegisterRead()
                 boost::asio::placeholders::error,
                 boost::asio::placeholders::bytes_transferred));
 }
-
