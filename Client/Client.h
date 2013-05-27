@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Mon May 27 14:00:33 2013 maxime ginters
+** Last update Mon May 27 19:24:05 2013 vincent leroy
 */
 
 #ifndef CLIENT_H_
@@ -72,6 +72,8 @@ public:
     ChatBox const& GetChatBox() const;
 
     void HandleReceivPong();
+
+    void GetObjectList(std::list<const GameObject*> &list) const;
 
 private:
     void Update(uint32 const diff);

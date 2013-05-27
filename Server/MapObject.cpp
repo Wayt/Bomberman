@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Fri May 24 20:09:50 2013 maxime ginters
+** Last update Mon May 27 18:46:02 2013 vincent leroy
 */
 
 #include <iostream>
@@ -13,7 +13,7 @@
 #include "Map.h"
 #include "ObjectAI.h"
 
-MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : Position(),
+MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(modelId, name),
     _modelId(modelId), _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
     _guid(guid), _motionMaster(NULL), _owner(NULL)
 {

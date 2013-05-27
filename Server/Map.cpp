@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 24 20:06:26 2013 maxime ginters
+** Last update Mon May 27 19:36:45 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -218,6 +218,13 @@ void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list)
         list.push_back(*itr);
 }
 
+void MapGrid::GetObjectList(std::list<const GameObject*> &list) const
+{
+    std::list<MapObject*>::const_iterator it;
+    for (it = _objectList.begin(); it != _objectList.end(); ++it)
+        list.push_back(*it);
+}
+
 MapGrid* Map::GetGridAt(float x, float y)
 {
     x = (float)((uint32)x - ((uint32)x % GRID_SIZE));
@@ -353,6 +360,17 @@ void Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapO
                 grid->GetObjectListInRange(obj, range, list);
 }
 
+void Map::GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const
+{
+    float x, y;
+    obj->GetPosition(x, y);
+
+    for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
+        for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
+            if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
+                grid->GetObjectList(list);
+}
+
 void Map::RegisterLua(lua_State* state)
 {
     luabind::module(state) [
@@ -360,3 +378,5 @@ void Map::RegisterLua(lua_State* state)
         .def("RemoveObject", &Map::RemoveObject)
         ];
 }
+
+

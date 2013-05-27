@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:21 2013 vincent leroy
-** Last update Fri May 24 16:12:56 2013 vincent leroy
+** Last update Mon May 27 18:42:49 2013 vincent leroy
 */
 
 #ifndef MOVEMENTPOINT_H_
@@ -17,7 +17,7 @@
 class MovementPoint : public AMovement
 {
 public:
-    MovementPoint(Position*obj);
+    MovementPoint(GameObject *obj);
     virtual ~MovementPoint();
 
     void Initialize();

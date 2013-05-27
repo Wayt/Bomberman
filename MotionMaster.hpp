@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Fri May 24 13:11:28 2013 vincent leroy
+** Last update Mon May 27 18:40:16 2013 vincent leroy
 */
 
 #ifndef MOTIONMASTER_H_
@@ -15,7 +15,7 @@
 #include "PathFindingRunnable.h"
 #include "Shared.h"
 
-class Position;
+class GameObject;
 
 enum MovementTypes
 {
@@ -28,7 +28,7 @@ enum MovementTypes
 class AMovement
 {
 public:
-    AMovement(Position* obj, MovementTypes type);
+    AMovement(GameObject* obj, MovementTypes type);
     virtual ~AMovement();
 
     virtual void Initialize() = 0;
@@ -40,14 +40,14 @@ public:
     MovementTypes GetType() const;
 
 protected:
-    Position* _owner;
+    GameObject* _owner;
     MovementTypes _type;
 };
 
 class MotionMaster
 {
 public:
-    MotionMaster(Position* obj);
+    MotionMaster(GameObject* obj);
     virtual ~MotionMaster();
 
     void Initialize(MovementTypes moveType);
@@ -64,7 +64,7 @@ private:
         return new T(_owner);
     }
 
-    Position* _owner;
+    GameObject* _owner;
     std::map<MovementTypes, AMovement* (MotionMaster::*)() const> _amovementMap;
     AMovement* _moveGen;
 };

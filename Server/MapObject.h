@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Fri May 24 20:10:20 2013 maxime ginters
+** Last update Mon May 27 18:36:42 2013 vincent leroy
 */
 
 #ifndef MAPOBJECT_H_
@@ -13,7 +13,7 @@
 
 #include "Shared.h"
 #include "Packet.hpp"
-#include "Position.h"
+#include "GameObject.h"
 #include "MotionMaster.hpp"
 #include "Map.h"
 
@@ -33,7 +33,7 @@ enum TypeId
     TYPEID_OBJECT   = 1,
 };
 
-class MapObject : public Position
+class MapObject : public GameObject
 {
 public:
     explicit MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name);

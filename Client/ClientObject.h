@@ -5,19 +5,19 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Fri May 24 18:05:46 2013 maxime ginters
+** Last update Mon May 27 18:36:58 2013 vincent leroy
 */
 
 #ifndef CLIENTOBJECT_H_
 # define CLIENTOBJECT_H_
 
 #include "GraphicObject.h"
-#include "Position.h"
+#include "GameObject.h"
 #include "MotionMaster.hpp"
 
 typedef SharedPtr<ClientObject> ClientObjectPtr;
 
-class ClientObject : public Position
+class ClientObject : public GameObject
 {
 public:
     ClientObject(uint64 guid, uint32 modelid, std::string const& name);

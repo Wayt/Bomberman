@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Mon May 27 14:01:17 2013 maxime ginters
+** Last update Mon May 27 19:23:44 2013 vincent leroy
 */
 
 #include "Input.hpp"
@@ -362,4 +362,14 @@ void Client::HandleReceivPong()
 {
     _pingData[PING_LATENCY] = GetMSTimeDiffToNow(_pingData[PING_TIME]);
     sLog->out("Latency : %u", _pingData[PING_LATENCY]);
+}
+
+void Client::GetObjectList(std::list<const GameObject*> &list) const
+{
+    std::map<uint64, ClientObjectPtr>::const_iterator it;
+    for (it = _clientObjectMap.begin(); it != _clientObjectMap.end(); ++it)
+    {
+        ClientObjectPtr ma_super_variable_useless_mais_que_je_sais_pas_faire_autrement_et_que_jai_la_fleme_de_chercher = it->second;
+        list.push_back(ma_super_variable_useless_mais_que_je_sais_pas_faire_autrement_et_que_jai_la_fleme_de_chercher.get());
+    }
 }

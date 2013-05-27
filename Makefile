@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Mon May 27 16:24:28 2013 maxime ginters
+## Last update Mon May 27 19:41:29 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -29,7 +29,7 @@ LDFLAGS	+= -lSOIL
 
 NAME	= bomberman
 
-SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cpp MovementPoint.cpp \
+SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cpp MovementPoint.cpp GameObject.cpp \
 		  Opcodes.cpp ModelMgr.cpp \
 		  Server/SessionHandler.cpp Server/Map.cpp Server/MapObject.cpp Server/Player.cpp \
 		  Server/Server.cpp Server/SessionSocketAcceptor.cpp Server/Session.cpp Server/SessionSocket.cpp \

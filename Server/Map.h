@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Thu May 23 18:58:31 2013 maxime ginters
+** Last update Mon May 27 19:38:04 2013 vincent leroy
 */
 
 #ifndef MAP_H_
@@ -21,6 +21,7 @@
 
 class MapObject;
 class Player;
+class GameObject;
 
 enum GridUpdaterActions
 {
@@ -69,6 +70,7 @@ public:
 
     void AddObjectForUpdate(std::list<MapObject*>& list);
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    void GetObjectList(std::list<const GameObject*> &list) const;
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
@@ -102,6 +104,8 @@ public:
     void UpdateObjectGrid(MapObject* obj);
 
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+
+    void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;
 
     static void RegisterLua(lua_State* state);
 

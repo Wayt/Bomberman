@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:19 2013 maxime ginters
-** Last update Fri May 24 15:14:34 2013 vincent leroy
+** Last update Mon May 27 18:43:38 2013 vincent leroy
 */
 
 #ifndef MOVEMENTPLAYER_H_
@@ -16,14 +16,14 @@
 class MovementPlayer : public AMovement
 {
 public:
-    MovementPlayer(Position* obj);
+    MovementPlayer(GameObject* obj);
 
     void Initialize();
     void Update(uint32 const diff);
     void Finish();
     void Abort(MovementTypes newType);
 
-    static float getAngle(const Position *owner);
+    static float getAngle(const GameObject *owner);
 };
 
 #endif /* !MOVEMENTPLAYER_H_ */

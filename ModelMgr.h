@@ -16,11 +16,8 @@ struct Model
     float width;
     float height;
     float zsize;
-    uint8 colorR;
-    uint8 colorG;
-    uint8 colorB;
-    Model(uint32 id, float w, float h, float z, int8 r = 0, int8 g = 0, int8 b = 0) :
-        modelId(id), width(w), height(h), zsize(z), colorR(r), colorG(g), colorB(b) {}
+    Model(uint32 id, float w, float h, float z) :
+        modelId(id), width(w), height(h), zsize(z) {}
 };
 struct ModelBox
 {
@@ -44,7 +41,6 @@ public:
     ModelMgr();
     ~ModelMgr();
 
-    static ModelMgr* instance();
     ModelBox GetModelBoxAtPos(float x, float y, float z, uint32 modelid) const;
     Model const* GetModel(uint32 id) const;
 

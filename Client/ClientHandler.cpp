@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Mon May 27 13:57:50 2013 maxime ginters
+** Last update Mon May 27 19:07:03 2013 vincent leroy
 */
 
 #include "Client.h"
@@ -29,6 +29,7 @@ void Client::HandleLoginResponse(Packet& recvData)
     recvData >> name;
     recvData >> modelid;
     _player = new ClientObject(guid, modelid, name);
+    _player->SetClient(this);
     _status = STATUS_AUTHED;
     sLog->out("Successful authed to server");
 

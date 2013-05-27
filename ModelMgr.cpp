@@ -15,15 +15,6 @@ ModelMgr::~ModelMgr()
         delete itr->second;
 }
 
-ModelMgr* ModelMgr::instance()
-{
-    static ModelMgr* object = NULL;
-
-    if (!object)
-        object = new ModelMgr;
-    return object;
-}
-
 ModelBox ModelMgr::GetModelBoxAtPos(float x, float y, float z, uint32 modelid) const
 {
     Model const* model = GetModel(modelid);

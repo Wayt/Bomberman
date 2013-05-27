@@ -5,15 +5,15 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Fri May 24 18:42:53 2013 vincent leroy
+** Last update Mon May 27 18:44:02 2013 vincent leroy
 */
 
-#include "Position.h"
+#include "GameObject.h"
 #include "MovementPoint.h"
 
 #include <cmath>
 
-MovementPoint::MovementPoint(Position*obj) :
+MovementPoint::MovementPoint(GameObject *obj) :
     AMovement(obj, MOVEMENTTYPE_POINT),
     _path()
 {
@@ -42,8 +42,6 @@ void MovementPoint::Update(uint32 const diff)
     {
         _owner->UpdatePosition(dest.first, dest.second, _owner->GetOrientation());
         _path.pop_front();
-        if (_path.empty())
-            Finish();
     }
     else
     {
@@ -55,6 +53,8 @@ void MovementPoint::Update(uint32 const diff)
     }
 
     _owner->HandlePositionChange();
+    if (_path.empty())
+        Finish();
 }
 
 void MovementPoint::Finish()

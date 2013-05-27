@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:26:03 2013 maxime ginters
-** Last update Thu May 16 19:20:04 2013 vincent leroy
+** Last update Mon May 27 18:42:19 2013 vincent leroy
 */
 
 #ifndef MOVEMENTILDE_H_
@@ -16,7 +16,7 @@
 class MovementIdle : public AMovement
 {
 public:
-    MovementIdle(Position* obj);
+    MovementIdle(GameObject* obj);
 
     void Initialize();
     void Update(uint32 const diff);

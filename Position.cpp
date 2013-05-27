@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Thu May 23 17:04:52 2013 maxime ginters
+** Last update Mon May 27 18:32:53 2013 vincent leroy
 */
 
 #include "Position.h"
@@ -13,9 +13,7 @@
 
 Position::Position() :
     _posX(0.0f), _posY(0.0f),
-    _posZ(0.0f), _orr(0.0f),
-    _speed(5.0f), _speed_or(1.0f),
-    _movementFlags(0)
+    _posZ(0.0f), _orr(0.0f)
 {}
 
 
@@ -104,60 +102,6 @@ float Position::GetDistance2d(Position const* other) const
     return GetDistance2d(this, other);
 }
 
-void Position::SetMovementFlags(uint32 flags)
-{
-    _movementFlags = flags;
-}
-
-bool Position::AddMovementFlag(uint32 flag)
-{
-    if (_movementFlags & flag)
-        return false;
-    _movementFlags |= flag;
-    return true;
-}
-
-bool Position::RemoveMovementFlag(uint32 flag)
-{
-    if (!(_movementFlags & flag))
-        return false;
-    _movementFlags &= ~flag;
-    return true;
-}
-
-bool Position::UpdateMovementFlag(uint32 flag, bool add)
-{
-    if (add)
-        return AddMovementFlag(flag);
-    else
-        return RemoveMovementFlag(flag);
-}
-
-bool Position::HasMovementFlag(uint32 flag) const
-{
-    return (_movementFlags & flag);
-}
-
-void Position::SetSpeed(float speed)
-{
-    _speed = speed;
-}
-
-float Position::GetSpeed() const
-{
-    return _speed;
-}
-
-void Position::SetSpeedOr(float speed_or)
-{
-    _speed_or = speed_or;
-}
-
-float Position::GetSpeedOr() const
-{
-    return _speed_or;
-}
-
 float Position::GetDistance2d(Position const* pos1, Position const* pos2)
 {
     float x1, y1, x2, y2;
@@ -171,11 +115,6 @@ float Position::GetDistance2d(float x1, float y1, float x2, float y2)
     float dx = x2 - x1;
     float dy = y2 - y1;
     return std::sqrt(dx * dx + dy * dy);
-}
-
-uint32 Position::GetMovementFlags() const
-{
-    return _movementFlags;
 }
 
 std::ostream& operator<<(std::ostream& stream, Position const& pos)
