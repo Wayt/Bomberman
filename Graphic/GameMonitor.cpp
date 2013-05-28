@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Fri May 24 18:59:01 2013 maxime ginters
+** Last update Tue May 28 16:49:19 2013 maxime ginters
 */
 
 #include <iostream>
@@ -29,7 +29,8 @@ void GameMonitor::initialize(void)
 
 void GameMonitor::update(void)
 {
-    std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
+    std::map<uint64, ClientObjectPtr> map;
+    _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetGraphicObject().update(gameClock_);
@@ -69,7 +70,8 @@ void GameMonitor::draw(void)
     glVertex3f(_width, 0.0f, 0.0f);
     glEnd();
 
-    std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
+    std::map<uint64, ClientObjectPtr> map;
+    _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetGraphicObject().draw();
@@ -165,6 +167,7 @@ void GameMonitor::draw(void)
 
     window_.display();
 
+    usleep(25000);
 
 }
 

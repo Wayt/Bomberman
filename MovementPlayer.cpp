@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Tue May 28 13:53:48 2013 vincent leroy
+** Last update Tue May 28 16:04:53 2013 maxime ginters
 */
 
 #include <iostream>
@@ -38,9 +38,10 @@ void MovementPlayer::Update(uint32 const diff)
 
     if (_owner->HasMovementFlag(MOVEMENT_MOVING))
     {
-        dx = x + dist * cos(angle);
-        dy = y + dist * sin(angle);
+        dx = x + dist * cosf(angle);
+        dy = y + dist * sinf(angle);
 
+        /*
         std::list<const GameObject*> list;
         _owner->GetVisibleObject(list);
         ModelBox self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
@@ -66,7 +67,7 @@ void MovementPlayer::Update(uint32 const diff)
             {
                 sLog->error("MovementPlayer : %s\n", e.what());
             }
-        }
+        }*/
     }
 
     if (_owner->HasMovementFlag(MOVEMENT_TURN_LEFT))

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Mon May 27 19:24:05 2013 vincent leroy
+** Last update Tue May 28 16:58:28 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -62,11 +62,12 @@ public:
     void HandleDeleteObject(Packet& recvData);
     void HandleForcePosition(Packet& recvData);
     void HandleGlobalChatText(Packet& recvData);
+    void HandleGridChange(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
 
-    std::map<uint64, ClientObjectPtr>& GetObjectMap();
+    void GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const;
     ClientObjectPtr GetObject(uint64 guid);
     ClientObjectPtr GetPlayer();
     ChatBox const& GetChatBox() const;
