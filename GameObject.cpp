@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Mon May 27 21:54:36 2013 vincent leroy
+** Last update Tue May 28 18:02:20 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -15,7 +15,7 @@
 GameObject::GameObject(uint32 modelId, const std::string &name) :
     Position(),
     _modelId(modelId), _name(name),
-    _speed(5.f), _speed_or(1.f),
+    _speed(10.f), _speed_or(1.f),
     _movementFlags(0), _map(NULL),
     _client(NULL)
 {
