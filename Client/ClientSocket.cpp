@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 14:26:06 2013 maxime ginters
-** Last update Wed May 29 01:23:50 2013 maxime ginters
+** Last update Wed May 29 01:34:10 2013 maxime ginters
 */
 
 #include <boost/bind.hpp>
@@ -14,7 +14,9 @@
 
 ClientSocket::ClientSocket(Client* client) :
     _socket(client->GetIOService()), _client(client)
-{}
+{
+
+}
 
 bool ClientSocket::Connect(std::string const& addr, std::string const& port)
 {
@@ -25,6 +27,8 @@ bool ClientSocket::Connect(std::string const& addr, std::string const& port)
     try
     {
         boost::asio::connect(_socket, iterator);
+        boost::asio::ip::tcp::no_delay option(true);
+        _socket.set_option(option);
         size_t size = _socket.available();
         if (size > 0)
         {
