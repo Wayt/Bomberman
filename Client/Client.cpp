@@ -5,17 +5,11 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Tue May 28 14:25:07 2013 fabien casters
+** Last update Tue May 28 17:22:42 2013 fabien casters
 */
 
 #include "Input.hpp"
 #include "Client.h"
-
-#define ABS(v) ((v) > 0 ? (v) : -(v))
-#define GRIDX(o) (((uint32)o->GetPositionX() - ((uint32)o->GetPositionX() % GRID_SIZE)))
-#define GRIDY(o) (((uint32)o->GetPositionY() - ((uint32)o->GetPositionY() % GRID_SIZE)))
-#define DISTX(a, b) (ABS(((GRIDX(a)) - (GRIDX(b)))))
-#define DISTY(a, b) (ABS(((GRIDY(a)) - (GRIDY(b)))))
 
 Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
@@ -123,19 +117,8 @@ void Client::Update(uint32 const diff)
         UpdateInput(keys);
 
         std::map<uint64, ClientObjectPtr>::iterator itr;
-        for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end();)
-        {
-            if (DISTX(_player, itr->second) > GRID_SIZE ||
-                    DISTY(_player, itr->second) > GRID_SIZE)
-            {
-                _clientObjectMap.erase(itr++);
-            }
-            else
-            {
-                itr->second->Update(diff);
-                ++itr;
-            }
-        }
+        for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
+            itr->second->Update(diff);
 
         _player->Update(diff);
 
@@ -184,9 +167,15 @@ void Client::RemoveObject(ClientObjectPtr obj)
     _clientObjectMap.erase(itr);
 }
 
-std::map<uint64, ClientObjectPtr>& Client::GetObjectMap()
+void Client::GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const
 {
-    return _clientObjectMap;
+    uint32 size = 0;
+    std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.begin();
+    for (; itr != _clientObjectMap.end(); ++itr)
+    {
+        ++size;
+        map[itr->first] = itr->second;
+    }
 }
 
 void Client::UpdateInput(std::vector<bool> const& keys)

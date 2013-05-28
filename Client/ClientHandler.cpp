@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Tue May 28 14:44:57 2013 fabien casters
+** Last update Tue May 28 17:24:43 2013 fabien casters
 */
 
 #include "Client.h"
@@ -135,4 +135,24 @@ void Client::HandleGlobalChatText(Packet& recvData)
     std::string msg;
     recvData >> msg;
     _chatBox.PushMessage(msg);
+}
+
+#define ABS(v) ((v) > 0 ? (v) : -(v))
+#define GRIDPOS(v) (int32(v) - (int32(v) % GRID_SIZE))
+#define DISTX(a, b) (ABS(((GRIDPOS(a->GetPositionX())) - (GRIDPOS(b->GetPositionX())))))
+#define DISTY(a, b) (ABS(((GRIDPOS(a->GetPositionY())) - (GRIDPOS(b->GetPositionY())))))
+
+void Client::HandleGridChange(Packet& recvData)
+{
+    _player->ReadPosition(recvData);
+    std::map<uint64, ClientObjectPtr>::iterator itr;
+    for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end();)
+    {
+        if (DISTX(_player, itr->second) > GRID_SIZE ||
+                DISTY(_player, itr->second) > GRID_SIZE)
+            _clientObjectMap.erase(itr++);
+        else
+            ++itr;
+    }
+
 }

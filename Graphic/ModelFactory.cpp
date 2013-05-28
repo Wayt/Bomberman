@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:26 2013 fabien casters
-** Last update Sat May 25 15:39:15 2013 vincent leroy
+** Last update Tue May 28 17:30:08 2013 fabien casters
 */
 
 #include <fstream>
@@ -34,8 +34,8 @@ void ModelFactory::init(const std::string &filename)
         if (elems.size() < 10)
             continue;
         uint32 modelId = to<uint32>(elems[0].c_str());
-        uint32 nbAnim = addModel(model, elems);
-        for (uint32 i = 0; i < nbAnim && std::getline(ifs, line); ++i)
+        model.nbAnim = addModel(model, elems);
+        for (uint32 i = 0; i < model.nbAnim && std::getline(ifs, line); ++i)
         {
             elems.clear();
             split(line, ';', elems);

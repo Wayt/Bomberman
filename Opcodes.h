@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Mon May 27 13:43:54 2013 maxime ginters
+** Last update Tue May 28 16:56:57 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -54,6 +54,8 @@ enum Opcodes
 
     CMSG_PING               = 0x0013,
     SMSG_PONG               = 0x0014,
+
+    SMSG_GRID_CHANGE_NOTIFY = 0x0015,
 };
 
 class Packet;

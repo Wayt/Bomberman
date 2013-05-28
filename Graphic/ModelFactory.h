@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:23 2013 fabien casters
-** Last update Tue May 28 14:42:56 2013 fabien casters
+** Last update Tue May 28 17:29:24 2013 fabien casters
 */
 
 #ifndef MODELFACTORY_H_
@@ -28,6 +28,7 @@ struct modelConfig
     float scaleY;
     float scaleZ;
     gdl::Model model;
+    uint32 nbAnim;
 };
 
 class ModelFactory : public Singleton<ModelFactory>

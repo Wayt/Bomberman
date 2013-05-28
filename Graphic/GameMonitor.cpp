@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Tue May 28 16:17:35 2013 fabien casters
+** Last update Tue May 28 17:21:39 2013 fabien casters
 */
 
 #include <iostream>
@@ -29,7 +29,8 @@ void GameMonitor::initialize(void)
 
 void GameMonitor::update(void)
 {
-    std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
+    std::map<uint64, ClientObjectPtr> map;
+    _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetGraphicObject().update(gameClock_);
@@ -72,7 +73,8 @@ void GameMonitor::draw(void)
     ClientObjectPtr obj = _client->GetPlayer();
     if (obj.get())
         obj->GetGraphicObject().draw();
-    std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
+    std::map<uint64, ClientObjectPtr> map;
+    _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetGraphicObject().draw();
@@ -162,6 +164,7 @@ void GameMonitor::draw(void)
 
     window_.display();
 
+    usleep(25000);
 
 }
 
