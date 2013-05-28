@@ -7,7 +7,7 @@
 
 ModelMgr::ModelMgr() : _modelMap()
 {
-    _modelMap[0] = new Model(0, 1.0f, 1.0f, 2.0f);
+    _modelMap[0] = new Model(0, 1.5f, 1.5f, 2.0f);
     _modelMap[1] = new Model(1, 5.0f, 5.0f, 5.0f);
 }
 
