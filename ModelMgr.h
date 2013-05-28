@@ -7,8 +7,11 @@
 
 #include <map>
 #include <exception>
+
 #include "Shared.h"
 #include "Position.h"
+
+class GameObject;
 
 struct Model
 {
@@ -41,6 +44,7 @@ public:
     ModelMgr();
     ~ModelMgr();
 
+    ModelBox GetModelBoxAtPos(const GameObject *obj) const;
     ModelBox GetModelBoxAtPos(float x, float y, float z, uint32 modelid) const;
     Model const* GetModel(uint32 id) const;
 

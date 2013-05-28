@@ -2,10 +2,12 @@
 ** ModelMgr.cpp for Heex
 */
 
+#include "GameObject.h"
 #include "ModelMgr.h"
 
 ModelMgr::ModelMgr() : _modelMap()
 {
+    _modelMap[0] = new Model(0, 1.0f, 1.0f, 2.0f);
     _modelMap[1] = new Model(1, 5.0f, 5.0f, 5.0f);
 }
 
@@ -13,6 +15,11 @@ ModelMgr::~ModelMgr()
 {
     for (std::map<uint32, Model*>::iterator itr = _modelMap.begin(); itr != _modelMap.end(); ++itr)
         delete itr->second;
+}
+
+ModelBox ModelMgr::GetModelBoxAtPos(const GameObject *obj) const
+{
+    return GetModelBoxAtPos(obj->GetPositionX(), obj->GetPositionY(), obj->GetPositionZ(), obj->GetModelId());
 }
 
 ModelBox ModelMgr::GetModelBoxAtPos(float x, float y, float z, uint32 modelid) const

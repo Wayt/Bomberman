@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Mon May 27 19:40:35 2013 vincent leroy
+** Last update Mon May 27 22:01:03 2013 vincent leroy
 */
 
 #include <iostream>
@@ -13,8 +13,8 @@
 
 #include "Log.h"
 #include "ModelMgr.h"
-#include "MovementPlayer.h"
 #include "GameObject.h"
+#include "MovementPlayer.h"
 
 MovementPlayer::MovementPlayer(GameObject* obj) :
     AMovement(obj, MOVEMENTTYPE_PLAYER)
@@ -33,13 +33,40 @@ void MovementPlayer::Update(uint32 const diff)
     float o = _owner->GetOrientation();
     float dist = _owner->GetSpeed() * diff / 1000.f;
     float angle = MovementPlayer::getAngle(_owner) + _owner->GetOrientation();
-    float dx = 0.f;
-    float dy = 0.f;
+    float dx = x;
+    float dy = y;
 
     if (_owner->HasMovementFlag(MOVEMENT_MOVING))
     {
         dx = x + dist * cos(angle);
         dy = y + dist * sin(angle);
+
+        std::list<const GameObject*> list;
+        _owner->GetVisibleObject(list);
+        ModelBox self = sModelMgr->GetModelBoxAtPos(_owner);
+
+        std::list<const GameObject*>::const_iterator it;
+        for (it = list.begin(); it != list.end(); ++it)
+        {
+            if (*it == _owner)
+                continue;
+
+            try
+            {
+                ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
+                    (self.max.y > box.min.y && self.min.y < box.max.y))
+                {
+                    dx = x;
+                    dy = y;
+                    break;
+                }
+            }
+            catch (const std::exception &e)
+            {
+                sLog->error("MovementPlayer : %s\n", e.what());
+            }
+        }
     }
 
     if (_owner->HasMovementFlag(MOVEMENT_TURN_LEFT))

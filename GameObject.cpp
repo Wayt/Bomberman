@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Mon May 27 19:39:00 2013 vincent leroy
+** Last update Mon May 27 21:54:36 2013 vincent leroy
 */
 
 #include "Map.h"
@@ -82,6 +82,11 @@ void GameObject::SetSpeedOr(float speed_or)
 float GameObject::GetSpeedOr() const
 {
     return _speed_or;
+}
+
+uint32 GameObject::GetModelId() const
+{
+    return _modelId;
 }
 
 void GameObject::SetMap(Map *map)
