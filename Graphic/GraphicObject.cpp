@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Fri May 24 19:47:19 2013 fabien casters
+** Last update Tue May 28 16:25:44 2013 fabien casters
 */
 
 #include <cmath>
@@ -13,7 +13,6 @@
 #include <GL/glu.h>
 #include "GraphicObject.h"
 #include "Model.hpp"
-#include "ModelFactory.h"
 #include "ClientObject.h"
 
 GraphicObject::GraphicObject(ClientObject const *o) :
@@ -21,21 +20,16 @@ GraphicObject::GraphicObject(ClientObject const *o) :
 {
 }
 
-bool GraphicObject::IsLoaded() const
+void GraphicObject::init()
 {
-    return _model != NULL;
-}
-
-void GraphicObject::Load()
-{
-    _model = new gdl::Model(sModelFactory->load(_object->GetModelId()).model);
+    _config = sModelFactory->load(_object->GetModelId());
+    _model = new gdl::Model(_config.model);
 }
 
 void GraphicObject::update(gdl::GameClock const &clock)
 {
-    if (!IsLoaded())
-        Load();
-
+    if (_model == NULL)
+        init();
     if (_object->HasMovementFlag(MOVEMENT_FORWARD))
         _model->play("FORWARD");
     else if (_object->HasMovementFlag(MOVEMENT_BACKWARD))
@@ -47,17 +41,16 @@ void GraphicObject::update(gdl::GameClock const &clock)
 
 void GraphicObject::draw()
 {
-    if (!IsLoaded())
-        Load();
-
+    if (_model == NULL)
+        init();
     float x, y, z, o;
     _object->GetPosition(x, y, z, o);
 
     glPushMatrix();
-    glTranslatef(x, y, 0.0f);
+    glTranslatef(_config.x + x, _config.y + y, _config.z);
     glRotatef(90, 1.0f, 0.0f, 0.0f);
     glRotatef(((o * 180.0f) / M_PI) + 90, 0.0f, 1.0f, 0.0f);
-    glScalef(0.002f, 0.002f, 0.002f);
+    glScalef(_config.scaleX, _config.scaleY, _config.scaleZ);
     _model->draw();
     glPopMatrix();
 }

@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Fri May 24 18:59:01 2013 maxime ginters
+** Last update Tue May 28 16:17:35 2013 fabien casters
 */
 
 #include <iostream>
@@ -69,18 +69,16 @@ void GameMonitor::draw(void)
     glVertex3f(_width, 0.0f, 0.0f);
     glEnd();
 
+    ClientObjectPtr obj = _client->GetPlayer();
+    if (obj.get())
+        obj->GetGraphicObject().draw();
     std::map<uint64, ClientObjectPtr>& map = _client->GetObjectMap();
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
         iter->second->GetGraphicObject().draw();
-    ClientObjectPtr obj = _client->GetPlayer();
-    if (obj.get())
-        obj->GetGraphicObject().draw();
-
-    //glClear(GL_DEPTH_BUFFER_BIT);
 
 
-    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
@@ -161,7 +159,6 @@ void GameMonitor::draw(void)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glPopAttrib();
-
 
     window_.display();
 

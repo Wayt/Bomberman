@@ -5,13 +5,12 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Mon May 27 19:23:44 2013 vincent leroy
+** Last update Tue May 28 14:25:07 2013 fabien casters
 */
 
 #include "Input.hpp"
 #include "Client.h"
 
-#define GRID_SIZE 50
 #define ABS(v) ((v) > 0 ? (v) : -(v))
 #define GRIDX(o) (((uint32)o->GetPositionX() - ((uint32)o->GetPositionX() % GRID_SIZE)))
 #define GRIDY(o) (((uint32)o->GetPositionY() - ((uint32)o->GetPositionY() % GRID_SIZE)))

@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:23 2013 fabien casters
-** Last update Sat May 25 15:39:37 2013 vincent leroy
+** Last update Tue May 28 14:42:56 2013 fabien casters
 */
 
 #ifndef MODELFACTORY_H_
@@ -15,6 +15,7 @@
 
 #include "Shared.h"
 #include "MapObject.h"
+#include "Model.hpp"
 
 struct modelConfig
 {
