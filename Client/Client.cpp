@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Tue May 28 17:22:42 2013 fabien casters
+** Last update Tue May 28 18:22:04 2013 vincent leroy
 */
 
 #include "Input.hpp"
@@ -318,9 +318,13 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
     {
         if (binds[j].key[_keymap] == key)
         {
-
             if (_player->AddMovementFlag(binds[j].movement))
                 SendMovementPacket(binds[j].movement, true);
+
+            if (binds[j].movement == MOVEMENT_STRAF_LEFT)
+                _player->UpdateOrientation(_player->GetOrientation() + M_PI_4);
+            else if (binds[j].movement == MOVEMENT_STRAF_RIGHT)
+                _player->UpdateOrientation(_player->GetOrientation() - M_PI_4);
         }
     }
 }
@@ -334,9 +338,13 @@ void Client::HandleKeyUp(gdl::Keys::Key key)
     {
         if (binds[j].key[_keymap] == key)
         {
-
             if (_player->RemoveMovementFlag(binds[j].movement))
                 SendMovementPacket(binds[j].movement, false);
+
+            if (binds[j].movement == MOVEMENT_STRAF_LEFT)
+                _player->UpdateOrientation(_player->GetOrientation() - M_PI_4);
+            else if (binds[j].movement == MOVEMENT_STRAF_RIGHT)
+                _player->UpdateOrientation(_player->GetOrientation() + M_PI_4);
         }
     }
 }

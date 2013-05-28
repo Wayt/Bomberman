@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Mon May 27 19:26:22 2013 vincent leroy
+** Last update Tue May 28 18:40:29 2013 vincent leroy
 */
 
 #include "Bomb.h"
@@ -58,6 +58,9 @@ void Session::HandleMovement(Packet& recvData)
 {
     bool add;
     recvData >> add;
+
+    _player->ReadPosition(recvData);
+
     switch (recvData.GetOpcode())
     {
         case CMSG_MOVE_FORWARD:
@@ -78,10 +81,12 @@ void Session::HandleMovement(Packet& recvData)
             break;
         case CMSG_MOVE_STRAF_LEFT:
             _player->UpdateMovementFlag(MOVEMENT_STRAF_LEFT, add);
+            _player->UpdateOrientation(_player->GetOrientation() + (add ? M_PI_4 : -M_PI_4));
             std::cout << "EN STRAF GAUCHE" << std::endl;
             break;
         case CMSG_MOVE_STRAF_RIGHT:
             _player->UpdateMovementFlag(MOVEMENT_STRAF_RIGHT, add);
+            _player->UpdateOrientation(_player->GetOrientation() + (add ? -M_PI_4 : M_PI_4));
             std::cout << "EN STRAF DROITE" << std::endl;
             break;
         default:
@@ -89,8 +94,6 @@ void Session::HandleMovement(Packet& recvData)
     }
     Position pos;
     _player->GetPosition(pos);
-
-    _player->ReadPosition(recvData);
 
     std::cout << "OLD POS : " << pos << std::endl;
     std::cout << "NEW POS : " << *_player->GetPosition() << std::endl;

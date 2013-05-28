@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Mon May 27 18:33:12 2013 vincent leroy
+** Last update Tue May 28 18:18:20 2013 vincent leroy
 */
 
 #ifndef POSITION_H_
@@ -24,8 +24,7 @@ enum MovementFlags
     MOVEMENT_STRAF_LEFT = 0x00000010,
     MOVEMENT_STRAF_RIGHT= 0x00000020,
 
-    MOVEMENT_MOVING     = (MOVEMENT_FORWARD | MOVEMENT_BACKWARD | \
-                            MOVEMENT_STRAF_LEFT | MOVEMENT_STRAF_RIGHT),
+    MOVEMENT_MOVING     = (MOVEMENT_FORWARD | MOVEMENT_BACKWARD),
 };
 
 class Position
@@ -42,6 +41,7 @@ public:
     void GetPosition(float& x, float& y, float& z, float& o) const;
     Position const* GetPosition() const;
     void GetPosition(Position& pos) const;
+    void UpdateOrientation(float o);
     void UpdatePosition(float x, float y, float z, float o);
     void UpdatePosition(float x, float y, float o);
 
