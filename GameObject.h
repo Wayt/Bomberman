@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Mon May 27 21:43:44 2013 vincent leroy
+** Last update Tue May 28 11:51:07 2013 vincent leroy
 */
 
 #ifndef GAMEOBJECT_H_
@@ -45,7 +45,7 @@ public:
 
     void GetVisibleObject(std::list<const GameObject*> &list) const;
 
-private:
+protected:
     uint32 _modelId;
     std::string _name;
     float _speed;
