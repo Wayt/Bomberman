@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 14:26:06 2013 maxime ginters
-** Last update Mon May 27 14:00:51 2013 maxime ginters
+** Last update Wed May 29 01:23:50 2013 maxime ginters
 */
 
 #include <boost/bind.hpp>
@@ -81,7 +81,7 @@ void ClientSocket::HandleInput(boost::system::error_code const& error, std::size
 
 void ClientSocket::SendPacket(Packet const* packet)
 {
-    _socket.write_some(boost::asio::buffer(packet->content(), packet->size()));
+    write(_socket, boost::asio::buffer(packet->content(), packet->size()));
 }
 
 void ClientSocket::Close()
