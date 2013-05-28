@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Mon May 27 22:01:03 2013 vincent leroy
+** Last update Tue May 28 13:53:48 2013 vincent leroy
 */
 
 #include <iostream>
@@ -43,7 +43,7 @@ void MovementPlayer::Update(uint32 const diff)
 
         std::list<const GameObject*> list;
         _owner->GetVisibleObject(list);
-        ModelBox self = sModelMgr->GetModelBoxAtPos(_owner);
+        ModelBox self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
 
         std::list<const GameObject*>::const_iterator it;
         for (it = list.begin(); it != list.end(); ++it)
