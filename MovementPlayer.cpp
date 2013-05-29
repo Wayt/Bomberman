@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Wed May 29 15:42:09 2013 maxime ginters
+** Last update Wed May 29 15:54:06 2013 vincent leroy
 */
 
 #include <iostream>
@@ -71,6 +71,7 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
 {
     std::list<const GameObject*> list;
     _owner->GetVisibleObject(list);
+    ModelBox actu = sModelMgr->GetModelBoxAtPos(x, y, _owner->GetPositionZ(), _owner->GetModelId());
     ModelBox self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
 
     std::list<const GameObject*>::const_iterator it;
@@ -82,6 +83,10 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
         try
         {
             ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+            if ((actu.max.x > box.min.x && actu.min.x < box.max.x) &&
+                (actu.max.y > box.min.y && actu.min.y < box.max.y))
+                continue;
+
             if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
                 (self.max.y > box.min.y && self.min.y < box.max.y))
             {
