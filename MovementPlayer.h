@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:19 2013 maxime ginters
-** Last update Tue May 28 18:42:20 2013 vincent leroy
+** Last update Tue May 28 23:02:28 2013 vincent leroy
 */
 
 #ifndef MOVEMENTPLAYER_H_
@@ -22,6 +22,9 @@ public:
     void Update(uint32 const diff);
     void Finish();
     void Abort(MovementTypes newType);
+
+private:
+    void CollisionManager(float x, float y, float angle, float dist, float &dx, float &dy);
 };
 
 #endif /* !MOVEMENTPLAYER_H_ */
