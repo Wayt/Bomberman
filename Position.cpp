@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Wed May 29 14:03:03 2013 maxime ginters
+** Last update Wed May 29 15:04:11 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -124,7 +124,7 @@ float Position::GetDistance2d(float x1, float y1, float x2, float y2)
 
 float Position::GetDistance2dSquare(Position const* other) const
 {
-    return GetDistance2d(this, other);
+    return GetDistance2dSquare(this, other);
 }
 
 float Position::GetDistance2dSquare(Position const* pos1, Position const* pos2)
@@ -132,7 +132,7 @@ float Position::GetDistance2dSquare(Position const* pos1, Position const* pos2)
     float x1, y1, x2, y2;
     pos1->GetPosition(x1, y1);
     pos2->GetPosition(x2, y2);
-    return GetDistance2d(x1, y1, x2, y2);
+    return GetDistance2dSquare(x1, y1, x2, y2);
 }
 
 float Position::GetDistance2dSquare(float x1, float y1, float x2, float y2)

@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Tue May 28 18:02:20 2013 maxime ginters
+** Last update Wed May 29 15:29:39 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -115,4 +115,9 @@ void GameObject::GetVisibleObject(std::list<const GameObject*> &list) const
         _client->GetObjectList(list);
     else if (_map)
         _map->GetObjectList(this, list);
+}
+
+std::string const& GameObject::GetName() const
+{
+    return _name;
 }

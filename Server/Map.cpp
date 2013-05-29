@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed May 29 14:53:10 2013 maxime ginters
+** Last update Wed May 29 15:17:50 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -15,6 +15,7 @@
 #include "Session.h"
 #include "MapObject.h"
 #include "Player.h"
+#include "Object.h"
 
 Map::Map(uint32 width, uint32 height) :
     _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList()
@@ -90,7 +91,7 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         {
             if (map[y][x] == 1)
             {
-                MapObject* obj = new MapObject(newMap->MakeNewGuid(), MODELID_WALL, TYPEID_OBJECT, "Wall");
+                MapObject* obj = new Object(newMap->MakeNewGuid(), MODELID_WALL, "Wall");
                 obj->UpdatePosition(x * MAP_PRECISION, y * MAP_PRECISION, 0.0f, 0.0f);
                 newMap->AddObject(obj);
             }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Fri May 24 20:19:19 2013 maxime ginters
+** Last update Wed May 29 15:11:37 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -34,6 +34,8 @@ public:
     static void RegisterLua(lua_State* state);
 
     virtual void DoAction(uint32 id);
+
+    void HandleHit(MapObject* obj);
 private:
     ObjectAI* _AI;
 };

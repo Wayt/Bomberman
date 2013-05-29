@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Tue May 28 23:41:21 2013 vincent leroy
+** Last update Wed May 29 15:42:09 2013 maxime ginters
 */
 
 #include <iostream>
@@ -76,7 +76,7 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
     std::list<const GameObject*>::const_iterator it;
     for (it = list.begin(); it != list.end(); ++it)
     {
-        if (*it == _owner)
+        if (*it == _owner || (*it)->GetModelId() == 0)
             continue;
 
         try

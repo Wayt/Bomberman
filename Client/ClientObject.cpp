@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Mon May 27 18:46:59 2013 vincent leroy
+** Last update Wed May 29 15:30:07 2013 maxime ginters
 */
 
 #include "ClientObject.h"
@@ -43,7 +43,3 @@ void ClientObject::Update(uint32 const diff)
         _motionMaster->Update(diff);
 }
 
-std::string const& ClientObject::GetName() const
-{
-    return _name;
-}

@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Tue May 28 11:51:07 2013 vincent leroy
+** Last update Wed May 29 15:29:16 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -37,6 +37,7 @@ public:
     float GetSpeedOr() const;
 
     uint32 GetModelId() const;
+    std::string const& GetName() const;
 
     virtual void SetMap(Map *map);
     void SetClient(Client *client);

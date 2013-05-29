@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Tue May 28 11:50:15 2013 vincent leroy
+** Last update Wed May 29 15:30:31 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -42,7 +42,6 @@ public:
     void SetInWorld(bool in_world = true);
     bool IsInWorld() const;
     uint32 GetModelId() const;
-    std::string const& GetName() const;
 
     virtual void SetGrid(MapGrid* grid);
     void SetMap(Map* map);
@@ -70,6 +69,8 @@ public:
     std::list<MapObject*> GetObjectListInRange(float range);
 
     virtual ObjectAI* GetAI();
+
+    virtual void HandleHit(MapObject* obj);
 
 protected:
     uint32 _modelId;

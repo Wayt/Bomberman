@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed May 29 14:30:49 2013 maxime ginters
+** Last update Wed May 29 15:13:44 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -74,4 +74,13 @@ void Object::RegisterLua(lua_State* state)
         .def("Despawn", &Object::Despawn)
         .def("DoAction", &Object::DoAction)
         ];
+}
+
+void Object::HandleHit(MapObject* obj)
+{
+    (void)obj;
+    if (!IsInWorld())
+        return;
+    std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
+    _map->RemoveObject(this);
 }
