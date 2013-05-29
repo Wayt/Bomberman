@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Mon May 27 18:36:58 2013 vincent leroy
+** Last update Wed May 29 15:29:50 2013 maxime ginters
 */
 
 #ifndef CLIENTOBJECT_H_
@@ -26,7 +26,6 @@ public:
     uint64 GetGUID() const;
     uint32 GetModelId() const;
     GraphicObject &GetGraphicObject();
-    std::string const& GetName() const;
 
     void Update(uint32 const diff);
 

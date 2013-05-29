@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Mon May 27 18:46:02 2013 vincent leroy
+** Last update Wed May 29 15:30:26 2013 maxime ginters
 */
 
 #include <iostream>
@@ -39,11 +39,6 @@ bool MapObject::IsInWorld() const
 uint32 MapObject::GetModelId() const
 {
     return _modelId;
-}
-
-std::string const& MapObject::GetName() const
-{
-    return _name;
 }
 
 void MapObject::SetGrid(MapGrid* grid)
@@ -163,3 +158,7 @@ ObjectAI* MapObject::GetAI()
     return NULL;
 }
 
+void MapObject::HandleHit(MapObject* obj)
+{
+    (void)obj;
+}

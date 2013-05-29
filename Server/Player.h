@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:44:16 2013 maxime ginters
-** Last update Fri May 17 15:51:43 2013 maxime ginters
+** Last update Wed May 29 15:08:55 2013 maxime ginters
 */
 
 #ifndef PLAYER_H_
@@ -27,6 +27,8 @@ public:
     void SendPacket(Packet const& data);
 
     void HandleLogout();
+
+    void HandleHit(MapObject* obj);
 
 private:
     Session* _session;

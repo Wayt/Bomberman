@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Fri May 24 20:22:53 2013 maxime ginters
+** Last update Wed May 29 15:15:21 2013 maxime ginters
 */
 
 #include <iostream>
@@ -34,4 +34,13 @@ void Bomb::DoAction(uint32 id)
 void Bomb::HandleExplode()
 {
     std::cout << "BOUM" << std::endl;
+    std::list<MapObject*> list;
+    GetObjectListInRange(10.0f, list);
+
+    std::list<MapObject*>::iterator itr;
+    for (itr = list.begin(); itr != list.end(); ++itr)
+        if (MapObject* obj = *itr)
+            if (obj->IsInWorld())
+                obj->HandleHit(this);
+
 }

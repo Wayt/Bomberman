@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Mon May 27 19:38:04 2013 vincent leroy
+** Last update Wed May 29 14:26:09 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -118,6 +118,7 @@ private:
     uint64 _nextGuid;
     uint32 _width;
     uint32 _height;
+    std::list<MapObject*> _removeList;
 };
 
 #endif /* !MAP_H_ */

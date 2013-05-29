@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Tue May 28 17:03:14 2013 maxime ginters
+** Last update Wed May 29 15:08:49 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -49,4 +49,9 @@ void Player::HandleLogout()
 {
     if (_map)
         _map->RemoveObject(this);
+}
+
+void Player::HandleHit(MapObject* obj)
+{
+    std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
 }

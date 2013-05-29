@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:18 2013 maxime ginters
-** Last update Mon May 27 13:59:44 2013 maxime ginters
+** Last update Wed May 29 01:33:44 2013 maxime ginters
 */
 
 #include "SessionSocket.h"
@@ -14,7 +14,9 @@
 
 SessionSocket::SessionSocket(SessionSocketMgr* sockMgr) :
     _socket(sockMgr->GetIOService()), _session(NULL), _sockMgr(sockMgr)
-{}
+{
+
+}
 
 tcp::socket& SessionSocket::socket()
 {
@@ -29,6 +31,8 @@ bool SessionSocket::IsClosed() const
 void SessionSocket::OnOpen()
 {
     std::cout << "SessionSocket start" << std::endl;
+    boost::asio::ip::tcp::no_delay option(true);
+    _socket.set_option(option);
     _session = new Session(this, _sockMgr->GetServer());
     _RegisterRead();
 }
@@ -80,7 +84,8 @@ void SessionSocket::SendPacket(Packet const* packet)
 {
     if (_session && _session->IsClosing())
         return;
-    _socket.write_some(boost::asio::buffer(packet->content(), packet->size()));
+
+    write(_socket, boost::asio::buffer(packet->content(), packet->size()));
 }
 
 void SessionSocket::_RegisterRead()
