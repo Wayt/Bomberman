@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Apr 15 14:14:28 2013 maxime ginters
-** Last update Mon May 06 14:15:10 2013 maxime ginters
+** Last update Wed May 29 18:25:59 2013 vincent leroy
 */
 
 #ifndef UTILS_H_
@@ -31,5 +31,7 @@ inline std::string &trim(std::string &s);
 uint32 GetMSTime();
 uint32 GetMSTimeDiffToNow(uint32 prev);
 uint32 GetMSTimeDiff(uint32 prev, uint32 now);
+bool FuzzyCompare(float f1, float f2);
+void Mod2PI(float &angle);
 
 #endif /* !UTILS_H_ */

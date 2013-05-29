@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Wed May 29 15:54:06 2013 vincent leroy
+** Last update Wed May 29 18:23:14 2013 vincent leroy
 */
 
 #include <iostream>
@@ -38,6 +38,7 @@ void MovementPlayer::Update(uint32 const diff)
 
     if (_owner->HasMovementFlag(MOVEMENT_MOVING))
     {
+        Mod2PI(angle);
         dx = x + dist * cosf(angle);
         dy = y + dist * sinf(angle);
 
@@ -49,11 +50,7 @@ void MovementPlayer::Update(uint32 const diff)
     else if (_owner->HasMovementFlag(MOVEMENT_TURN_RIGHT))
         o -= _owner->GetSpeedOr() * diff / 1000.f;
 
-    if (o < 0.f)
-        o = M_PI * 2 + o;
-    else if (o > M_PI * 2)
-        o -= M_PI * 2;
-
+    Mod2PI(o);
     _owner->UpdatePosition(dx, dy, o);
 
     _owner->HandlePositionChange();
@@ -67,37 +64,30 @@ void MovementPlayer::Abort(MovementTypes newType)
     (void)newType;
 }
 
-void MovementPlayer::CollisionManager(float x, float y, float angle, float dist, float &dx, float &dy)
+void MovementPlayer::CollisionManager(float x, float y, float angle, float dist, float &dx, float &dy) const
 {
     std::list<const GameObject*> list;
     _owner->GetVisibleObject(list);
-    ModelBox actu = sModelMgr->GetModelBoxAtPos(x, y, _owner->GetPositionZ(), _owner->GetModelId());
-    ModelBox self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
 
     std::list<const GameObject*>::const_iterator it;
     for (it = list.begin(); it != list.end(); ++it)
     {
-        if (*it == _owner || (*it)->GetModelId() == 0)
+        if (*it == _owner || (*it)->GetModelId() == 0 || AlreadyInWall(*it))
             continue;
 
         try
         {
             ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
-            if ((actu.max.x > box.min.x && actu.min.x < box.max.x) &&
-                (actu.max.y > box.min.y && actu.min.y < box.max.y))
-                continue;
-
+            ModelBox self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
             if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
                 (self.max.y > box.min.y && self.min.y < box.max.y))
             {
-                if (angle >= 0.f && angle <= M_PI_2)
-                    angle = 0.f;
-                else if (angle > M_PI_2 && angle <= M_PI)
-                    angle = M_PI_2;
-                else if (angle > M_PI && angle <= M_PI + M_PI_2)
-                    angle = M_PI;
-                else if (angle > M_PI + M_PI_2 && angle <= 2 * M_PI)
-                    angle = M_PI + M_PI_2;
+                for (uint32 i = 0; i < 4; ++i)
+                    if (angle >= i * M_PI_2 && angle <= (i + 1) * M_PI_2)
+                    {
+                        angle = i * M_PI_2;
+                        break;
+                    }
 
                 dx = x + dist * cosf(angle);
                 dy = y + dist * sinf(angle);
@@ -106,14 +96,12 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
                 if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
                     (self.max.y > box.min.y && self.min.y < box.max.y))
                 {
-                    if (angle >= 0.f && angle <= M_PI_2)
-                        angle = M_PI_2;
-                    else if (angle > M_PI_2 && angle <= M_PI)
-                        angle = M_PI;
-                    else if (angle > M_PI && angle <= M_PI + M_PI_2)
-                        angle = M_PI + M_PI_2;
-                    else if (angle > M_PI + M_PI_2 && angle <= 2 * M_PI)
-                        angle = 2 * M_PI;
+                    for (uint32 i = 0; i < 4; ++i)
+                        if (FuzzyCompare(angle, i * M_PI_2))
+                        {
+                            angle = (i + 1) * M_PI_2;
+                            break;
+                        }
 
                     dx = x + dist * cosf(angle);
                     dy = y + dist * sinf(angle);
@@ -133,4 +121,27 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
             sLog->error("MovementPlayer : %s\n", e.what());
         }
     }
+}
+
+bool MovementPlayer::AlreadyInWall(const GameObject *obj) const
+{
+    try
+    {
+        ModelBox self = sModelMgr->GetModelBoxAtPos(_owner);
+        ModelBox box = sModelMgr->GetModelBoxAtPos(obj);
+        Model const* model = sModelMgr->GetModel(obj->GetModelId());
+        if (!model)
+            return false;
+
+        float weight = model->width / 10;
+        if ((self.max.x > (box.min.x + weight) && self.min.x < (box.max.x - weight)) &&
+            (self.max.y > (box.min.y + weight) && self.min.y < (box.max.y - weight)))
+            return true;
+    }
+    catch (const std::exception &e)
+    {
+        sLog->error("MovementPlayer : %s\n", e.what());
+    }
+
+    return false;
 }
