@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Thu May 23 18:48:02 2013 maxime ginters
+** Last update Wed May 29 16:29:35 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
@@ -20,6 +20,7 @@
 #define LUA_RUNTIME_ERROR(a) sLog->error("LUA ERROR: %s", lua_tostring(a, -1))
 
 class Object;
+class MapObject;
 
 class ObjectAI
 {
@@ -31,6 +32,7 @@ public:
     bool ReloadLua();
 
     void UpdateAI(uint32 const diff);
+    void HandleHit(MapObject* obj);
 
 private:
     Object* _me;

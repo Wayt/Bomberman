@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Wed May 29 15:15:21 2013 maxime ginters
+** Last update Wed May 29 17:27:54 2013 maxime ginters
 */
 
 #include <iostream>
@@ -33,14 +33,27 @@ void Bomb::DoAction(uint32 id)
 
 void Bomb::HandleExplode()
 {
-    std::cout << "BOUM" << std::endl;
+    float x, y;
+    GetPosition(x, y);
+    x += 2.5f;
+    y += 2.5f;
+
+    uint32 coefx = (uint32)x / 5;
+    float blockx = 5 * coefx;
+
+    uint32 coefy = (uint32)y / 5;
+    float blocky = 5 * coefy;
+
     std::list<MapObject*> list;
-    GetObjectListInRange(10.0f, list);
+    _map->GetObjectListInRange(blockx, blocky, 10.0f, list);
 
     std::list<MapObject*>::iterator itr;
     for (itr = list.begin(); itr != list.end(); ++itr)
         if (MapObject* obj = *itr)
             if (obj->IsInWorld())
-                obj->HandleHit(this);
+                if ((obj->GetPositionX() > (blockx - 2.5f) && obj->GetPositionX() < (blockx + 2.5f)) ||
+                        (obj->GetPositionY() > (blocky - 2.5f) && obj->GetPositionY() < (blocky + 2.5f)))
+                    obj->HandleHit(this);
 
 }
+

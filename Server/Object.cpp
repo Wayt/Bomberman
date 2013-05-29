@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed May 29 15:13:44 2013 maxime ginters
+** Last update Wed May 29 16:29:14 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -81,6 +81,8 @@ void Object::HandleHit(MapObject* obj)
     (void)obj;
     if (!IsInWorld())
         return;
-    std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
-    _map->RemoveObject(this);
+    if (GetAI())
+        GetAI()->HandleHit(obj);
+    //std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
+    //_map->RemoveObject(this);
 }

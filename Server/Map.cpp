@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed May 29 15:17:50 2013 maxime ginters
+** Last update Wed May 29 17:09:02 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -91,7 +91,8 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         {
             if (map[y][x] == 1)
             {
-                MapObject* obj = new Object(newMap->MakeNewGuid(), MODELID_WALL, "Wall");
+                Object* obj = new Object(newMap->MakeNewGuid(), MODELID_WALL, "Wall");
+                obj->InitializeAI("Scripts/wall.lua");
                 obj->UpdatePosition(x * MAP_PRECISION, y * MAP_PRECISION, 0.0f, 0.0f);
                 newMap->AddObject(obj);
             }
@@ -364,15 +365,29 @@ void MapGrid::GetObjectListInRange(MapObject const* obj, float range, std::list<
                 list.push_back(tmp);
 }
 
+void MapGrid::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
+{
+    std::list<MapObject*>::const_iterator itr;
+    range *= range;
+    for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
+        if (MapObject* tmp = (*itr))
+            if (tmp->GetDistance2dSquare(x, y) <= range)
+                list.push_back(tmp);
+}
+
 void Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
 {
     float x, y;
     obj->GetPosition(x, y);
+    GetObjectListInRange(x, y, range, list);
+}
 
+void Map::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
+{
     for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
-                grid->GetObjectListInRange(obj, range, list);
+                grid->GetObjectListInRange(x, y, range, list);
 }
 
 void Map::GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const
