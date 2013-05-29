@@ -6,7 +6,7 @@ local used = 0
 
 function LoadScript(me)
     Log:print("LoadScript !")
-    timer = 5000
+    timer = 3000
     despawn_timer = 50000
     used = 0
 end
