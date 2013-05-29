@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Fri May 24 20:22:53 2013 maxime ginters
+** Last update Wed May 29 14:38:23 2013 maxime ginters
 */
 
 #include <iostream>
@@ -34,4 +34,16 @@ void Bomb::DoAction(uint32 id)
 void Bomb::HandleExplode()
 {
     std::cout << "BOUM" << std::endl;
+    std::list<MapObject*> list;
+    GetObjectListInRange(5.0f, list);
+
+    std::list<MapObject*>::iterator itr;
+    for (itr = list.begin(); itr != list.end(); ++itr)
+        if (MapObject* obj = *itr)
+            if (obj->IsInWorld() && obj->GetTypeId() != TYPEID_PLAYER)
+            {
+                std::cout << "Removing " << obj->GetName() << std::endl;
+                _map->RemoveObject(obj);
+            }
+
 }

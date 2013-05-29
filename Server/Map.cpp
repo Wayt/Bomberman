@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Mon May 27 19:36:45 2013 vincent leroy
+** Last update Wed May 29 14:53:10 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -17,7 +17,7 @@
 #include "Player.h"
 
 Map::Map(uint32 width, uint32 height) :
-    _mapGridMap(), _nextGuid(1), _width(width), _height(height)
+    _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList()
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -126,6 +126,7 @@ void Map::RemoveObject(MapObject* obj)
     }
     obj->SetGrid(NULL);
     obj->SetMap(NULL);
+    _removeList.push_back(obj);
 }
 
 MapGrid::MapGrid() :
@@ -325,7 +326,19 @@ void Map::Update(uint32 const diff)
 
     std::list<MapObject*>::iterator itr2;
     for (itr2 = toUpdate.begin(); itr2 != toUpdate.end(); ++itr2)
-        (*itr2)->Update(diff);
+        if (MapObject* obj = *itr2)
+            if (obj->IsInWorld())
+                obj->Update(diff);
+
+    std::list<MapObject*>::iterator next;
+    for (itr2 = _removeList.begin(); itr2 != _removeList.end(); itr2 = next)
+    {
+        next = itr2;
+        ++next;
+        _removeList.erase(itr2);
+        delete *itr2;
+
+    }
 }
 
 void Map::UpdateObjectGrid(MapObject* obj)
@@ -343,9 +356,10 @@ void Map::UpdateObjectGrid(MapObject* obj)
 void MapGrid::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
 {
     std::list<MapObject*>::const_iterator itr;
+    range *= range;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if (MapObject* tmp = (*itr))
-            if (obj != tmp && tmp->GetDistance2d(obj) <= range)
+            if (obj != tmp && tmp->GetDistance2dSquare(obj) <= range)
                 list.push_back(tmp);
 }
 

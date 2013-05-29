@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:52:15 2013 maxime ginters
-** Last update Fri May 17 18:58:58 2013 maxime ginters
+** Last update Wed May 29 14:31:15 2013 maxime ginters
 */
 
 #include <iostream>
@@ -57,7 +57,6 @@ void Session::HandleLogout()
     std::cout << "Logout session" << std::endl;
     if (_player)
         _player->HandleLogout();
-    delete _player;
     _socket->Close();
     delete _socket;
     _socket = NULL;

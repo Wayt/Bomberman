@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Fri May 24 20:20:12 2013 maxime ginters
+** Last update Wed May 29 14:30:49 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -59,7 +59,6 @@ void Object::Despawn()
 {
     if (GetMap())
         GetMap()->RemoveObject(this);
-    delete this;
 }
 
 void Object::DoAction(uint32 id)
