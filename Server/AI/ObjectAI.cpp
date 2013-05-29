@@ -5,11 +5,12 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Thu May 23 18:33:21 2013 maxime ginters
+** Last update Wed May 29 16:42:07 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
 #include "Object.h"
+#include "MapObject.h"
 #include "Map.h"
 
 ObjectAI::ObjectAI(Object* obj, std::string const& file) : _me(obj),
@@ -29,6 +30,7 @@ bool ObjectAI::Initialize()
     {
         luabind::open(_luastate);
         Object::RegisterLua(_luastate);
+        MapObject::RegisterLua(_luastate);
         Map::RegisterLua(_luastate);
         luabind::module(_luastate) [
             luabind::class_<Log>("Log")
@@ -66,6 +68,7 @@ bool ObjectAI::ReloadLua()
     }
     catch (std::exception const&)
     {
+        std::cerr << "ObjectAI::ReloadLua" << std::endl;
         LUA_RUNTIME_ERROR(_luastate);
     }
 
@@ -84,6 +87,25 @@ void ObjectAI::UpdateAI(uint32 const diff)
     }
     catch (std::exception const&)
     {
+        std::cerr << "ObjectAI::UpdateAI" << std::endl;
         LUA_RUNTIME_ERROR(_luastate);
     }
+}
+
+void ObjectAI::HandleHit(MapObject* obj)
+{
+    if (!_luastate)
+        return;
+
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["HandleHit"])
+            f(_me, obj);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "ObjectAI::HandleHit - " << e.what() << std::endl;
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+
 }

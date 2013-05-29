@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed May 29 14:26:09 2013 maxime ginters
+** Last update Wed May 29 17:09:36 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -70,6 +70,7 @@ public:
 
     void AddObjectForUpdate(std::list<MapObject*>& list);
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
     void GetObjectList(std::list<const GameObject*> &list) const;
 private:
     std::list<MapObject*> _objectList;
@@ -104,6 +105,7 @@ public:
     void UpdateObjectGrid(MapObject* obj);
 
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
     void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;
 
