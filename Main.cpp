@@ -5,17 +5,31 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Fri May 24 19:08:18 2013 maxime ginters
+** Last update Fri May 31 15:17:09 2013 vincent leroy
 */
+
+#include <csignal>
 
 #include "Shared.h"
 #include "Server.h"
 #include "Client.h"
 
+static void inter_sig(int)
+{
+    std::ostringstream cmd;
+    cmd << "gstack " << getpid() << std::endl;
+
+    system(cmd.str().c_str());
+
+    ::exit(1);
+}
+
 int main(int ac, char **av)
 {
     (void)ac;
     (void)av;
+
+    signal(SIGSEGV, &inter_sig);
 
     if (ac < 4)
     {
