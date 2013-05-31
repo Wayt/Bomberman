@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed May 29 17:09:02 2013 maxime ginters
+** Last update Fri May 31 13:09:18 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -84,6 +84,14 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         }
     }
 
+    for (uint32 i = 0; i < width; ++i)
+    {
+        map[i][0] = 2;
+        map[i][width - 1 - i] = 2;
+        map[0][i] = 2;
+        map[width - 1 - i][i] = 2;
+    }
+
     Map* newMap = new Map(width * MAP_PRECISION, height * MAP_PRECISION);
     for (uint32 y = 0; y < height; ++y)
     {
@@ -93,6 +101,13 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
             {
                 Object* obj = new Object(newMap->MakeNewGuid(), MODELID_WALL, "Wall");
                 obj->InitializeAI("Scripts/wall.lua");
+                obj->UpdatePosition(x * MAP_PRECISION, y * MAP_PRECISION, 0.0f, 0.0f);
+                newMap->AddObject(obj);
+            }
+            else if (map[y][x] == 2)
+            {
+                Object *obj = new Object(newMap->MakeNewGuid(), MODELID_BORDER, "Border");
+                obj->InitializeAI("Scripts/border.lua");
                 obj->UpdatePosition(x * MAP_PRECISION, y * MAP_PRECISION, 0.0f, 0.0f);
                 newMap->AddObject(obj);
             }

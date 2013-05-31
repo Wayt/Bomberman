@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed May 29 16:41:03 2013 maxime ginters
+** Last update Fri May 31 13:02:20 2013 vincent leroy
 */
 
 #ifndef MAPOBJECT_H_
@@ -24,7 +24,8 @@ enum ModelIds
 {
     MODELID_PLAYER  = 0,
     MODELID_WALL    = 1,
-    MODELID_BOMB    = 2
+    MODELID_BOMB    = 2,
+    MODELID_BORDER  = 3
 };
 
 enum TypeId

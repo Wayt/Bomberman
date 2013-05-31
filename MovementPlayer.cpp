@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Wed May 29 18:23:14 2013 vincent leroy
+** Last update Thu May 30 13:23:54 2013 vincent leroy
 */
 
 #include <iostream>
@@ -112,6 +112,7 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
                     {
                         dx = x;
                         dy = y;
+                        break;
                     }
                 }
             }
