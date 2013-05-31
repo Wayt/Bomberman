@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 31 13:09:18 2013 vincent leroy
+** Last update Fri May 31 16:18:52 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -87,9 +87,9 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
     for (uint32 i = 0; i < width; ++i)
     {
         map[i][0] = 2;
-        map[i][width - 1 - i] = 2;
+        map[i][width - 1] = 2;
         map[0][i] = 2;
-        map[width - 1 - i][i] = 2;
+        map[width - 1][i] = 2;
     }
 
     Map* newMap = new Map(width * MAP_PRECISION, height * MAP_PRECISION);
