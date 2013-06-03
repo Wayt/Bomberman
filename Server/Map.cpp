@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 31 16:18:52 2013 vincent leroy
+** Last update Mon Jun 03 15:57:34 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -16,6 +16,8 @@
 #include "MapObject.h"
 #include "Player.h"
 #include "Object.h"
+
+#define BORDER_DENSITY 5
 
 Map::Map(uint32 width, uint32 height) :
     _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList()
@@ -91,6 +93,10 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         map[0][i] = 2;
         map[width - 1][i] = 2;
     }
+
+    for (uint32 i = 0; i < height; i += BORDER_DENSITY)
+        for (uint32 j = 0; j < width; j += BORDER_DENSITY)
+            map[i][j] = 2;
 
     Map* newMap = new Map(width * MAP_PRECISION, height * MAP_PRECISION);
     for (uint32 y = 0; y < height; ++y)
