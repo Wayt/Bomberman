@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Mon Jun 03 19:02:28 2013 maxime ginters
+** Last update Mon Jun 03 19:08:34 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -81,6 +81,7 @@ void Object::HandleHit(MapObject* obj)
     (void)obj;
     if (!IsInWorld())
         return;
+    Map* savedMap = _map;
     if (GetAI())
         GetAI()->HandleHit(obj);
     //std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
@@ -88,10 +89,10 @@ void Object::HandleHit(MapObject* obj)
 
     if (GetModelId() == MODELID_WALL)
     {
-        if (Score* sc = _map->GetScoreMgr().GetScore(obj->GetOwner()))
+        if (Score* sc = savedMap->GetScoreMgr().GetScore(obj->GetOwner()))
         {
             sc->wall += 1;
-            _map->SendScores(obj->GetOwner());
+            savedMap->SendScores(obj->GetOwner());
         }
     }
 }
