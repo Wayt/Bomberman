@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Jun 03 17:58:56 2013 maxime ginters
-** Last update Mon Jun 03 18:45:42 2013 maxime ginters
+** Last update Mon Jun 03 20:19:29 2013 vincent leroy
 */
 
 #include "GameObject.h"
@@ -99,6 +99,7 @@ void ScoreMgr::ReadScores(Packet& data)
             _scores[guid] = sc;
         }
 
+        data >> sc->name;
         data >> sc->died;
         data >> sc->killed;
         data >> sc->bomb;

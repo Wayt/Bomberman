@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Mon Jun 03 17:12:02 2013 maxime ginters
+** Last update Mon Jun 03 20:37:22 2013 vincent leroy
 */
 
 #include <iostream>
@@ -13,6 +13,9 @@
 #include "Client.h"
 #include "Text.hpp"
 #include "ModelFactory.h"
+
+#define SIZE_SCORE_BOX_X 600
+#define SIZE_SCORE_BOX_Y 400
 
 GameMonitor::GameMonitor(Client *cli, uint32 width, uint32 height) :
     _client(cli), _width(width), _height(height), _cam(),
@@ -104,7 +107,16 @@ void GameMonitor::draw(void)
     glVertex3f(300, 0, 0);
     glEnd();
 
-
+    if (_client->IsScoreOpen())
+    {
+        glColor3f(0, 0, 0);
+        glBegin(GL_QUADS);
+        glVertex3f(window_.getWidth() / 2 - SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2, 0.f);
+        glVertex3f(window_.getWidth() / 2 + SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2, 0.f);
+        glVertex3f(window_.getWidth() / 2 + SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 + SIZE_SCORE_BOX_Y / 2, 0.f);
+        glVertex3f(window_.getWidth() / 2 - SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 + SIZE_SCORE_BOX_Y / 2, 0.f);
+        glEnd();
+    }
 
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
@@ -169,6 +181,49 @@ void GameMonitor::draw(void)
         killed.setPosition(10, 10);
         killed.setSize(15);
         killed.draw();
+    }
+
+    if (_client->IsScoreOpen())
+    {
+        gdl::Text prompt;
+        prompt.setText("Score");
+        prompt.setPosition(window_.getWidth() / 2 - 30, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2 + 10);
+        prompt.setSize(26);
+        prompt.draw();
+
+        uint32 x = 0;
+        uint32 y = 0;
+        std::map<uint64, Score*>::const_iterator it = _client->GetScoreMgr().ScoreBegin();
+        for (; it != _client->GetScoreMgr().ScoreEnd(); ++it)
+        {
+            if (!it->second)
+                continue;
+
+            std::ostringstream oss;
+
+            oss << it->second->name << std::endl;
+            oss << it->second->died;
+            oss << " died" << std::endl;
+            oss << it->second->bomb;
+            oss << " bomb planted" << std::endl;
+            oss << it->second->killed;
+            oss << " kill" << std::endl;
+            oss << it->second->wall;
+            oss << " wall destructed" << std::endl;
+
+            gdl::Text name;
+            name.setSize(12);
+            name.setText(oss.str());
+            name.setPosition(window_.getWidth() / 2 - SIZE_SCORE_BOX_X / 2 + x * 120 + 40, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2 + y * 120 + 60);
+            name.draw();
+
+            ++x;
+            if (x >= 4)
+            {
+                x = 0;
+                ++y;
+            }
+        }
     }
 
     // After drawing the text
