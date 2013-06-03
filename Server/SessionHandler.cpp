@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Tue May 28 18:40:29 2013 vincent leroy
+** Last update Mon Jun 03 16:31:00 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -58,6 +58,9 @@ void Session::HandleMovement(Packet& recvData)
 {
     bool add;
     recvData >> add;
+
+    if (!_player->IsAlive())
+        return;
 
     _player->ReadPosition(recvData);
 

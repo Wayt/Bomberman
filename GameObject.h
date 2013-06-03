@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed May 29 15:29:16 2013 maxime ginters
+** Last update Mon Jun 03 17:03:25 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -46,6 +46,15 @@ public:
 
     void GetVisibleObject(std::list<const GameObject*> &list) const;
 
+    bool IsAlive() const;
+    void SetAlive(bool alive);
+    void UpdateRespawnTime(uint32 const diff);
+    virtual void HandleRespawn();
+    void SetRespawnTime(uint32 time);
+    uint32 GetRespawnTime() const;
+    void SetKilledBy(std::string const& by);
+    std::string const& GetLastKiller() const;
+
 protected:
     uint32 _modelId;
     std::string _name;
@@ -54,6 +63,9 @@ protected:
     uint32 _movementFlags;
     Map *_map;
     Client *_client;
+    bool _alive;
+    uint32 _respawnTime;
+    std::string _lastKiller;
 };
 
 #endif /* !GAMEOBJECT_H_ */

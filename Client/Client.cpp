@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Tue May 28 18:22:04 2013 vincent leroy
+** Last update Mon Jun 03 17:13:39 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -121,6 +121,7 @@ void Client::Update(uint32 const diff)
             itr->second->Update(diff);
 
         _player->Update(diff);
+        _player->UpdateRespawnTime(diff);
 
         if (_pingData[PING_INTERVAL] <= diff)
         {
@@ -271,6 +272,9 @@ ClientObjectPtr Client::GetPlayer()
 
 void Client::HandleSpaceAction()
 {
+    if (!_player->IsAlive())
+        return;
+
     Packet data(CMSG_DROP_BOMB, 0);
     SendPacket(data);
 }
@@ -313,6 +317,9 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
 
     }
 
+    if (!_player->IsAlive())
+        return;
+
     KeysBinds const* binds = GetKeyBinds();
     for (uint8 j = 0; j < 6; ++j)
     {
@@ -332,6 +339,9 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
 void Client::HandleKeyUp(gdl::Keys::Key key)
 {
     std::cout << "KEYUP : " << (uint32)key << std::endl;
+
+    if (!_player->IsAlive())
+        return;
 
     KeysBinds const* binds = GetKeyBinds();
     for (uint8 j = 0; j < 6; ++j)

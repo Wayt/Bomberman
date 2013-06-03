@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Wed May 29 17:27:54 2013 maxime ginters
+** Last update Mon Jun 03 16:25:42 2013 maxime ginters
 */
 
 #include <iostream>
@@ -50,7 +50,7 @@ void Bomb::HandleExplode()
     std::list<MapObject*>::iterator itr;
     for (itr = list.begin(); itr != list.end(); ++itr)
         if (MapObject* obj = *itr)
-            if (obj->IsInWorld())
+            if (obj->IsInWorld() && obj->IsAlive())
                 if ((obj->GetPositionX() > (blockx - 2.5f) && obj->GetPositionX() < (blockx + 2.5f)) ||
                         (obj->GetPositionY() > (blocky - 2.5f) && obj->GetPositionY() < (blocky + 2.5f)))
                     obj->HandleHit(this);

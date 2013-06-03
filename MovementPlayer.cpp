@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Thu May 30 13:23:54 2013 vincent leroy
+** Last update Mon Jun 03 16:40:00 2013 maxime ginters
 */
 
 #include <iostream>
@@ -25,7 +25,7 @@ void MovementPlayer::Initialize()
 
 void MovementPlayer::Update(uint32 const diff)
 {
-    if (_owner->GetMovementFlags() == 0)
+    if (_owner->GetMovementFlags() == 0 || !_owner->IsAlive())
         return ;
 
     float x = _owner->GetPositionX();

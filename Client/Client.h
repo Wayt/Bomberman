@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Tue May 28 16:58:28 2013 maxime ginters
+** Last update Mon Jun 03 16:43:57 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -63,6 +63,7 @@ public:
     void HandleForcePosition(Packet& recvData);
     void HandleGlobalChatText(Packet& recvData);
     void HandleGridChange(Packet& recvData);
+    void HandleKilled(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);

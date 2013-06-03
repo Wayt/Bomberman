@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Tue May 28 17:21:39 2013 fabien casters
+** Last update Mon Jun 03 17:12:02 2013 maxime ginters
 */
 
 #include <iostream>
@@ -33,9 +33,10 @@ void GameMonitor::update(void)
     _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
-        iter->second->GetGraphicObject().update(gameClock_);
+        if (iter->second->IsAlive())
+            iter->second->GetGraphicObject().update(gameClock_);
     ClientObjectPtr obj = _client->GetPlayer();
-    if (obj.get())
+    if (obj.get() && obj->IsAlive())
         obj->GetGraphicObject().update(gameClock_);
 
     _cam.update(_client->GetPlayer());
@@ -71,13 +72,14 @@ void GameMonitor::draw(void)
     glEnd();
 
     ClientObjectPtr obj = _client->GetPlayer();
-    if (obj.get())
+    if (obj.get() && obj->IsAlive())
         obj->GetGraphicObject().draw();
     std::map<uint64, ClientObjectPtr> map;
     _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
-        iter->second->GetGraphicObject().draw();
+        if (iter->second->IsAlive())
+            iter->second->GetGraphicObject().draw();
 
 
     glEnable(GL_DEPTH_TEST);
@@ -153,6 +155,20 @@ void GameMonitor::draw(void)
         prompt.setSize(font_size);
         //prompt.setFont("Assets/SIXTY.TTF");
         prompt.draw();
+    }
+    if (obj.get() && !obj->IsAlive())
+    {
+        std::stringstream ss;
+        ss << "Vous avez ete tue par [";
+        ss << obj->GetLastKiller();
+        ss << "] repop dans ";
+        ss << uint32(obj->GetRespawnTime() / 1000);
+        ss << "s";
+        gdl::Text killed;
+        killed.setText(ss.str());
+        killed.setPosition(10, 10);
+        killed.setSize(15);
+        killed.draw();
     }
 
     // After drawing the text

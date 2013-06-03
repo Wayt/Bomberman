@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Thu May 30 13:19:51 2013 vincent leroy
+** Last update Mon Jun 03 17:07:05 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -17,7 +17,8 @@ GameObject::GameObject(uint32 modelId, const std::string &name) :
     _modelId(modelId), _name(name),
     _speed(10.f), _speed_or(3.f),
     _movementFlags(0), _map(NULL),
-    _client(NULL)
+    _client(NULL), _alive(true),
+    _respawnTime(0), _lastKiller()
 {
 }
 
@@ -120,4 +121,53 @@ void GameObject::GetVisibleObject(std::list<const GameObject*> &list) const
 std::string const& GameObject::GetName() const
 {
     return _name;
+}
+
+bool GameObject::IsAlive() const
+{
+    return _alive;
+}
+
+void GameObject::SetAlive(bool alive)
+{
+    _alive = alive;
+}
+
+void GameObject::UpdateRespawnTime(uint32 const diff)
+{
+    if (_alive)
+        return;
+
+    if (_respawnTime <= diff)
+    {
+        _respawnTime = 0;
+        HandleRespawn();
+    }
+    else
+        _respawnTime -= diff;
+}
+
+void GameObject::HandleRespawn()
+{
+    _alive = true;
+}
+
+void GameObject::SetRespawnTime(uint32 time)
+{
+    _respawnTime = time;
+}
+
+uint32 GameObject::GetRespawnTime() const
+{
+    return _respawnTime;
+}
+
+void GameObject::SetKilledBy(std::string const& by)
+{
+    _lastKiller = by;
+}
+
+std::string const& GameObject::GetLastKiller() const
+{
+    return _lastKiller;
 }

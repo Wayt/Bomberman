@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Fri May 31 13:02:20 2013 vincent leroy
+** Last update Mon Jun 03 16:32:45 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -73,8 +73,6 @@ public:
 
     virtual void HandleHit(MapObject* obj);
 
-    bool IsAlive() const;
-
     static void RegisterLua(lua_State* state);
 
 protected:
@@ -86,7 +84,6 @@ protected:
     uint64 const _guid;
     MotionMaster* _motionMaster;
     MapObject* _owner;
-    bool _alive;
 };
 
 #endif /* !MAPOBJECT_H_ */

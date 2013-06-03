@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Wed May 29 15:08:49 2013 maxime ginters
+** Last update Mon Jun 03 17:20:38 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -53,5 +53,16 @@ void Player::HandleLogout()
 
 void Player::HandleHit(MapObject* obj)
 {
+    MapObject::HandleHit(obj);
     std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
+
+    Packet data(SMSG_KILLED, 4 + obj->GetName().length());
+    data << uint32(TIME_TO_RESPAWN);
+    data << obj->GetName();
+    SendPacket(data);
+
+    SetAlive(false);
+    SetKilledBy(obj->GetName());
+    SetMovementFlags(0);
+    SetRespawnTime(TIME_TO_RESPAWN);
 }

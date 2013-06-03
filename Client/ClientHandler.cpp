@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed May 29 15:42:41 2013 maxime ginters
+** Last update Mon Jun 03 17:03:41 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -156,4 +156,18 @@ void Client::HandleGridChange(Packet& recvData)
             ++itr;
     }
 
+}
+
+void Client::HandleKilled(Packet& recvData)
+{
+    uint32 time;
+    std::string by;
+    recvData >> time;
+    recvData >> by;
+
+    std::cout << "Killed by : " << by << " respawn in " << time << "ms" << std::endl;
+    _player->SetAlive(false);
+    _player->SetKilledBy(by);
+    _player->SetMovementFlags(0);
+    _player->SetRespawnTime(time);
 }
