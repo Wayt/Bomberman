@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Mon Jun 03 16:40:00 2013 maxime ginters
+** Last update Mon Jun 03 17:32:55 2013 maxime ginters
 */
 
 #include <iostream>
@@ -119,7 +119,7 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
         }
         catch (const std::exception &e)
         {
-            sLog->error("MovementPlayer : %s\n", e.what());
+            sLog->error("MovementPlayer : %s", e.what());
         }
     }
 }
@@ -141,7 +141,7 @@ bool MovementPlayer::AlreadyInWall(const GameObject *obj) const
     }
     catch (const std::exception &e)
     {
-        sLog->error("MovementPlayer : %s\n", e.what());
+        sLog->error("MovementPlayer : %s", e.what());
     }
 
     return false;

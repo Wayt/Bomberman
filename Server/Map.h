@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed May 29 17:09:36 2013 maxime ginters
+** Last update Mon Jun 03 18:50:28 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -15,6 +15,7 @@
 #include "Shared.h"
 #include "Packet.hpp"
 #include "luabind.h"
+#include "ScoreMgr.h"
 
 #define MAP_PRECISION 5
 #define GRID_SIZE (MAP_PRECISION * 10)
@@ -66,7 +67,7 @@ public:
     void GridUpdateSendObject(MapObject *obj);
     void GridUpdateMoveFlags(MapObject *obj);
     void GridUpdateDelObj(MapObject *obj);
-    void BroadcastToGrid(Packet& pkt, MapObject* except = NULL);
+    void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list);
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
@@ -109,6 +110,12 @@ public:
 
     void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;
 
+    ScoreMgr& GetScoreMgr();
+    ScoreMgr const& GetScoreMgr() const;
+    void SendScores(uint64 from = 0);
+
+    void BroadcastToAll(Packet const& pkt);
+
     static void RegisterLua(lua_State* state);
 
 private:
@@ -121,6 +128,7 @@ private:
     uint32 _width;
     uint32 _height;
     std::list<MapObject*> _removeList;
+    ScoreMgr _scoreMgr;
 };
 
 #endif /* !MAP_H_ */

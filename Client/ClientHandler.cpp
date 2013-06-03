@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Mon Jun 03 17:03:41 2013 maxime ginters
+** Last update Mon Jun 03 18:54:37 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -170,4 +170,9 @@ void Client::HandleKilled(Packet& recvData)
     _player->SetKilledBy(by);
     _player->SetMovementFlags(0);
     _player->SetRespawnTime(time);
+}
+
+void Client::HandleSendScore(Packet& recvData)
+{
+    _scoreMgr.ReadScores(recvData);
 }

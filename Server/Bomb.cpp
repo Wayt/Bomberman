@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Mon Jun 03 16:25:42 2013 maxime ginters
+** Last update Mon Jun 03 17:29:00 2013 maxime ginters
 */
 
 #include <iostream>
@@ -15,7 +15,7 @@
 Bomb::Bomb(uint64 guid, MapObject* obj) :
     Object(guid, MODELID_BOMB, std::string("Bomb - ") + obj->GetName())
 {
-    SetOwner(obj);
+    SetOwner(obj->GetGUID());
     InitializeAI("Scripts/bomb.lua");
 }
 

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Mon Jun 03 16:40:38 2013 maxime ginters
+** Last update Mon Jun 03 18:57:05 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -35,6 +35,7 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
         {SMSG_SEND_GLOBALTEXT, STATUS_INGAME, NULL, &Client::HandleGlobalChatText},
         {SMSG_GRID_CHANGE_NOTIFY, STATUS_INGAME, NULL, &Client::HandleGridChange},
         {SMSG_KILLED, STATUS_INGAME, NULL, &Client::HandleKilled},
+        {SMSG_SEND_SCORE, STATUS_INGAME, NULL, &Client::HandleSendScore},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}
     };
 

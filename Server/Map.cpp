@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Mon Jun 03 15:57:34 2013 vincent leroy
+** Last update Mon Jun 03 18:51:51 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -226,7 +226,7 @@ void MapGrid::GridUpdateDelObj(MapObject *obj)
     BroadcastToGrid(data, obj);
 }
 
-void MapGrid::BroadcastToGrid(Packet& pkt, MapObject* except)
+void MapGrid::BroadcastToGrid(Packet const& pkt, MapObject* except)
 {
     std::list<MapObject*>::const_iterator itr;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
@@ -430,4 +430,26 @@ void Map::RegisterLua(lua_State* state)
         ];
 }
 
+ScoreMgr& Map::GetScoreMgr()
+{
+    return _scoreMgr;
+}
 
+ScoreMgr const& Map::GetScoreMgr() const
+{
+    return _scoreMgr;
+}
+
+void Map::SendScores(uint64 from)
+{
+    Packet data(SMSG_SEND_SCORE);
+    _scoreMgr.WriteScores(data, from);
+    BroadcastToAll(data);
+}
+
+void Map::BroadcastToAll(Packet const& pkt)
+{
+    std::map<std::pair<float, float>, MapGrid*>::iterator itr;
+    for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->BroadcastToGrid(pkt);
+}

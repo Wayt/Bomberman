@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Mon Jun 03 16:32:45 2013 maxime ginters
+** Last update Mon Jun 03 18:27:37 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -49,7 +49,6 @@ public:
     TypeId GetTypeId() const;
 
     void BuildObjectCreateForPlayer(Packet& data) const;
-    uint64 GetGUID() const;
 
     MotionMaster const* GetMotionMaster() const;
     MotionMaster* GetMotionMaster();
@@ -63,8 +62,8 @@ public:
 
     void HandlePositionChange();
 
-    MapObject* GetOwner();
-    void SetOwner(MapObject* obj);
+    uint64 GetOwner();
+    void SetOwner(uint64 guid);
 
     void GetObjectListInRange(float range, std::list<MapObject*>& list) const;
     std::list<MapObject*> GetObjectListInRange(float range);
@@ -81,9 +80,8 @@ protected:
     MapGrid* _currGrid;
     std::string _name;
     TypeId _typeId;
-    uint64 const _guid;
     MotionMaster* _motionMaster;
-    MapObject* _owner;
+    uint64 _owner;
 };
 
 #endif /* !MAPOBJECT_H_ */

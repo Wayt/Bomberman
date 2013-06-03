@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Mon Jun 03 16:31:00 2013 maxime ginters
+** Last update Mon Jun 03 19:04:47 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -51,7 +51,9 @@ void Session::HandleEnterGame(Packet& recvData)
     SendPacket(data);
 
     map->AddObject(_player);
+    map->GetScoreMgr().AddPlayer(_player);
     _status = STATUS_INGAME;
+    map->SendScores();
 }
 
 void Session::HandleMovement(Packet& recvData)
@@ -125,6 +127,12 @@ void Session::HandleDropBomb(Packet& recvData)
     bomb->UpdatePosition(x, y, z, 0.0f);
     _player->GetMap()->AddObject(bomb);
     std::cout << "BOMB PLANTED" << std::endl;
+
+    if (Score* sc = _player->GetMap()->GetScoreMgr().GetScore(_player->GetGUID()))
+    {
+        sc->bomb += 1;
+        _player->GetMap()->SendScores(_player->GetGUID());
+    }
 }
 
 void Session::HandleGlobalChatText(Packet& recvData)

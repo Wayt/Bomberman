@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Mon Jun 03 17:03:25 2013 maxime ginters
+** Last update Mon Jun 03 18:28:48 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -21,8 +21,10 @@ class Client;
 class GameObject : public Position
 {
 public:
-    GameObject(uint32 modelId, const std::string &name);
+    GameObject(uint64 guid, uint32 modelId, const std::string &name);
     virtual ~GameObject();
+
+    uint64 GetGUID() const;
 
     uint32 GetMovementFlags() const;
     void SetMovementFlags(uint32 flags);
@@ -66,6 +68,7 @@ protected:
     bool _alive;
     uint32 _respawnTime;
     std::string _lastKiller;
+    uint64 _guid;
 };
 
 #endif /* !GAMEOBJECT_H_ */

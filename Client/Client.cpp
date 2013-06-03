@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Mon Jun 03 17:46:01 2013 maxime ginters
+** Last update Mon Jun 03 18:57:40 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -14,7 +14,8 @@
 Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
-    _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false)
+    _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false),
+    _scoreMgr()
 {
     _pingData[PING_INTERVAL] = 5000;
 }
@@ -389,4 +390,9 @@ void Client::GetObjectList(std::list<const GameObject*> &list) const
 bool Client::IsScoreOpen() const
 {
     return _scoreOpen;
+}
+
+ScoreMgr const& Client::GetScoreMgr() const
+{
+    return _scoreMgr;
 }

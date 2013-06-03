@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Fri May 24 18:30:36 2013 maxime ginters
+** Last update Mon Jun 03 18:32:02 2013 maxime ginters
 */
 
 #include <iostream>
@@ -130,3 +130,4 @@ void Server::BroadcastToAll(Packet& pkt)
                 sess->SendPacket(pkt);
     }
 }
+

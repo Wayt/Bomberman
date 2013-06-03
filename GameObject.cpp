@@ -5,20 +5,21 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Mon Jun 03 17:07:05 2013 maxime ginters
+** Last update Mon Jun 03 18:30:37 2013 maxime ginters
 */
 
 #include "Map.h"
 #include "Client.h"
 #include "GameObject.h"
 
-GameObject::GameObject(uint32 modelId, const std::string &name) :
+GameObject::GameObject(uint64 guid, uint32 modelId, const std::string &name) :
     Position(),
     _modelId(modelId), _name(name),
     _speed(10.f), _speed_or(3.f),
     _movementFlags(0), _map(NULL),
     _client(NULL), _alive(true),
-    _respawnTime(0), _lastKiller()
+    _respawnTime(0), _lastKiller(),
+    _guid(guid)
 {
 }
 
@@ -170,4 +171,9 @@ void GameObject::SetKilledBy(std::string const& by)
 std::string const& GameObject::GetLastKiller() const
 {
     return _lastKiller;
+}
+
+uint64 GameObject::GetGUID() const
+{
+    return _guid;
 }

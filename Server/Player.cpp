@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Mon Jun 03 17:20:38 2013 maxime ginters
+** Last update Mon Jun 03 19:01:05 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -60,6 +60,18 @@ void Player::HandleHit(MapObject* obj)
     data << uint32(TIME_TO_RESPAWN);
     data << obj->GetName();
     SendPacket(data);
+
+    if (Score* sc = _map->GetScoreMgr().GetScore(GetGUID()))
+    {
+        sc->died += 1;
+        _map->SendScores(GetGUID());
+    }
+
+    if (Score* sc = _map->GetScoreMgr().GetScore(obj->GetOwner()))
+    {
+        sc->killed += 1;
+        _map->SendScores(obj->GetOwner());
+    }
 
     SetAlive(false);
     SetKilledBy(obj->GetName());
