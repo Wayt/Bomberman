@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Mon Jun 03 16:43:57 2013 maxime ginters
+** Last update Mon Jun 03 17:41:33 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -77,6 +77,8 @@ public:
 
     void GetObjectList(std::list<const GameObject*> &list) const;
 
+    bool IsScoreOpen() const;
+
 private:
     void Update(uint32 const diff);
     void UpdateInput(std::vector<bool> const& keys);
@@ -109,6 +111,8 @@ private:
         PING_SIZE       = 3
     };
     uint32 _pingData[PING_SIZE];
+
+    bool _scoreOpen;
 };
 
 #endif /* !CLIENT_H_ */

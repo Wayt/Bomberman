@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Mon Jun 03 17:13:39 2013 maxime ginters
+** Last update Mon Jun 03 17:46:01 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -14,7 +14,7 @@
 Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
-    _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData()
+    _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false)
 {
     _pingData[PING_INTERVAL] = 5000;
 }
@@ -312,6 +312,9 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
                 else
                     _chatBox.StartInput();
                 return;
+        case gdl::Keys::Tab:
+                _scoreOpen = true;
+                break;
         default:
                 break;
 
@@ -340,7 +343,10 @@ void Client::HandleKeyUp(gdl::Keys::Key key)
 {
     std::cout << "KEYUP : " << (uint32)key << std::endl;
 
-    if (!_player->IsAlive())
+    if (key == gdl::Keys::Tab)
+        _scoreOpen = false;
+
+    if (_chatBox.IsOpen() || !_player->IsAlive())
         return;
 
     KeysBinds const* binds = GetKeyBinds();
@@ -378,4 +384,9 @@ void Client::GetObjectList(std::list<const GameObject*> &list) const
         ClientObjectPtr ma_super_variable_useless_mais_que_je_sais_pas_faire_autrement_et_que_jai_la_fleme_de_chercher = it->second;
         list.push_back(ma_super_variable_useless_mais_que_je_sais_pas_faire_autrement_et_que_jai_la_fleme_de_chercher.get());
     }
+}
+
+bool Client::IsScoreOpen() const
+{
+    return _scoreOpen;
 }
