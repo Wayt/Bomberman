@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Tue Jun 04 15:08:32 2013 maxime ginters
+** Last update Tue Jun 04 17:19:24 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -174,13 +174,17 @@ void MapGrid::RemoveObject(MapObject* obj)
 
 void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
 {
-    static GridUpdaterFunction updaterFunction[4] =
-        {{GRIDUPDATE_ACTIVE, &MapGrid::GridUpdateActive},
+    static GridUpdaterFunction updaterFunction[7] = {
+        {GRIDUPDATE_ACTIVE, &MapGrid::GridUpdateActive},
         {GRIDUPDATE_SENDOBJ, &MapGrid::GridUpdateSendObject},
         {GRIDUPDATE_MOVEFLAGS, &MapGrid::GridUpdateMoveFlags},
-        {GRIDUPDATE_DELOBJ, &MapGrid::GridUpdateDelObj}};
+        {GRIDUPDATE_DELOBJ, &MapGrid::GridUpdateDelObj},
+        {GRIDUPDATE_KILLED, &MapGrid::GridUpdateKilled},
+        {GRIDUPDATE_RESPAWN, &MapGrid::GridUpdateRespawn},
+        {GRIDUPDATE_TELEPORT, &MapGrid::GridUpdateTeleport}
+    };
 
-    for (uint32 i = 0; i < 4; ++i)
+    for (uint32 i = 0; i < 7; ++i)
         if (action & updaterFunction[i].flag)
             (this->*updaterFunction[i].update)(obj);
 }
@@ -226,13 +230,40 @@ void MapGrid::GridUpdateDelObj(MapObject *obj)
     BroadcastToGrid(data, obj);
 }
 
+void MapGrid::GridUpdateKilled(MapObject *obj)
+{
+    Packet data(SMSG_PLAYER_KILLED, 8 + 4 + obj->GetLastKiller().length());
+    data << uint64(obj->GetGUID());
+    data << uint32(obj->GetRespawnTime());
+    data << obj->GetLastKiller();
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::GridUpdateRespawn(MapObject *obj)
+{
+    Packet data(SMSG_PLAYER_RESPAWN, 8);
+    data << uint64(obj->GetGUID());
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::GridUpdateTeleport(MapObject *obj)
+{
+    Packet data(SMSG_TELEPORT, 8 + 16);
+    data << uint64(obj->GetGUID());
+    obj->WritePosition(data);
+    BroadcastToGrid(data, NULL);
+}
+
 void MapGrid::BroadcastToGrid(Packet const& pkt, MapObject* except)
 {
     std::list<MapObject*>::const_iterator itr;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if ((*itr)->GetTypeId() == TYPEID_PLAYER)
             if ((*itr) != except)
+            {
                 (*itr)->SendPacket(pkt);
+                std::cout << "Send packet to " << (*itr)->GetName() << std::endl;
+            }
 }
 
 void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list)
@@ -466,9 +497,9 @@ void Map::GetRandomStartPosition(float& x, float& y)
 void Map::TeleportPlayer(Player* player, float x, float y)
 {
     player->UpdatePosition(x, y, 0.0f);
-    Packet data(SMSG_TELEPORT, 16);
-    player->WritePosition(data);
-    player->SendPacket(data);
 
     UpdateObjectGrid(player);
+
+    GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
 }
+

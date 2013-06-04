@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Mon Jun 03 18:26:58 2013 maxime ginters
+** Last update Tue Jun 04 16:42:10 2013 maxime ginters
 */
 
 #ifndef CLIENTOBJECT_H_
@@ -27,6 +27,8 @@ public:
     GraphicObject &GetGraphicObject();
 
     void Update(uint32 const diff);
+
+    void HandleRespawn();
 
 private:
     uint32 _modelId;

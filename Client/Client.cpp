@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Mon Jun 03 18:57:40 2013 maxime ginters
+** Last update Tue Jun 04 17:33:44 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -152,7 +152,6 @@ void Client::AddObject(ClientObjectPtr obj)
     if (itr != _clientObjectMap.end())
     {
         sLog->error("Error : try to add an existing object");
-        std::cout << "GUID : " << obj->GetGUID() << " - NAME : " << obj->GetName() << std::endl;
         return;
     }
     _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Tue Jun 04 15:16:04 2013 maxime ginters
+** Last update Tue Jun 04 17:32:08 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -56,10 +56,13 @@ void Player::HandleHit(MapObject* obj)
     MapObject::HandleHit(obj);
     std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
 
-    Packet data(SMSG_KILLED, 4 + obj->GetName().length());
-    data << uint32(TIME_TO_RESPAWN);
-    data << obj->GetName();
-    SendPacket(data);
+    SetAlive(false);
+    SetKilledBy(obj->GetName());
+    SetMovementFlags(0);
+    SetRespawnTime(TIME_TO_RESPAWN);
+    _telTimer = TIME_TO_RESPAWN / 3;
+
+    _map->GridUpdater(this, GRIDUPDATE_KILLED, UPDATE_FULL);
 
     if (Score* sc = _map->GetScoreMgr().GetScore(GetGUID()))
     {
@@ -72,12 +75,6 @@ void Player::HandleHit(MapObject* obj)
         sc->killed += 1;
         _map->SendScores(obj->GetOwner());
     }
-
-    SetAlive(false);
-    SetKilledBy(obj->GetName());
-    SetMovementFlags(0);
-    SetRespawnTime(TIME_TO_RESPAWN);
-    _telTimer = TIME_TO_RESPAWN / 3;
 }
 
 void Player::Update(uint32 const diff)
@@ -96,4 +93,11 @@ void Player::Update(uint32 const diff)
         else
             _telTimer -= diff;
     }
+}
+
+void Player::HandleRespawn()
+{
+    GameObject::HandleRespawn();
+
+    _map->GridUpdater(this, GRIDUPDATE_RESPAWN, UPDATE_FULL);
 }
