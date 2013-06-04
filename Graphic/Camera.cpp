@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 15 12:59:41 2013 fabien casters
-** Last update Tue May 28 16:20:21 2013 fabien casters
+** Last update Tue Jun 04 14:56:51 2013 maxime ginters
 */
 
 #include "Camera.h"
@@ -39,5 +39,5 @@ void Camera::update(ClientObjectPtr player)
     player->GetXYAt(10.0f, M_PI, x, y);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(x, y, 17.0f, player->GetPositionX(), player->GetPositionY(), 0.0f, 0.0f, 0.0f, 1.0f);
+    gluLookAt(x, y, 20.0f, player->GetPositionX(), player->GetPositionY(), 0.0f, 0.0f, 0.0f, 1.0f);
 }

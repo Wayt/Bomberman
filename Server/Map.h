@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Mon Jun 03 18:50:28 2013 maxime ginters
+** Last update Tue Jun 04 15:01:20 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -115,6 +115,10 @@ public:
     void SendScores(uint64 from = 0);
 
     void BroadcastToAll(Packet const& pkt);
+
+    void GetRandomStartPosition(float& x, float& y);
+
+    void TeleportPlayer(Player* player, float x, float y);
 
     static void RegisterLua(lua_State* state);
 

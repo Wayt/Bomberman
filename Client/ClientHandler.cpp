@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Mon Jun 03 18:54:37 2013 maxime ginters
+** Last update Tue Jun 04 15:00:45 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -175,4 +175,9 @@ void Client::HandleKilled(Packet& recvData)
 void Client::HandleSendScore(Packet& recvData)
 {
     _scoreMgr.ReadScores(recvData);
+}
+
+void Client::HandleTeleport(Packet& recvData)
+{
+    _player->ReadPosition(recvData);
 }

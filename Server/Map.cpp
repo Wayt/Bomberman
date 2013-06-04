@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Mon Jun 03 18:51:51 2013 maxime ginters
+** Last update Tue Jun 04 15:08:32 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -302,6 +302,9 @@ uint8 Map::BuildGridUpdaterFlags(MapGrid* old, MapGrid* newGrid) const
     if (!_GetGridXY(old, oldX, oldY) || !_GetGridXY(newGrid, newX, newY))
         return 0;
 
+    if (std::abs(oldX - newX) > GRID_SIZE || std::abs(oldY - newY) > GRID_SIZE)
+        return UPDATE_FULL;
+
     uint8 flags = 0;
     flags |= (oldY < newY ? UPDATE_UP : (oldY > newY ? UPDATE_DOWN : 0));
     flags |= (oldX < newX ? UPDATE_RIGHT : (oldX > newX ? UPDATE_LEFT : 0));
@@ -452,4 +455,20 @@ void Map::BroadcastToAll(Packet const& pkt)
     std::map<std::pair<float, float>, MapGrid*>::iterator itr;
     for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
         itr->second->BroadcastToGrid(pkt);
+}
+
+void Map::GetRandomStartPosition(float& x, float& y)
+{
+    x = rand() % _width;
+    y = rand() % _height;
+}
+
+void Map::TeleportPlayer(Player* player, float x, float y)
+{
+    player->UpdatePosition(x, y, 0.0f);
+    Packet data(SMSG_TELEPORT, 16);
+    player->WritePosition(data);
+    player->SendPacket(data);
+
+    UpdateObjectGrid(player);
 }

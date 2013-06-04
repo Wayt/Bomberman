@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Mon Jun 03 19:04:47 2013 maxime ginters
+** Last update Tue Jun 04 14:41:30 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -45,7 +45,9 @@ void Session::HandleEnterGame(Packet& recvData)
     Packet data(SMSG_ADD_TO_MAP, 20);
     data << uint32(width * MAP_PRECISION);
     data << uint32(height * MAP_PRECISION);
-    _player->UpdatePosition(5.0f, 5.0f, 0.0f, 0.0f);
+    float x, y;
+    map->GetRandomStartPosition(x, y);
+    _player->UpdatePosition(x, y, 0.0f, 0.0f);
     _player->WritePosition(data);
 
     SendPacket(data);

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Mon Jun 03 18:56:08 2013 maxime ginters
+** Last update Tue Jun 04 15:07:57 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -65,6 +65,7 @@ public:
     void HandleGridChange(Packet& recvData);
     void HandleKilled(Packet& recvData);
     void HandleSendScore(Packet& recvData);
+    void HandleTeleport(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
