@@ -5,12 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Tue Jun 04 19:08:18 2013 maxime ginters
+** Last update Tue Jun 04 19:10:31 2013 maxime ginters
 */
 
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
+
+#include "ModelMgr.h"
 #include "Map.h"
 #include "Session.h"
 #include "MapObject.h"
@@ -502,8 +504,47 @@ void Map::BroadcastToAll(Packet const& pkt)
 
 void Map::GetRandomStartPosition(float& x, float& y)
 {
-    x = rand() % _width;
-    y = rand() % _height;
+    bool ok = true;
+
+    do
+    {
+        x = rand() % (_width - MAP_PRECISION);
+        y = rand() % (_height - MAP_PRECISION);
+
+        MapGrid *grid = GetGridAt(x, y);
+        if (!grid)
+            ok = false;
+        else
+        {
+            std::list<const GameObject*> list;
+            grid->GetObjectList(list);
+            try
+            {
+                ModelBox self = sModelMgr->GetModelBoxAtPos(x, y, 0.f, MODELID_PLAYER);
+                std::list<const GameObject*>::const_iterator it;
+                for (it = list.begin(); it != list.end(); ++it)
+                {
+                    if ((*it)->GetModelId() == MODELID_PLAYER)
+                        continue;
+
+                    ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                    if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
+                        (self.max.y > box.min.y && self.min.y < box.max.y))
+                    {
+                        ok = false;
+                        break;
+                    }
+                    else
+                        ok = true;
+                }
+            }
+            catch (const std::exception&)
+            {
+                ok = false;
+            }
+        }
+    }
+    while (!ok);
 }
 
 void Map::TeleportPlayer(Player* player, float x, float y)
