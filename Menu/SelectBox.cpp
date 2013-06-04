@@ -86,11 +86,6 @@ void SelectBox::draw ()
 }
 /*}*/
 
-void SelectBox::setTexture (const std::string &s)
-{
-    texture_ = gdl::Image::load(s);
-}
-
 bool SelectBox::select ()
 {
     setStatus (SubObject::SELECTED);
@@ -104,6 +99,10 @@ bool SelectBox::select ()
 void SelectBox::addSubObject (SubObject *obj)
 {
     obj_ = obj;
+}
+SubObject *SelectBox::getSubObject()
+{
+    return obj_;
 }
 
 /*{ Movements */
@@ -154,5 +153,20 @@ bool SelectBox::moveLeft ()
 	return false;
     }
     return true;
+}
+
+SubObject *SelectBox::operator [] (const std::string &)
+{
+    return obj_;
+}
+
+void	SelectBox::initpos(int x, int y, int z, int v)
+{
+    _pos.x = x - id_ * v;
+    _pos.y = y;
+    _pos.z = z - id_ * v;
+    oldpos_.x = _pos.x;
+    oldpos_.y = _pos.y;
+    oldpos_.z = _pos.z;
 }
 /*}*/

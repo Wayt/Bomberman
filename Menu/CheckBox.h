@@ -21,14 +21,6 @@ class CheckBox : public SelectBox
 	CheckBox (float, float, float, float);
 	~CheckBox ();
 	virtual bool select ();
-
-	void setTexture (const std::string &img1, const std::string &img2);
-
-    private:
-	bool		status_;
-
-	std::string img1_;
-	std::string img2_;
 };
 
 #endif
