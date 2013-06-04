@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Tue Jun 04 17:33:44 2013 maxime ginters
+** Last update Tue Jun 04 19:05:59 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -15,7 +15,7 @@ Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
     _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false),
-    _scoreMgr()
+    _scoreMgr(), _gameTimer(0)
 {
     _pingData[PING_INTERVAL] = 5000;
 }
@@ -117,6 +117,9 @@ void Client::Update(uint32 const diff)
         _gameMonitor->getKeyVector(keys);
         UpdateInput(keys);
 
+        if (IsFinish())
+            return;
+
         std::map<uint64, ClientObjectPtr>::iterator itr;
         for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
             itr->second->Update(diff);
@@ -133,6 +136,11 @@ void Client::Update(uint32 const diff)
         }
         else
             _pingData[PING_INTERVAL] -= diff;
+
+        if (_gameTimer <= diff)
+            _gameTimer = 0;
+        else
+            _gameTimer -= diff;
     }
 }
 
@@ -272,7 +280,7 @@ ClientObjectPtr Client::GetPlayer()
 
 void Client::HandleSpaceAction()
 {
-    if (!_player->IsAlive())
+    if (!IsFinish() && !_player->IsAlive())
         return;
 
     Packet data(CMSG_DROP_BOMB, 0);
@@ -313,7 +321,8 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
                     _chatBox.StartInput();
                 return;
         case gdl::Keys::Tab:
-                _scoreOpen = true;
+                if (!IsFinish())
+                    _scoreOpen = true;
                 break;
         default:
                 break;
@@ -342,6 +351,9 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
 void Client::HandleKeyUp(gdl::Keys::Key key)
 {
     std::cout << "KEYUP : " << (uint32)key << std::endl;
+
+    if (IsFinish())
+        return;
 
     if (key == gdl::Keys::Tab)
         _scoreOpen = false;
@@ -394,4 +406,14 @@ bool Client::IsScoreOpen() const
 ScoreMgr const& Client::GetScoreMgr() const
 {
     return _scoreMgr;
+}
+
+uint32 Client::GetGameTimer() const
+{
+    return _gameTimer;
+}
+
+bool Client::IsFinish() const
+{
+    return _gameTimer == 0;
 }

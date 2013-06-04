@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Tue Jun 04 17:33:33 2013 maxime ginters
+** Last update Tue Jun 04 19:07:39 2013 maxime ginters
 */
 
 #include "Client.h"
@@ -216,4 +216,16 @@ void Client::HandlePlayerRespawn(Packet& recvData)
     obj->SetMovementFlags(0);
     obj->SetAlive(true);
 
+}
+
+void Client::HandleSendGameTimer(Packet& recvData)
+{
+    recvData >> _gameTimer;
+}
+
+void Client::HandleGameFinish(Packet& recvData)
+{
+    (void)recvData;
+    _gameTimer = 0;
+    _scoreOpen = true;
 }

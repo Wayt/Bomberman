@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Tue Jun 04 16:47:21 2013 maxime ginters
+** Last update Tue Jun 04 18:50:26 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -38,6 +38,8 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
         {SMSG_TELEPORT, STATUS_INGAME, NULL, &Client::HandleTeleport},
         {SMSG_PLAYER_KILLED, STATUS_INGAME, NULL, &Client::HandlePlayerKilled},
         {SMSG_PLAYER_RESPAWN, STATUS_INGAME, NULL, &Client::HandlePlayerRespawn},
+        {SMSG_SEND_GAMETIMER, STATUS_INGAME, NULL, &Client::HandleSendGameTimer},
+        {SMSG_GAME_FINISH, STATUS_INGAME, NULL, &Client::HandleGameFinish},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}
     };
 

@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Mon Jun 03 20:37:22 2013 vincent leroy
+** Last update Tue Jun 04 19:01:40 2013 maxime ginters
 */
 
 #include <iostream>
@@ -224,6 +224,17 @@ void GameMonitor::draw(void)
                 ++y;
             }
         }
+    }
+
+    if (_client->GetGameTimer() > 0)
+    {
+        std::stringstream ss;
+        ss << "Fin de la partie dans : " << uint32(_client->GetGameTimer() / 1000) << "s";
+        gdl::Text timer;
+        timer.setText(ss.str());
+        timer.setPosition(window_.getWidth() / 2 - 40, 10);
+        timer.setSize(15);
+        timer.draw();
     }
 
     // After drawing the text

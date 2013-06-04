@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Tue Jun 04 16:47:33 2013 maxime ginters
+** Last update Tue Jun 04 19:03:33 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -67,6 +67,8 @@ public:
     void HandleTeleport(Packet& recvData);
     void HandlePlayerKilled(Packet& recvData);
     void HandlePlayerRespawn(Packet& recvData);
+    void HandleSendGameTimer(Packet& recvData);
+    void HandleGameFinish(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
@@ -82,6 +84,9 @@ public:
 
     bool IsScoreOpen() const;
     ScoreMgr const& GetScoreMgr() const;
+
+    uint32 GetGameTimer() const;
+    bool IsFinish() const;
 
 private:
     void Update(uint32 const diff);
@@ -118,6 +123,7 @@ private:
 
     bool _scoreOpen;
     ScoreMgr _scoreMgr;
+    uint32 _gameTimer;
 };
 
 #endif /* !CLIENT_H_ */

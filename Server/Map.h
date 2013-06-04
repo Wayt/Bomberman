@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Tue Jun 04 17:15:04 2013 maxime ginters
+** Last update Tue Jun 04 19:00:06 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -126,6 +126,10 @@ public:
 
     void TeleportPlayer(Player* player, float x, float y);
 
+    uint32 GetGameTimer() const;
+    bool IsFinish() const;
+    void HandleGameFinish();
+
     static void RegisterLua(lua_State* state);
 
 private:
@@ -139,6 +143,7 @@ private:
     uint32 _height;
     std::list<MapObject*> _removeList;
     ScoreMgr _scoreMgr;
+    uint32 _gameTimer;
 };
 
 #endif /* !MAP_H_ */

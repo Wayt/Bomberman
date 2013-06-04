@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 18:39:40 2013 maxime ginters
-** Last update Tue Jun 04 16:48:10 2013 maxime ginters
+** Last update Tue Jun 04 18:49:41 2013 maxime ginters
 */
 
 #ifndef OPCODES_H_
@@ -61,6 +61,8 @@ enum Opcodes
     SMSG_TELEPORT           = 0x0018,
     SMSG_PLAYER_KILLED      = 0x0019,
     SMSG_PLAYER_RESPAWN     = 0x001A,
+    SMSG_SEND_GAMETIMER     = 0x001B,
+    SMSG_GAME_FINISH        = 0x001C,
 };
 
 class Packet;

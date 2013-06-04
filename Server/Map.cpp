@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Tue Jun 04 17:19:24 2013 maxime ginters
+** Last update Tue Jun 04 19:08:18 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -20,7 +20,8 @@
 #define BORDER_DENSITY 5
 
 Map::Map(uint32 width, uint32 height) :
-    _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList()
+    _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList(),
+    _gameTimer(60000)
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -375,6 +376,17 @@ void Map::GetWidthAndHeight(uint32& width, uint32& height) const
 
 void Map::Update(uint32 const diff)
 {
+    if (IsFinish())
+        return;
+
+    if (_gameTimer <= diff)
+    {
+        HandleGameFinish();
+        _gameTimer = 0;
+        return;
+    }
+    else
+        _gameTimer -= diff;
     std::list<MapObject*> toUpdate;
     std::map<std::pair<float, float>, MapGrid*>::iterator itr;
     for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
@@ -503,3 +515,18 @@ void Map::TeleportPlayer(Player* player, float x, float y)
     GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
 }
 
+bool Map::IsFinish() const
+{
+    return _gameTimer == 0;
+}
+
+void Map::HandleGameFinish()
+{
+    Packet data(SMSG_GAME_FINISH, 0);
+    BroadcastToAll(data);
+}
+
+uint32 Map::GetGameTimer() const
+{
+    return _gameTimer;
+}
