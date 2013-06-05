@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 12:35:56 2013 vincent leroy
+** Last update Wed Jun 05 16:00:45 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -235,10 +235,11 @@ void MapGrid::GridUpdateDelObj(MapObject *obj)
 
 void MapGrid::GridUpdateKilled(MapObject *obj)
 {
-    Packet data(SMSG_PLAYER_KILLED, 8 + 4 + obj->GetLastKiller().length());
+    Packet data(SMSG_PLAYER_KILLED, 8 + 4 + obj->GetLastKiller().length() + 8);
     data << uint64(obj->GetGUID());
     data << uint32(obj->GetRespawnTime());
     data << obj->GetLastKiller();
+    data << uint64(obj->GetLastKillerGUID());
     BroadcastToGrid(data, NULL);
 }
 

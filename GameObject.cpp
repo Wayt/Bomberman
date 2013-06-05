@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Mon Jun 03 18:30:37 2013 maxime ginters
+** Last update Wed Jun 05 15:53:22 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -176,4 +176,14 @@ std::string const& GameObject::GetLastKiller() const
 uint64 GameObject::GetGUID() const
 {
     return _guid;
+}
+
+void GameObject::SetKillerGUID(uint64 guid)
+{
+    _lastKillerGUID = guid;
+}
+
+uint64 GameObject::GetLastKillerGUID() const
+{
+    return _lastKillerGUID;
 }

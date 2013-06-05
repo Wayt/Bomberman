@@ -5,10 +5,10 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed Jun 05 11:57:44 2013 maxime ginters
+** Last update Wed Jun 05 16:14:17 2013 maxime ginters
 */
 
-#include <SFML/Audio.hpp>
+#include "SoundMgr.h"
 #include "Client.h"
 
 void Client::HandleLoginResponse(Packet& recvData)
@@ -50,6 +50,7 @@ void Client::HandleSendObject(Packet& recvData)
         uint32 modelid;
         std::string name;
         float x, y, z, o;
+        uint64 owner;
         recvData >> guid;
         recvData >> modelid;
         recvData >> name;
@@ -57,6 +58,7 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> y;
         recvData >> z;
         recvData >> o;
+        recvData >> owner;
 
         if (guid != _player->GetGUID())
         {
@@ -65,18 +67,8 @@ void Client::HandleSendObject(Packet& recvData)
             obj->UpdatePosition(x, y, z, o);
             AddObject(obj);
 
-            if (modelid == 2)
-            {
-                sf::SoundBuffer buff;
-                if (buff.LoadFromFile("Sounds/bomb.ogg"))
-                {
-                    sf::Sound sound;
-                    sound.SetBuffer(buff);
-                    std::cout << "PLAY OSUNNDDD BATARD" << std::endl;
-                    sound.Play();
-                }
-
-            }
+            if (modelid == MODELID_BOMB && owner == _player->GetGUID())
+                sSoundMgr->PlaySound(SOUND_BOMB_PLANTED);
         }
     }
 }
@@ -131,6 +123,8 @@ void Client::HandleDeleteObject(Packet& recvData)
         sLog->error("Error: receiv SMSG_UPDATE_MOVEFLAGS for an unknow guid");
         return;
     }
+    if (obj->GetModelId() == MODELID_BOMB)
+        sSoundMgr->PlaySound(SOUND_BOUM);
 
     RemoveObject(obj);
 }
@@ -194,9 +188,11 @@ void Client::HandlePlayerKilled(Packet& recvData)
     uint64 guid;
     uint32 time;
     std::string by;
+    uint64 byOwner;
     recvData >> guid;
     recvData >> time;
     recvData >> by;
+    recvData >> byOwner;
 
     ClientObjectPtr obj = GetObject(guid);
     if (!obj)
@@ -211,6 +207,11 @@ void Client::HandlePlayerKilled(Packet& recvData)
     obj->SetKilledBy(by);
     obj->SetMovementFlags(0);
     obj->SetRespawnTime(time);
+    obj->SetKillerGUID(byOwner);
+
+    std::cout << "OWNER : " << byOwner << "  -  " << _player->GetGUID() << std::endl;
+    if (byOwner == _player->GetGUID())
+        sSoundMgr->PlaySound(SOUND_ENEMY_DOWN);
 }
 
 void Client::HandlePlayerRespawn(Packet& recvData)

@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 12:00:38 2013 vincent leroy
+** Last update Wed Jun 05 15:52:42 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -64,6 +64,8 @@ public:
     uint32 GetRespawnTime() const;
     void SetKilledBy(std::string const& by);
     std::string const& GetLastKiller() const;
+    void SetKillerGUID(uint64 guid);
+    uint64 GetLastKillerGUID() const;
 
 protected:
     uint32 _modelId;
@@ -77,6 +79,7 @@ protected:
     uint32 _respawnTime;
     std::string _lastKiller;
     uint64 _guid;
+    uint64 _lastKillerGUID;
 };
 
 #endif /* !GAMEOBJECT_H_ */

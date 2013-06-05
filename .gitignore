@@ -22,3 +22,5 @@
 !Scripts
 !*.lua
 !*.cfg
+!Sounds
+!*.ogg

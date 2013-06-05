@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Tue Jun 04 19:03:47 2013 maxime ginters
+** Last update Wed Jun 05 13:47:55 2013 maxime ginters
 */
 
 #include "Bomb.h"

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed Jun 05 12:00:30 2013 vincent leroy
+** Last update Wed Jun 05 16:41:36 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -34,7 +34,6 @@ public:
 
     void SetInWorld(bool in_world = true);
     bool IsInWorld() const;
-    uint32 GetModelId() const;
 
     virtual void SetGrid(MapGrid* grid);
     void SetMap(Map* map);
@@ -67,7 +66,6 @@ public:
     static void RegisterLua(lua_State* state);
 
 protected:
-    uint32 _modelId;
     bool _isInWorld;
     MapGrid* _currGrid;
     std::string _name;
@@ -75,5 +73,8 @@ protected:
     MotionMaster* _motionMaster;
     uint64 _owner;
 };
+
+std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj);
+std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj);
 
 #endif /* !MAPOBJECT_H_ */

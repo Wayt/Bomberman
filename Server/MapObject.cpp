@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Mon Jun 03 18:31:32 2013 maxime ginters
+** Last update Wed Jun 05 16:41:58 2013 maxime ginters
 */
 
 #include <iostream>
@@ -14,7 +14,7 @@
 #include "ObjectAI.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
-    _modelId(modelId), _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
+    _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
     _motionMaster(NULL), _owner(0)
 {
     _motionMaster = new MotionMaster(this);
@@ -34,11 +34,6 @@ void MapObject::SetInWorld(bool in_world)
 bool MapObject::IsInWorld() const
 {
     return _isInWorld;
-}
-
-uint32 MapObject::GetModelId() const
-{
-    return _modelId;
 }
 
 void MapObject::SetGrid(MapGrid* grid)
@@ -81,6 +76,7 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << float(GetPositionY());
     data << float(GetPositionZ());
     data << float(GetOrientation());
+    data << uint64(_owner);
 }
 
 
@@ -166,4 +162,17 @@ void MapObject::RegisterLua(lua_State* state)
         luabind::class_<MapObject>("MapObject")
         .def("GetName", &MapObject::GetName)
         ];
+}
+
+std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj)
+{
+    stream << *obj;
+    return stream;
+}
+
+std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj)
+{
+    (void)obj;
+    std::cout << "Coucou" << std::endl;
+    return stream;
 }

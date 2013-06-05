@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Tue Jun 04 17:32:08 2013 maxime ginters
+** Last update Wed Jun 05 16:02:56 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -58,6 +58,10 @@ void Player::HandleHit(MapObject* obj)
 
     SetAlive(false);
     SetKilledBy(obj->GetName());
+    if (obj->GetOwner() > 0)
+        SetKillerGUID(obj->GetOwner());
+    else
+        SetKillerGUID(obj->GetGUID());
     SetMovementFlags(0);
     SetRespawnTime(TIME_TO_RESPAWN);
     _telTimer = TIME_TO_RESPAWN / 3;
