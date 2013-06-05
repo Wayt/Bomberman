@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Mon Jun 03 17:29:00 2013 maxime ginters
+** Last update Wed Jun 05 21:13:25 2013 maxime ginters
 */
 
 #include <iostream>
@@ -45,7 +45,7 @@ void Bomb::HandleExplode()
     float blocky = 5 * coefy;
 
     std::list<MapObject*> list;
-    _map->GetObjectListInRange(blockx, blocky, 10.0f, list);
+    _map->GetObjectListInRange(blockx, blocky, 12.7f, list);
 
     std::list<MapObject*>::iterator itr;
     for (itr = list.begin(); itr != list.end(); ++itr)
