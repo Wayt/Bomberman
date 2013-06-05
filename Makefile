@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Mon Jun 03 19:05:49 2013 maxime ginters
+## Last update Wed Jun 05 11:59:06 2013 maxime ginters
 ##
 
 CXX	= g++
@@ -22,6 +22,7 @@ UNAME	:= $(shell uname -a)
 
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
+LDFLAGS	+= -lsfml-audio
 LDFLAGS	+= -llua
 LDFLAGS	+= -llua5.1
 LDFLAGS	+= -lluabind
@@ -41,6 +42,8 @@ SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cp
 
 OBJS	= $(SRCS:.cpp=.o)
 
+
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -54,5 +57,8 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+depend:
+	makedepend -I. $(SRCS)
+
+.PHONY: all clean fclean re depend
 

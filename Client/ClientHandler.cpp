@@ -5,9 +5,10 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Tue Jun 04 19:07:39 2013 maxime ginters
+** Last update Wed Jun 05 11:57:44 2013 maxime ginters
 */
 
+#include <SFML/Audio.hpp>
 #include "Client.h"
 
 void Client::HandleLoginResponse(Packet& recvData)
@@ -63,6 +64,19 @@ void Client::HandleSendObject(Packet& recvData)
             obj->SetClient(this);
             obj->UpdatePosition(x, y, z, o);
             AddObject(obj);
+
+            if (modelid == 2)
+            {
+                sf::SoundBuffer buff;
+                if (buff.LoadFromFile("Sounds/bomb.ogg"))
+                {
+                    sf::Sound sound;
+                    sound.SetBuffer(buff);
+                    std::cout << "PLAY OSUNNDDD BATARD" << std::endl;
+                    sound.Play();
+                }
+
+            }
         }
     }
 }
