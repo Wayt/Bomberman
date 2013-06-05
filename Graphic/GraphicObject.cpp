@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Tue May 28 17:32:37 2013 fabien casters
+** Last update Wed Jun 05 17:08:15 2013 vincent leroy
 */
 
 #include <cmath>
@@ -23,7 +23,7 @@ GraphicObject::GraphicObject(ClientObject const *o) :
 void GraphicObject::init()
 {
     _config = sModelFactory->load(_object->GetModelId());
-    _model = new gdl::Model(_config.model);
+    _model = _config.model;
 }
 
 void GraphicObject::update(gdl::GameClock const &clock)
