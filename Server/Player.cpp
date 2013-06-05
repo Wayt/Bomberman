@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Wed Jun 05 16:02:56 2013 maxime ginters
+** Last update Wed Jun 05 22:32:06 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -101,7 +101,7 @@ void Player::Update(uint32 const diff)
 
 void Player::HandleRespawn()
 {
-    GameObject::HandleRespawn();
+    MapObject::HandleRespawn();
 
     _map->GridUpdater(this, GRIDUPDATE_RESPAWN, UPDATE_FULL);
 }

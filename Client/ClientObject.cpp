@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Tue Jun 04 16:42:26 2013 maxime ginters
+** Last update Wed Jun 05 22:33:39 2013 maxime ginters
 */
 
 #include "ClientObject.h"
@@ -39,4 +39,6 @@ void ClientObject::Update(uint32 const diff)
 }
 
 void ClientObject::HandleRespawn()
-{}
+{
+    SetSpeed(1.0f);
+}

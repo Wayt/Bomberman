@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Wed Jun 05 20:35:48 2013 maxime ginters
+** Last update Wed Jun 05 22:35:57 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
@@ -31,7 +31,6 @@ bool ObjectAI::Initialize()
         luabind::open(_luastate);
         Object::RegisterLua(_luastate);
         MapObject::RegisterLua(_luastate);
-        GameObject::RegisterLua(_luastate);
         Map::RegisterLua(_luastate);
         luabind::module(_luastate) [
             luabind::class_<Log>("Log")
@@ -110,7 +109,7 @@ void ObjectAI::HandleHit(MapObject* obj)
 
 }
 
-void ObjectAI::HandleCross(GameObject* by)
+void ObjectAI::HandleCross(MapObject* by)
 {
     if (!_luastate)
         return;

@@ -14,4 +14,6 @@ end
 
 function HandleCross(me, by)
     Log:print("CROSSED")
+    by:AddMaxBombCount(1)
+    me:Despawn()
 end

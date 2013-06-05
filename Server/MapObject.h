@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed Jun 05 22:22:41 2013 maxime ginters
+** Last update Wed Jun 05 22:38:39 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -69,6 +69,10 @@ public:
 
     void DropBombIfPossible();
     void DecreasBombCount();
+
+    virtual void HandleRespawn();
+
+    void AddMaxBombCount(uint32 value);
 
 protected:
     bool _isInWorld;
