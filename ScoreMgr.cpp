@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Jun 03 17:58:56 2013 maxime ginters
-** Last update Mon Jun 03 20:19:29 2013 vincent leroy
+** Last update Wed Jun 05 18:36:57 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -24,6 +24,12 @@ void ScoreMgr::AddPlayer(GameObject* obj)
     sc->wall = 0;
     _scores.insert(std::pair<uint64, Score*>(obj->GetGUID(), sc));
 }
+
+void ScoreMgr::AddPlayer(uint64 guid, Score* sc)
+{
+    _scores.insert(std::pair<uint64, Score*>(guid, sc));
+}
+
 
 Score const* ScoreMgr::GetScore(uint64 guid) const
 {

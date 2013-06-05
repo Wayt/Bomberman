@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed Jun 05 15:03:13 2013 maxime ginters
-** Last update Wed Jun 05 16:13:04 2013 maxime ginters
+** Last update Wed Jun 05 19:35:52 2013 maxime ginters
 */
 
 #ifndef SOUNDMGR_H_
@@ -38,6 +38,7 @@ private:
 
     std::map<Sounds, sf::Sound*> _soundsMap;
     std::map<Sounds, sf::SoundBuffer*> _buffersMap;
+    sf::Music _music;
 };
 
 #define sSoundMgr SoundMgr::instance()

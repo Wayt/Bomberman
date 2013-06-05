@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 17:40:15 2013 maxime ginters
+** Last update Wed Jun 05 18:33:21 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -93,9 +93,10 @@ private:
 class Map
 {
 public:
-    explicit Map(uint32 width, uint32 height);
+    explicit Map(uint32 width, uint32 height, uint32 nguid = 1, uint32 time = 600000);
 
     static Map* CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density);
+    static Map* LoadFromFile(std::string const& filename);
 
     void AddObject(MapObject* obj);
     void RemoveObject(MapObject* obj);
@@ -140,6 +141,7 @@ public:
     static void RegisterLua(lua_State* state);
 
     void SaveToFile(std::string const& filename) const;
+    void LoadScore(uint32 count, std::ifstream& stream);
 
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;

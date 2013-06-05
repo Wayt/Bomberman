@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Apr 15 14:14:28 2013 maxime ginters
-** Last update Wed May 29 18:25:59 2013 vincent leroy
+** Last update Wed Jun 05 18:48:15 2013 maxime ginters
 */
 
 #ifndef UTILS_H_
@@ -23,6 +23,12 @@ T to(char const* buff)
     ss << buff;
     ss >> val;
     return val;
+}
+
+template<class T>
+T to(std::string const& str)
+{
+    return to<T>(str.c_str());
 }
 
 void split(std::string const& s, char c, std::vector<std::string> &elems);
