@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:23 2013 fabien casters
-** Last update Wed Jun 05 17:06:22 2013 vincent leroy
+** Last update Wed Jun 05 23:00:30 2013 fabien casters
 */
 
 #ifndef MODELFACTORY_H_
