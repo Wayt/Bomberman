@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed Jun 05 20:26:36 2013 maxime ginters
+** Last update Thu Jun 06 01:42:29 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -163,6 +163,20 @@ void Client::AddObject(ClientObjectPtr obj)
         return;
     }
     _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));
+}
+
+void Client::RemoveObject(ClientObject* obj)
+{
+    std::map<uint64, ClientObjectPtr>::iterator itr = _clientObjectMap.begin();
+    for (; itr != _clientObjectMap.end(); ++itr)
+    {
+        ClientObjectPtr ptr = itr->second;
+        if (ptr.get() == obj)
+        {
+            RemoveObject(ptr);
+            return;
+        }
+    }
 }
 
 void Client::RemoveObject(ClientObjectPtr obj)

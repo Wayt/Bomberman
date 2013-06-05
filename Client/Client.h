@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu Jun 06 00:09:04 2013 maxime ginters
+** Last update Thu Jun 06 01:43:09 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -74,6 +74,7 @@ public:
     void HandleBombBoumed(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
+    void RemoveObject(ClientObject* obj);
     void RemoveObject(ClientObjectPtr obj);
 
     void GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const;
