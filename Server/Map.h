@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 12:33:42 2013 vincent leroy
+** Last update Wed Jun 05 17:40:15 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -16,13 +16,13 @@
 #include "Packet.hpp"
 #include "luabind.h"
 #include "ScoreMgr.h"
+#include "GameObject.h"
 
 #define MAP_PRECISION 5
 #define GRID_SIZE (MAP_PRECISION * 10)
 
 class MapObject;
 class Player;
-class GameObject;
 
 enum GridUpdaterActions
 {
@@ -75,7 +75,7 @@ public:
     void GridUpdateTeleport(MapObject *obj);
     void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
-    void AddObjectForUpdate(std::list<MapObject*>& list);
+    void AddObjectForUpdate(std::list<MapObject*>& list) const;
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
     void GetObjectList(std::list<const GameObject*> &list) const;
@@ -109,6 +109,8 @@ public:
     uint32 GetWidth() const;
     uint32 GetHeight() const;
 
+    MapObject const* GetObject(uint64 guid) const;
+
     void Update(uint32 const diff);
 
     void UpdateObjectGrid(MapObject* obj);
@@ -137,6 +139,8 @@ public:
 
     static void RegisterLua(lua_State* state);
 
+    void SaveToFile(std::string const& filename) const;
+
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;
     MapGrid* GetGridAt(float x, float y);
@@ -149,6 +153,26 @@ private:
     std::list<MapObject*> _removeList;
     ScoreMgr _scoreMgr;
     uint32 _gameTimer;
+
+    class ModelIdRemover
+    {
+    public:
+        ModelIdRemover(uint32 id) : _id(id) {}
+        bool operator()(GameObject const* obj) const
+        {
+            return obj->GetModelId() == _id;
+        }
+    private:
+        uint32 _id;
+    };
+    class TypeIdRemover
+    {
+    public:
+        TypeIdRemover(uint32 id) : _id(id) {}
+        bool operator()(MapObject const* obj) const;
+    private:
+        uint32 _id;
+    };
 };
 
 #endif /* !MAP_H_ */

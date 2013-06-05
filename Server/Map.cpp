@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 18:14:28 2013 vincent leroy
+** Last update Wed Jun 05 18:19:33 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -274,7 +274,7 @@ void MapGrid::BroadcastToGrid(Packet const& pkt, MapObject* except)
             }
 }
 
-void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list)
+void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list) const
 {
     std::list<MapObject*>::const_iterator itr;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
@@ -607,4 +607,63 @@ void Map::HandleGameFinish()
 uint32 Map::GetGameTimer() const
 {
     return _gameTimer;
+}
+
+void Map::SaveToFile(std::string const& filename) const
+{
+    std::ofstream file;
+    try
+    {
+        file.open(filename.c_str());
+    }
+    catch (std::exception const& e)
+    {
+        sLog->error("Error: %s", e.what());
+        return;
+    }
+
+    file << _width << "," << _height << "," << _nextGuid << "," << _gameTimer << std::endl;
+
+
+    std::map<uint64, Score*>::const_iterator itr = _scoreMgr.ScoreBegin();
+    std::stringstream ss;
+    uint32 count = 0;
+    for (; itr != _scoreMgr.ScoreEnd(); ++itr)
+        if (MapObject const* obj = GetObject(itr->first))
+            if (obj->GetTypeId() == TYPEID_OBJECT)
+            {
+                Score const* sc = itr->second;
+                ss << obj->GetGUID() << "," << sc->name << "," << sc->died << "," << sc->killed << "," << sc->bomb << "," << sc->wall << std::endl;
+                ++count;
+            }
+    file << count << std::endl;
+    file << ss.str();
+
+    std::list<MapObject*> list;
+    for (std::map<std::pair<float, float>, MapGrid*>::const_iterator itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->AddObjectForUpdate(list);
+    list.remove_if(ModelIdRemover(MODELID_BOMB));
+    list.remove_if(TypeIdRemover(TYPEID_PLAYER));
+    file << list.size() << std::endl;
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        file << (*itr) << std::endl;
+
+    file.close();
+}
+
+bool Map::TypeIdRemover::operator()(MapObject const* obj) const
+{
+    return obj->GetTypeId() == _id;
+}
+
+MapObject const* Map::GetObject(uint64 guid) const
+{
+    std::list<MapObject*> list;
+    for (std::map<std::pair<float, float>, MapGrid*>::const_iterator itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->AddObjectForUpdate(list);
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if ((*itr)->GetGUID() == guid)
+            return (*itr);
+    return NULL;
 }
