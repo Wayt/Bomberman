@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 22:39:19 2013 maxime ginters
+** Last update Thu Jun 06 00:23:37 2013 maxime ginters
 */
 
 #include <iostream>
@@ -16,7 +16,7 @@
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
     _isInWorld(false), _currGrid(NULL), _typeId(type),
-    _motionMaster(NULL), _owner(0), _maxBomb(2), _currBomb(0)
+    _motionMaster(NULL), _owner(0), _maxBomb(2), _currBomb(0), _bombPower(10.0f)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -80,6 +80,7 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << uint64(_owner);
     data << float(GetSpeed());
     data << float(GetSpeedOr());
+    data << uint8(IsAlive());
 }
 
 
@@ -166,6 +167,8 @@ void MapObject::RegisterLua(lua_State* state)
         .def("GetName", &MapObject::GetName)
         .def("SetSpeed", &MapObject::SetSpeed)
         .def("AddMaxBombCount", &MapObject::AddMaxBombCount)
+        .def("RandomTeleport", &MapObject::RandomTeleport)
+        .def("IncrBombRange", &MapObject::IncrBombRange)
         ];
 }
 
@@ -221,9 +224,42 @@ void MapObject::HandleRespawn()
 
     SetSpeed(1.0f);
     _maxBomb = 2;
+    _bombPower = 10.0f;
 }
 
 void MapObject::AddMaxBombCount(uint32 value)
 {
     _maxBomb += value;
+}
+
+void MapObject::RandomTeleport()
+{
+    if (GetTypeId() != TYPEID_PLAYER)
+    {
+        std::cerr << "NO PLAYER" << std::endl;
+        return;
+    }
+
+    Player* player = reinterpret_cast<Player*>(this);
+    if (!player)
+    {
+        std::cout << "NO REINTEREPREPOK:KA: " << std::endl;
+        return;
+    }
+
+    float x, y;
+    _map->GetRandomStartPosition(x, y);
+    _map->TeleportPlayer(player, x, y);
+}
+
+float MapObject::GetBombRange() const
+{
+    return _bombPower;
+}
+
+void MapObject::IncrBombRange(float value)
+{
+    _bombPower += value;
+    if (_bombPower >= 100.0f)
+        _bombPower = 100.0f;
 }

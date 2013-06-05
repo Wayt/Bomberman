@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed Jun 05 22:36:51 2013 maxime ginters
+** Last update Wed Jun 05 23:57:56 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -78,6 +78,7 @@ void Object::RegisterLua(lua_State* state)
         .def("Despawn", &Object::Despawn)
         .def("DoAction", &Object::DoAction)
         .def("SpawnBonus", &Object::SpawnBonus)
+        .def("CheckBonusCross", &Object::CheckBonusCross)
         ];
 }
 
@@ -102,16 +103,15 @@ void Object::HandleHit(MapObject* obj)
     }
 }
 
-void Object::HandleCross(GameObject* by)
+void Object::HandleCross(MapObject* by)
 {
-    MapObject* obj = dynamic_cast<MapObject*>(by);
-    if (obj && GetAI())
-        GetAI()->HandleCross(obj);
+    if (GetAI())
+        GetAI()->HandleCross(by);
 }
 
 void Object::SpawnBonus()
 {
-    if ((rand() % 10) != 0)
+    if ((rand() % 1/*0*/) != 0)
         return ;
 
     uint32 r = rand() % 4;
@@ -139,4 +139,17 @@ void Object::SpawnBonus()
 
     bonus->UpdatePosition(GetPositionX(), GetPositionY(), GetPositionZ(), 0.f);
     GetMap()->AddObject(bonus);
+}
+
+void Object::CheckBonusCross(float range)
+{
+    std::list<MapObject*> list;
+    GetObjectListInRange(range, list);
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+        {
+            HandleCross(*itr);
+            break;
+        }
 }

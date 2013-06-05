@@ -15,12 +15,11 @@ function UpdateAI(me, diff)
 end
 
 function HandleHit(me, by)
-    Log:print("Range catch")
+    Log:print("Teleport catch")
     me:Despawn()
 end
 
 function HandleCross(me, by)
     Log:print("CROSSED")
-    by:IncrBombRange(5.0)
-    me:Despawn()
+    by:RandomTeleport()
 end

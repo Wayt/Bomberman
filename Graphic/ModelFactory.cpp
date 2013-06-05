@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:26 2013 fabien casters
-** Last update Wed Jun 05 17:05:57 2013 vincent leroy
+** Last update Wed Jun 05 23:00:30 2013 fabien casters
 */
 
 #include <fstream>
@@ -52,6 +52,7 @@ void ModelFactory::init(const std::string &filename)
             }
         }
 
+        gdl::Model::load(model.name);
         _modelConfig[modelId] = model;
     }
     ifs.close();

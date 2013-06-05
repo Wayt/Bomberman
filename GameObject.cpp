@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Wed Jun 05 22:34:38 2013 maxime ginters
+** Last update Wed Jun 05 23:50:48 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -187,9 +187,3 @@ uint64 GameObject::GetLastKillerGUID() const
 {
     return _lastKillerGUID;
 }
-
-void GameObject::HandleCross(GameObject* by)
-{
-    (void)by;
-}
-

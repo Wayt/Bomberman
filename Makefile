@@ -5,7 +5,7 @@
 ## Login <ginter_m@epitech.eu>
 ##
 ## Started on Mon May 06 13:39:56 2013 maxime ginters
-## Last update Wed Jun 05 22:21:03 2013 vincent leroy
+## Last update Thu Jun 06 01:13:24 2013 Aymeric Girault
 ##
 
 CXX	= g++
@@ -24,9 +24,9 @@ LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
 LDFLAGS	+= -lsfml-audio
 LDFLAGS	+= -llua
-#LDFLAGS	+= -llua5.1
+LDFLAGS	+= -llua5.1
 LDFLAGS	+= -lluabind
-#LDFLAGS	+= -lSOIL
+LDFLAGS	+= -lSOIL
 
 NAME	= bomberman
 

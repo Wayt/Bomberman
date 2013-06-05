@@ -11,9 +11,10 @@ ModelMgr::ModelMgr() : _modelMap()
     _modelMap[1] = new Model(1, 5.0f, 5.0f, 5.0f);
     _modelMap[2] = new Model(2, 2.0f, 2.0f, 2.0f);
     _modelMap[3] = new Model(3, 5.0f, 5.0f, 5.0f);
-    _modelMap[4] = new Model(4, 2.0f, 2.0f, 2.0f, true);
-    _modelMap[5] = new Model(5, 2.0f, 2.0f, 2.0f, true);
-    _modelMap[6] = new Model(6, 2.0f, 2.0f, 2.0f, true);
+    _modelMap[4] = new Model(4, 4.0f, 4.0f, 2.0f, true);
+    _modelMap[5] = new Model(5, 4.0f, 4.0f, 2.0f, true);
+    _modelMap[6] = new Model(6, 4.0f, 4.0f, 2.0f, true);
+    _modelMap[7] = new Model(7, 4.0f, 4.0f, 2.0f, true);
 }
 
 ModelMgr::~ModelMgr()

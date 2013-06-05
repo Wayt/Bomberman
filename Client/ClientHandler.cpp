@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed Jun 05 22:49:19 2013 fabien casters
+** Last update Thu Jun 06 00:24:43 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -52,6 +52,7 @@ void Client::HandleSendObject(Packet& recvData)
         float x, y, z, o;
         float speed, speedor;
         uint64 owner;
+        bool alive;
         recvData >> guid;
         recvData >> modelid;
         recvData >> name;
@@ -62,6 +63,7 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> owner;
         recvData >> speed;
         recvData >> speedor;
+        recvData >> alive;
 
         if (guid != _player->GetGUID())
         {
@@ -70,6 +72,7 @@ void Client::HandleSendObject(Packet& recvData)
             obj->UpdatePosition(x, y, z, o);
             obj->SetSpeed(speed);
             obj->SetSpeedOr(speedor);
+            obj->SetAlive(alive);
             AddObject(obj);
 
             if (modelid == MODELID_BOMB && owner == _player->GetGUID())
@@ -156,7 +159,9 @@ void Client::HandleGlobalChatText(Packet& recvData)
 
 void Client::HandleGridChange(Packet& recvData)
 {
+    std::cout << "REVEIV GRID CHANGE" << std::endl;
     _player->ReadPosition(recvData);
+    std::cout << "NEW POS : " << *_player << std::endl;
     std::map<uint64, ClientObjectPtr>::iterator itr;
     for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end();)
     {
@@ -276,4 +281,18 @@ void Client::HandleUpdateSpeed(Packet& recvData)
 
     obj->SetSpeed(speed);
     obj->ReadPosition(recvData);
+}
+
+void Client::HandleBombBoumed(Packet& recvData)
+{
+    uint64 guid;
+    float range;
+    recvData >> guid;
+    recvData >> range;
+
+    ClientObjectPtr obj = GetObject(guid);
+    if (!obj)
+        return;
+    (void)obj;
+    (void)range;
 }

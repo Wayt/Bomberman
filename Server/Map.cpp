@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 22:25:02 2013 maxime ginters
+** Last update Thu Jun 06 00:52:37 2013 Aymeric Girault
 */
 
 #include <cstdlib>
@@ -38,9 +38,7 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
 {
     sLog->out(">> Generating random map ");
 
-    timeval t1;
-    gettimeofday(&t1, NULL);
-    srand(t1.tv_usec * t1.tv_sec);
+    srand(time(NULL));
 
     uint32** map = new uint32*[height + 1];
     for (uint32 i = 0; i <= height; ++i)
@@ -187,7 +185,7 @@ void MapGrid::RemoveObject(MapObject* obj)
 
 void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
 {
-    static GridUpdaterFunction updaterFunction[8] = {
+    static GridUpdaterFunction updaterFunction[9] = {
         {GRIDUPDATE_ACTIVE, &MapGrid::GridUpdateActive},
         {GRIDUPDATE_SENDOBJ, &MapGrid::GridUpdateSendObject},
         {GRIDUPDATE_MOVEFLAGS, &MapGrid::GridUpdateMoveFlags},
@@ -195,10 +193,11 @@ void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
         {GRIDUPDATE_KILLED, &MapGrid::GridUpdateKilled},
         {GRIDUPDATE_RESPAWN, &MapGrid::GridUpdateRespawn},
         {GRIDUPDATE_TELEPORT, &MapGrid::GridUpdateTeleport},
-        {GRIDUPDATE_SPEED, &MapGrid::GridUpdateSpeed}
+        {GRIDUPDATE_SPEED, &MapGrid::GridUpdateSpeed},
+        {GRIDUPDATE_BOUM, &MapGrid::GridUpdateBoum}
     };
 
-    for (uint32 i = 0; i < 8; ++i)
+    for (uint32 i = 0; i < 9; ++i)
         if (action & updaterFunction[i].flag)
             (this->*updaterFunction[i].update)(obj);
 }
@@ -275,6 +274,14 @@ void MapGrid::GridUpdateSpeed(MapObject* obj)
     data << uint64(obj->GetGUID());
     data << float(obj->GetSpeed());
     obj->WritePosition(data);
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::GridUpdateBoum(MapObject* obj)
+{
+    Packet data(SMSG_BOMB_BOUMED, 8 + 4);
+    data << uint64(obj->GetGUID());
+    data << float(obj->GetBombRange());
     BroadcastToGrid(data, NULL);
 }
 
@@ -455,39 +462,53 @@ void Map::UpdateObjectGrid(MapObject* obj)
         grid->AddObject(obj);
 }
 
-void MapGrid::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
+uint32 MapGrid::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
 {
+    uint32 i = 0;
     std::list<MapObject*>::const_iterator itr;
     range *= range;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if (MapObject* tmp = (*itr))
             if (obj != tmp && tmp->GetDistance2dSquare(obj) <= range)
+	    {
                 list.push_back(tmp);
+		i++;
+	    }
+    return i;
 }
 
-void MapGrid::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
+uint32 MapGrid::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
 {
+    uint32 i = 0;
     std::list<MapObject*>::const_iterator itr;
     range *= range;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if (MapObject* tmp = (*itr))
             if (tmp->GetDistance2dSquare(x, y) <= range)
+	    {
                 list.push_back(tmp);
+		i++;
+	    }
+    return i;
 }
 
-void Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
+uint32 Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
 {
     float x, y;
     obj->GetPosition(x, y);
-    GetObjectListInRange(x, y, range, list);
+    return(GetObjectListInRange(x, y, range, list));
 }
 
-void Map::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
+uint32 Map::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
 {
+  uint32 i = 0;
     for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
-                grid->GetObjectListInRange(x, y, range, list);
+	    {
+	      i += grid->GetObjectListInRange(x, y, range, list);
+	    }
+    return i;
 }
 
 void Map::GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const
@@ -577,10 +598,9 @@ void Map::GetRandomStartPosition(float& x, float& y)
                 std::list<GameObject*>::const_iterator it;
                 for (it = list.begin(); it != list.end(); ++it)
                 {
-                    if ((*it)->GetModelId() == MODELID_PLAYER)
-                        continue;
-
                     ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                    if (box.crossable == true)
+                        continue;
                     if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
                         (self.max.y > box.min.y && self.min.y < box.max.y))
                     {
@@ -607,6 +627,13 @@ void Map::TeleportPlayer(Player* player, float x, float y)
     UpdateObjectGrid(player);
 
     GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
+
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
 }
 
 bool Map::IsFinish() const

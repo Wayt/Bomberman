@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 22:24:21 2013 maxime ginters
+** Last update Thu Jun 06 00:56:59 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -34,6 +34,7 @@ enum GridUpdaterActions
     GRIDUPDATE_RESPAWN  = 0x0020,
     GRIDUPDATE_TELEPORT = 0x0040,
     GRIDUPDATE_SPEED    = 0x0080,
+    GRIDUPDATE_BOUM     = 0x0100,
 };
 
 enum GridUpdaterFlags
@@ -75,11 +76,12 @@ public:
     void GridUpdateRespawn(MapObject *obj);
     void GridUpdateTeleport(MapObject *obj);
     void GridUpdateSpeed(MapObject *obj);
+    void GridUpdateBoum(MapObject *obj);
     void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list) const;
-    void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
-    void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
     void GetObjectList(std::list<GameObject*> &list) const;
 private:
     std::list<MapObject*> _objectList;
@@ -87,7 +89,7 @@ private:
 
     struct GridUpdaterFunction
     {
-        uint8 flag;
+        uint16 flag;
         void (MapGrid::*update)(MapObject*);
     };
 };
@@ -119,8 +121,8 @@ public:
 
     void UpdateObjectGrid(MapObject* obj);
 
-    void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
-    void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
     void GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const;
     void GetObjectList(const GameObject *obj, std::list<GameObject*> &list) const;
