@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 22:25:02 2013 maxime ginters
+** Last update Thu Jun 06 00:00:33 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -38,9 +38,7 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
 {
     sLog->out(">> Generating random map ");
 
-    timeval t1;
-    gettimeofday(&t1, NULL);
-    srand(t1.tv_usec * t1.tv_sec);
+    srand(time(NULL));
 
     uint32** map = new uint32*[height + 1];
     for (uint32 i = 0; i <= height; ++i)
@@ -577,10 +575,9 @@ void Map::GetRandomStartPosition(float& x, float& y)
                 std::list<GameObject*>::const_iterator it;
                 for (it = list.begin(); it != list.end(); ++it)
                 {
-                    if ((*it)->GetModelId() == MODELID_PLAYER)
-                        continue;
-
                     ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                    if (box.crossable == true)
+                        continue;
                     if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
                         (self.max.y > box.min.y && self.min.y < box.max.y))
                     {
@@ -607,6 +604,13 @@ void Map::TeleportPlayer(Player* player, float x, float y)
     UpdateObjectGrid(player);
 
     GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
+
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
 }
 
 bool Map::IsFinish() const

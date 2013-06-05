@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Wed Jun 05 22:21:22 2013 maxime ginters
+** Last update Wed Jun 05 23:50:28 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -39,7 +39,9 @@ public:
 
     void SpawnBonus();
 
-    void HandleCross(GameObject* by);
+    void HandleCross(MapObject* by);
+
+    void CheckBonusCross(float range);
 private:
     ObjectAI* _AI;
 };

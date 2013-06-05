@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 22:34:55 2013 maxime ginters
+** Last update Wed Jun 05 23:50:39 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -69,8 +69,6 @@ public:
     std::string const& GetLastKiller() const;
     void SetKillerGUID(uint64 guid);
     uint64 GetLastKillerGUID() const;
-
-    virtual void HandleCross(GameObject* by);
 
 protected:
     uint32 _modelId;

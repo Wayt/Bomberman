@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Wed Jun 05 20:57:51 2013 maxime ginters
+** Last update Wed Jun 05 23:47:02 2013 maxime ginters
 */
 
 #include <iostream>
@@ -118,8 +118,6 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
                         }
                     }
                 }
-                else
-                    (*it)->HandleCross(_owner);
             }
         }
         catch (const std::exception &e)

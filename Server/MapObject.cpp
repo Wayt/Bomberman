@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 22:39:19 2013 maxime ginters
+** Last update Wed Jun 05 23:11:59 2013 maxime ginters
 */
 
 #include <iostream>
@@ -80,6 +80,7 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << uint64(_owner);
     data << float(GetSpeed());
     data << float(GetSpeedOr());
+    data << uint8(IsAlive());
 }
 
 
@@ -166,6 +167,7 @@ void MapObject::RegisterLua(lua_State* state)
         .def("GetName", &MapObject::GetName)
         .def("SetSpeed", &MapObject::SetSpeed)
         .def("AddMaxBombCount", &MapObject::AddMaxBombCount)
+        .def("RandomTeleport", &MapObject::RandomTeleport)
         ];
 }
 
@@ -226,4 +228,24 @@ void MapObject::HandleRespawn()
 void MapObject::AddMaxBombCount(uint32 value)
 {
     _maxBomb += value;
+}
+
+void MapObject::RandomTeleport()
+{
+    if (GetTypeId() != TYPEID_PLAYER)
+    {
+        std::cerr << "NO PLAYER" << std::endl;
+        return;
+    }
+
+    Player* player = reinterpret_cast<Player*>(this);
+    if (!player)
+    {
+        std::cout << "NO REINTEREPREPOK:KA: " << std::endl;
+        return;
+    }
+
+    float x, y;
+    _map->GetRandomStartPosition(x, y);
+    _map->TeleportPlayer(player, x, y);
 }
