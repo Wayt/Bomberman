@@ -22,3 +22,6 @@
 !Scripts
 !*.lua
 !*.cfg
+!Menu
+!Menu/images
+!*.png

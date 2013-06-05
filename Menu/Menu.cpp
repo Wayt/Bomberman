@@ -39,7 +39,21 @@ Menu::Menu(float x, float y, float z, float o) :
     menu_.addBox("credits", SelectBox::CHECKBOX);
     menu_["highscore"]->setTexture("images/highscore.png", "images/highscore.png");
     menu_["credits"]->setTexture("images/credits.png", "images/credits.png");
-    menu_.addBackBox("images/quit.png");
+
+
+    std::list<std::string> imglist;
+    imglist.push_back("images/new.png");
+    imglist.push_back("images/load.png");
+    imglist.push_back("images/create.png");
+    imglist.push_back("images/join.png");
+
+    menu_.addBox("test", imglist);
+    menu_.addBox("input", SelectBox::INPUTBOX);
+    menu_["input"]->setTexture("images/new.png");
+
+    menu_.addBackBox("images/back.png");
+
+    menu_.setStatus(SubObject::VISIBLE);
 
 
 }
@@ -51,8 +65,10 @@ void Menu::initialize()
 
 void Menu::update(gdl::GameClock const &clock, gdl::Input &input)
 { 
-    if ((*menu_["single"])["new"]->value()  == 1)
+    if ((*menu_["single"])["new"]->value()  == 1){
 	std::cout << "game started" << std::endl;
+	(*menu_["single"])["new"]->select();
+    }
     menu_.update(clock, input);
     if (menu_.getRet() == false)
 	::exit(0);

@@ -21,16 +21,17 @@ class SelectBox : public SubObject
     public:
 	enum e_boxtype {
 	    SELECTBOX,
-	    CHECKBOX
+	    CHECKBOX,
+	    INPUTBOX
 	};
 
 
 	SelectBox (float, float, float, float);
 	virtual ~SelectBox ();
 
-	void initialize ();
-	void update (gdl::GameClock const&, gdl::Input &);
-	void draw ();
+	virtual void initialize ();
+	virtual void update (gdl::GameClock const&, gdl::Input &);
+	virtual void draw ();
 
 	bool moveUp ();
 	bool moveDown ();

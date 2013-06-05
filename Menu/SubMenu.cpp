@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include "CheckBox.h"
 #include "SelectBox.h"
+#include "ListBox.h"
+#include "InputBox.h"
 #include "SubMenu.h"
 #include "Image.hpp"
 
@@ -208,8 +210,15 @@ void	SubMenu::addBox(const std::string &key, SelectBox::e_boxtype type)
     {
 	case SelectBox::SELECTBOX:
 	    box = new SelectBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+	    break;
 	case SelectBox::CHECKBOX:
 	    box = new CheckBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+	    break;
+	case SelectBox::INPUTBOX:
+	    box = new InputBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+	    break;
+	default:
+	    break;
     }
     box->setKey(key);
     addObject(box);
@@ -220,6 +229,15 @@ void   SubMenu::addBox(const std::string &key, const std::string &img, SubObject
     SelectBox *box = new SelectBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
     box->addSubObject(obj);
     box->setTexture(img);
+    box->setKey(key);
+    addObject(box);
+}
+
+void	SubMenu::addBox(const std::string &key, const std::list<std::string> &imgs) 
+{
+    ListBox *box;
+    box = new ListBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+    box->setImgs(imgs);
     box->setKey(key);
     addObject(box);
 }
