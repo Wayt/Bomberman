@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed Jun 05 21:05:03 2013 maxime ginters
+** Last update Wed Jun 05 22:49:19 2013 fabien casters
 */
 
 #include "SoundMgr.h"
