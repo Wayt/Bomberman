@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Tue Jun 04 19:00:06 2013 maxime ginters
+** Last update Wed Jun 05 12:33:42 2013 vincent leroy
 */
 
 #ifndef MAP_H_
@@ -106,6 +106,8 @@ public:
     uint64 MakeNewGuid();
 
     void GetWidthAndHeight(uint32& width, uint32& height) const;
+    uint32 GetWidth() const;
+    uint32 GetHeight() const;
 
     void Update(uint32 const diff);
 
@@ -114,7 +116,10 @@ public:
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
+    void GetObjectList(float x, float y, std::list<const GameObject*> &list, uint32 &w, uint32 &h) const;
     void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;
+
+    void GetAllObject(std::list<const GameObject*> &list) const;
 
     ScoreMgr& GetScoreMgr();
     ScoreMgr const& GetScoreMgr() const;

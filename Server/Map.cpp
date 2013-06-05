@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Tue Jun 04 19:10:31 2013 maxime ginters
+** Last update Wed Jun 05 12:35:56 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -376,6 +376,16 @@ void Map::GetWidthAndHeight(uint32& width, uint32& height) const
     height = _height;
 }
 
+uint32 Map::GetWidth() const
+{
+    return _width;
+}
+
+uint32 Map::GetHeight() const
+{
+    return _height;
+}
+
 void Map::Update(uint32 const diff)
 {
     if (IsFinish())
@@ -459,6 +469,21 @@ void Map::GetObjectListInRange(float x, float y, float range, std::list<MapObjec
                 grid->GetObjectListInRange(x, y, range, list);
 }
 
+void Map::GetObjectList(float x, float y, std::list<const GameObject*> &list, uint32 &w, uint32 &h) const
+{
+    w = 0;
+    h = 0;
+
+    for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
+        for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
+            if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
+            {
+                w += GRID_SIZE;
+                h += GRID_SIZE;
+                grid->GetObjectList(list);
+            }
+}
+
 void Map::GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const
 {
     float x, y;
@@ -468,6 +493,13 @@ void Map::GetObjectList(const GameObject *obj, std::list<const GameObject*> &lis
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
                 grid->GetObjectList(list);
+}
+
+void Map::GetAllObject(std::list<const GameObject*> &list) const
+{
+    std::map<std::pair<float, float>, MapGrid*>::const_iterator itr;
+    for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->GetObjectList(list);
 }
 
 void Map::RegisterLua(lua_State* state)

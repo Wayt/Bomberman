@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Mon Jun 03 18:27:37 2013 maxime ginters
+** Last update Wed Jun 05 12:00:30 2013 vincent leroy
 */
 
 #ifndef MAPOBJECT_H_
@@ -19,14 +19,6 @@
 
 class MapGrid;
 class ObjectAI;
-
-enum ModelIds
-{
-    MODELID_PLAYER  = 0,
-    MODELID_WALL    = 1,
-    MODELID_BOMB    = 2,
-    MODELID_BORDER  = 3
-};
 
 enum TypeId
 {

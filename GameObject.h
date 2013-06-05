@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Mon Jun 03 18:28:48 2013 maxime ginters
+** Last update Wed Jun 05 12:00:38 2013 vincent leroy
 */
 
 #ifndef GAMEOBJECT_H_
@@ -17,6 +17,14 @@
 
 class Map;
 class Client;
+
+enum ModelIds
+{
+    MODELID_PLAYER  = 0,
+    MODELID_WALL    = 1,
+    MODELID_BOMB    = 2,
+    MODELID_BORDER  = 3
+};
 
 class GameObject : public Position
 {

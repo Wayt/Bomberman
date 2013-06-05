@@ -5,11 +5,12 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Mon May 27 18:44:02 2013 vincent leroy
+** Last update Wed Jun 05 12:44:22 2013 vincent leroy
 */
 
 #include "GameObject.h"
 #include "MovementPoint.h"
+#include "Map.h"
 
 #include <cmath>
 
@@ -46,8 +47,8 @@ void MovementPoint::Update(uint32 const diff)
     else
     {
         float angle = acosf((dest.second - actu.second) / dist);
-        float dx = dist * cos(angle);
-        float dy = dist * sin(angle);
+        float dx = dist * cosf(angle);
+        float dy = dist * sinf(angle);
 
         _owner->UpdatePosition(actu.first + dx, actu.second + dy, angle);
     }
@@ -66,13 +67,34 @@ void MovementPoint::Abort(MovementTypes)
     _path.clear();
 }
 
-void MovementPoint::MovePoint(const point &p)
+void MovementPoint::MovePoint(const point &p, const Map *map)
 {
     PathFinderRequest request;
 
-    request.map = NULL;
-    request.width = 0;
-    request.height = 0;
+    std::list<const GameObject*> list;
+    map->GetAllObject(list);
+
+    request.map = new uint8*[map->GetHeight()];
+    for (uint32 i = 0; i < map->GetHeight(); ++i)
+    {
+        request.map[i] = new uint8[map->GetWidth()];
+        for (uint32 j = 0; j < map->GetWidth(); ++j)
+            request.map[i][j] = 0;
+    }
+
+    std::list<const GameObject*>::const_iterator it;
+    for (it = list.begin(); it != list.end(); ++it)
+    {
+        float x, y;
+        (*it)->GetPosition(x, y);
+        if ((*it)->GetModelId() == MODELID_WALL || (*it)->GetModelId() == MODELID_BORDER)
+            request.map[(uint32)x / MAP_PRECISION][(uint32)y / MAP_PRECISION] = 1;
+        else
+            request.map[(uint32)x / MAP_PRECISION][(uint32)y / MAP_PRECISION] = 0;
+    }
+
+    request.width = map->GetWidth();
+    request.height = map->GetHeight();
     request.begin = point(_owner->GetPositionX(), _owner->GetPositionY());
     request.end = p;
     request.object = this;

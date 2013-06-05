@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Fri May 24 16:38:46 2013 vincent leroy
+** Last update Wed Jun 05 11:42:13 2013 vincent leroy
 */
 
 #include "PathFinder.h"
@@ -38,6 +38,14 @@ void PathFindingRunnable::operator()()
             findPath(path, request);
             (request->object->*request->callback)(path);
         }
+
+        if (request->map)
+        {
+            for (uint32 i = 0; i < request->height; ++i)
+                delete[] request->map[i];
+            delete[] request->map;
+        }
+
         delete request;
     }
 }
