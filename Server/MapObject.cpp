@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 16:51:02 2013 maxime ginters
+** Last update Wed Jun 05 18:59:09 2013 maxime ginters
 */
 
 #include <iostream>
@@ -172,6 +172,6 @@ std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj)
 
 std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj)
 {
-    stream << obj.GetModelId() << "," << obj.GetName() << "," << obj.GetSpeed() << "," << obj.GetSpeedOr() << obj.GetPositionX() << "," << obj.GetPositionY() << "," << obj.GetPositionZ() << "," << obj.GetOrientation() << "," << obj.GetGUID();
+    stream << obj.GetModelId() << "," << obj.GetName() << "," << obj.GetSpeed() << "," << obj.GetSpeedOr() << "," << obj.GetPositionX() << "," << obj.GetPositionY() << "," << obj.GetPositionZ() << "," << obj.GetOrientation() << "," << obj.GetGUID();
     return stream;
 }
