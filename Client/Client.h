@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Wed Jun 05 17:10:11 2013 maxime ginters
+** Last update Wed Jun 05 20:44:28 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -70,6 +70,7 @@ public:
     void HandleSendGameTimer(Packet& recvData);
     void HandleGameFinish(Packet& recvData);
     void HandleMapSaved(Packet& recvData);
+    void HandleUpdateSpeed(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
@@ -81,7 +82,7 @@ public:
 
     void HandleReceivPong();
 
-    void GetObjectList(std::list<const GameObject*> &list) const;
+    void GetObjectList(std::list<GameObject*> &list) const;
 
     bool IsScoreOpen() const;
     ScoreMgr const& GetScoreMgr() const;

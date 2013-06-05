@@ -5,13 +5,14 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 22:17:40 2013 vincent leroy
+** Last update Wed Jun 05 22:22:24 2013 vincent leroy
 */
 
 #ifndef GAMEOBJECT_H_
 # define GAMEOBJECT_H_
 
 #include <list>
+#include "luabind.h"
 
 #include "Position.h"
 
@@ -45,7 +46,7 @@ public:
     bool UpdateMovementFlag(uint32 flag, bool add);
     bool HasMovementFlag(uint32 flag) const;
 
-    void SetSpeed(float speed);
+    virtual void SetSpeed(float speed);
     float GetSpeed() const;
     void SetSpeedOr(float speed_or);
     float GetSpeedOr() const;
@@ -58,7 +59,7 @@ public:
     Map* GetMap();
     Client* GetClient();
 
-    void GetVisibleObject(std::list<const GameObject*> &list) const;
+    void GetVisibleObject(std::list< GameObject*> &list) const;
 
     bool IsAlive() const;
     void SetAlive(bool alive);
@@ -70,6 +71,10 @@ public:
     std::string const& GetLastKiller() const;
     void SetKillerGUID(uint64 guid);
     uint64 GetLastKillerGUID() const;
+
+    virtual void HandleCross(GameObject* by);
+
+    static void RegisterLua(lua_State* state);
 
 protected:
     uint32 _modelId;

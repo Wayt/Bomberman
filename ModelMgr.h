@@ -19,8 +19,9 @@ struct Model
     float width;
     float height;
     float zsize;
-    Model(uint32 id, float w, float h, float z) :
-        modelId(id), width(w), height(h), zsize(z) {}
+    bool crossable;
+    Model(uint32 id, float w, float h, float z, bool cross = false) :
+        modelId(id), width(w), height(h), zsize(z), crossable(cross) {}
 };
 struct ModelBox
 {
@@ -36,6 +37,7 @@ struct ModelBox
         float y;
         float z;
     } min;
+    bool crossable;
 };
 
 class ModelMgr : public Singleton<ModelMgr>

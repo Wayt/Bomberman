@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed Jun 05 17:14:01 2013 maxime ginters
+** Last update Wed Jun 05 20:26:36 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -392,7 +392,7 @@ void Client::HandleReceivPong()
     sLog->out("Latency : %u", _pingData[PING_LATENCY]);
 }
 
-void Client::GetObjectList(std::list<const GameObject*> &list) const
+void Client::GetObjectList(std::list<GameObject*> &list) const
 {
     std::map<uint64, ClientObjectPtr>::const_iterator it;
     for (it = _clientObjectMap.begin(); it != _clientObjectMap.end(); ++it)

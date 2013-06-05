@@ -11,3 +11,7 @@ function HandleHit(me, by)
     Log:print("Range catch")
     me:Despawn()
 end
+
+function HandleCross(me, by)
+    Log:print("CROSSED")
+end

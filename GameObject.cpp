@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Wed Jun 05 15:53:22 2013 maxime ginters
+** Last update Wed Jun 05 20:57:35 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -15,7 +15,7 @@
 GameObject::GameObject(uint64 guid, uint32 modelId, const std::string &name) :
     Position(),
     _modelId(modelId), _name(name),
-    _speed(10.f), _speed_or(3.f),
+    _speed(1.f), _speed_or(3.f),
     _movementFlags(0), _map(NULL),
     _client(NULL), _alive(true),
     _respawnTime(0), _lastKiller(),
@@ -111,7 +111,7 @@ Client* GameObject::GetClient()
     return _client;
 }
 
-void GameObject::GetVisibleObject(std::list<const GameObject*> &list) const
+void GameObject::GetVisibleObject(std::list<GameObject*> &list) const
 {
     if (_client)
         _client->GetObjectList(list);
@@ -186,4 +186,18 @@ void GameObject::SetKillerGUID(uint64 guid)
 uint64 GameObject::GetLastKillerGUID() const
 {
     return _lastKillerGUID;
+}
+
+void GameObject::HandleCross(GameObject* by)
+{
+    (void)by;
+}
+
+void GameObject::RegisterLua(lua_State* state)
+{
+    luabind::module(state) [
+        luabind::class_<GameObject>("GameObject")
+        .def("GetModelId", &GameObject::GetModelId)
+        .def("SetSpeed", &GameObject::SetSpeed)
+        ];
 }

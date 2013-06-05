@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 18:59:09 2013 maxime ginters
+** Last update Wed Jun 05 20:53:42 2013 maxime ginters
 */
 
 #include <iostream>
@@ -77,6 +77,8 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << float(GetPositionZ());
     data << float(GetOrientation());
     data << uint64(_owner);
+    data << float(GetSpeed());
+    data << float(GetSpeedOr());
 }
 
 
@@ -174,4 +176,12 @@ std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj)
 {
     stream << obj.GetModelId() << "," << obj.GetName() << "," << obj.GetSpeed() << "," << obj.GetSpeedOr() << "," << obj.GetPositionX() << "," << obj.GetPositionY() << "," << obj.GetPositionZ() << "," << obj.GetOrientation() << "," << obj.GetGUID();
     return stream;
+}
+
+void MapObject::SetSpeed(float speed)
+{
+    GameObject::SetSpeed(speed);
+
+    if (IsInWorld())
+        _map->GridUpdater(this, GRIDUPDATE_SPEED, UPDATE_FULL);
 }
