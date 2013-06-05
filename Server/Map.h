@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Thu Jun 06 00:51:47 2013 Aymeric Girault
+** Last update Thu Jun 06 00:56:59 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -82,7 +82,7 @@ public:
     void AddObjectForUpdate(std::list<MapObject*>& list) const;
     uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
-    void GetObjectList(std::list<const GameObject*> &list) const;
+    void GetObjectList(std::list<GameObject*> &list) const;
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
