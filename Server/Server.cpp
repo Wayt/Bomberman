@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Wed Jun 05 19:06:59 2013 maxime ginters
+** Last update Wed Jun 05 19:08:49 2013 maxime ginters
 */
 
 #include <iostream>
@@ -27,7 +27,7 @@ bool Server::Initialize(std::string const& addr, std::string const& port, uint8 
 
     // prepare map
     //_map = Map::LoadFromFile("dust2.map");
-    _map = Map::CreateNewRandomMap(10, 10, 0.9f, 0.9f);
+    _map = Map::CreateNewRandomMap(10, 20, 0.9f, 0.9f);
     return true;
 }
 

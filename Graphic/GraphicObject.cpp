@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Wed Jun 05 17:08:15 2013 vincent leroy
+** Last update Wed Jun 05 18:10:26 2013 vincent leroy
 */
 
 #include <cmath>
@@ -18,6 +18,11 @@
 GraphicObject::GraphicObject(ClientObject const *o) :
     _object(o), _model(NULL)
 {
+}
+
+GraphicObject::~GraphicObject()
+{
+    delete _model;
 }
 
 void GraphicObject::init()
