@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 18:33:21 2013 maxime ginters
+** Last update Wed Jun 05 23:50:26 2013 Aymeric Girault
 */
 
 #ifndef MAP_H_
@@ -76,8 +76,8 @@ public:
     void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list) const;
-    void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
-    void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
     void GetObjectList(std::list<const GameObject*> &list) const;
 private:
     std::list<MapObject*> _objectList;
@@ -116,8 +116,8 @@ public:
 
     void UpdateObjectGrid(MapObject* obj);
 
-    void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
-    void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
+    uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
     void GetObjectList(float x, float y, std::list<const GameObject*> &list, uint32 &w, uint32 &h) const;
     void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;

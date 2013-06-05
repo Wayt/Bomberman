@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 19:08:17 2013 maxime ginters
+** Last update Thu Jun 06 00:23:52 2013 Aymeric Girault
 */
 
 #include <cstdlib>
@@ -439,39 +439,53 @@ void Map::UpdateObjectGrid(MapObject* obj)
         grid->AddObject(obj);
 }
 
-void MapGrid::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
+uint32 MapGrid::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
 {
+    uint32 i = 0;
     std::list<MapObject*>::const_iterator itr;
     range *= range;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if (MapObject* tmp = (*itr))
             if (obj != tmp && tmp->GetDistance2dSquare(obj) <= range)
+	    {
                 list.push_back(tmp);
+		i++;
+	    }
+    return i;
 }
 
-void MapGrid::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
+uint32 MapGrid::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
 {
+    uint32 i = 0;
     std::list<MapObject*>::const_iterator itr;
     range *= range;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if (MapObject* tmp = (*itr))
             if (tmp->GetDistance2dSquare(x, y) <= range)
+	    {
                 list.push_back(tmp);
+		i++;
+	    }
+    return i;
 }
 
-void Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
+uint32 Map::GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const
 {
     float x, y;
     obj->GetPosition(x, y);
-    GetObjectListInRange(x, y, range, list);
+    return(GetObjectListInRange(x, y, range, list));
 }
 
-void Map::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
+uint32 Map::GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const
 {
+  uint32 i = 0;
     for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
-                grid->GetObjectListInRange(x, y, range, list);
+	    {
+	      i += grid->GetObjectListInRange(x, y, range, list);
+	    }
+    return i;
 }
 
 void Map::GetObjectList(float x, float y, std::list<const GameObject*> &list, uint32 &w, uint32 &h) const
