@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Tue Jun 04 19:05:59 2013 maxime ginters
+** Last update Wed Jun 05 17:14:01 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -324,6 +324,10 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
                 if (!IsFinish())
                     _scoreOpen = true;
                 break;
+        case gdl::Keys::M:
+                if (!IsFinish())
+                    SaveMapRequest();
+                break;
         default:
                 break;
 
@@ -416,4 +420,10 @@ uint32 Client::GetGameTimer() const
 bool Client::IsFinish() const
 {
     return _gameTimer == 0;
+}
+
+void Client::SaveMapRequest()
+{
+    Packet data(CMSG_SAVE_MAP, 0);
+    SendPacket(data);
 }

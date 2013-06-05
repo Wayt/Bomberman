@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:47:46 2013 maxime ginters
-** Last update Mon May 27 13:57:04 2013 maxime ginters
+** Last update Wed Jun 05 17:01:30 2013 maxime ginters
 */
 
 #ifndef SESSION_H_
@@ -42,6 +42,7 @@ public:
     void HandleMovement(Packet& recvData);
     void HandleDropBomb(Packet& recvData);
     void HandleGlobalChatText(Packet& recvData);
+    void HandleSaveMap(Packet& recvData);
 
 private:
     SessionSocket* _socket;

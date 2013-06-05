@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Mon Jun 03 18:27:37 2013 maxime ginters
+** Last update Wed Jun 05 16:50:07 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -19,14 +19,6 @@
 
 class MapGrid;
 class ObjectAI;
-
-enum ModelIds
-{
-    MODELID_PLAYER  = 0,
-    MODELID_WALL    = 1,
-    MODELID_BOMB    = 2,
-    MODELID_BORDER  = 3
-};
 
 enum TypeId
 {
@@ -42,7 +34,6 @@ public:
 
     void SetInWorld(bool in_world = true);
     bool IsInWorld() const;
-    uint32 GetModelId() const;
 
     virtual void SetGrid(MapGrid* grid);
     void SetMap(Map* map);
@@ -75,13 +66,14 @@ public:
     static void RegisterLua(lua_State* state);
 
 protected:
-    uint32 _modelId;
     bool _isInWorld;
     MapGrid* _currGrid;
-    std::string _name;
     TypeId _typeId;
     MotionMaster* _motionMaster;
     uint64 _owner;
 };
+
+std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj);
+std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj);
 
 #endif /* !MAPOBJECT_H_ */

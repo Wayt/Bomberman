@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:13 2013 vincent leroy
-** Last update Tue May 28 14:35:20 2013 fabien casters
+** Last update Wed Jun 05 18:07:02 2013 vincent leroy
 */
 
 #ifndef GRAPHICOBJECT_H_
@@ -21,6 +21,8 @@ class GraphicObject
 {
 public:
     GraphicObject(ClientObject const *);
+    virtual ~GraphicObject();
+
     void init();
     void update(gdl::GameClock const &);
     void draw();

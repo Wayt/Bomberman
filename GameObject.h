@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Mon Jun 03 18:28:48 2013 maxime ginters
+** Last update Wed Jun 05 15:52:42 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -17,6 +17,14 @@
 
 class Map;
 class Client;
+
+enum ModelIds
+{
+    MODELID_PLAYER  = 0,
+    MODELID_WALL    = 1,
+    MODELID_BOMB    = 2,
+    MODELID_BORDER  = 3
+};
 
 class GameObject : public Position
 {
@@ -56,6 +64,8 @@ public:
     uint32 GetRespawnTime() const;
     void SetKilledBy(std::string const& by);
     std::string const& GetLastKiller() const;
+    void SetKillerGUID(uint64 guid);
+    uint64 GetLastKillerGUID() const;
 
 protected:
     uint32 _modelId;
@@ -69,6 +79,7 @@ protected:
     uint32 _respawnTime;
     std::string _lastKiller;
     uint64 _guid;
+    uint64 _lastKillerGUID;
 };
 
 #endif /* !GAMEOBJECT_H_ */
