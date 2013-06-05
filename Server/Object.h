@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Wed Jun 05 20:22:54 2013 maxime ginters
+** Last update Wed Jun 05 22:21:22 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -29,7 +29,7 @@ public:
 
     virtual void Update(uint32 const diff);
 
-    void Despawn();
+    virtual void Despawn();
 
     static void RegisterLua(lua_State* state);
 

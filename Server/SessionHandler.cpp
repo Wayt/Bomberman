@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Wed Jun 05 17:11:55 2013 maxime ginters
+** Last update Wed Jun 05 22:20:04 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -126,19 +126,8 @@ void Session::HandleMovement(Packet& recvData)
 void Session::HandleDropBomb(Packet& recvData)
 {
     (void)recvData;
-    float x, y, z, o;
-    _player->GetPosition(x, y, z, o);
+    _player->DropBombIfPossible();
 
-    Bomb* bomb = new Bomb(_player->GetMap()->MakeNewGuid(), _player);
-    bomb->UpdatePosition(x, y, z, 0.0f);
-    _player->GetMap()->AddObject(bomb);
-    std::cout << "BOMB PLANTED" << std::endl;
-
-    if (Score* sc = _player->GetMap()->GetScoreMgr().GetScore(_player->GetGUID()))
-    {
-        sc->bomb += 1;
-        _player->GetMap()->SendScores(_player->GetGUID());
-    }
 }
 
 void Session::HandleGlobalChatText(Packet& recvData)

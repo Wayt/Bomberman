@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 20:48:50 2013 maxime ginters
+** Last update Wed Jun 05 22:24:21 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -113,6 +113,7 @@ public:
     uint32 GetHeight() const;
 
     MapObject const* GetObject(uint64 guid) const;
+    MapObject* GetObject(uint64 guid);
 
     void Update(uint32 const diff);
 
