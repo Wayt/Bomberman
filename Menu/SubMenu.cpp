@@ -14,6 +14,8 @@
 #include <unistd.h>
 #include "CheckBox.h"
 #include "SelectBox.h"
+#include "ListBox.h"
+#include "InputBox.h"
 #include "SubMenu.h"
 #include "Image.hpp"
 
@@ -111,8 +113,14 @@ void SubMenu::HandleKeyDown(gdl::Keys::Key key)
 		(*sit)->select();
 		setStatus(SubObject::HIDDEN);
 	    }
-	    else if ((*sit)->select() == false)
+	    else if ((*sit)->select() == false){
+		for (std::list<SelectBox *>::iterator it = boxes_.begin(); 
+			it != boxes_.end(); ++it){
+		    (*it)->initpos(_pos.x, _pos.y, _pos.z, intervalV_);
+		}
+		currentBox_ = 0;
 		setRet(false);
+	    }
 	    mvt_ = (*sit)->getMvt();
 	}
 	if ( key == gdl::Keys::Up)
@@ -195,21 +203,46 @@ void	SubMenu::addObject(SelectBox *obj)
     boxes_.push_back(obj);
     sbox_++;
 }
-void	SubMenu::addBox(const std::string &img) {
-    SelectBox *box = new SelectBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
-    box->setTexture(img);
+void	SubMenu::addBox(const std::string &key, SelectBox::e_boxtype type) 
+{
+    SelectBox *box;
+    switch (type)
+    {
+	case SelectBox::SELECTBOX:
+	    box = new SelectBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+	    break;
+	case SelectBox::CHECKBOX:
+	    box = new CheckBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+	    break;
+	case SelectBox::INPUTBOX:
+	    box = new InputBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+	    break;
+	default:
+	    break;
+    }
+    box->setKey(key);
     addObject(box);
 }
 
-void	SubMenu::addBox(const std::string &img, SubObject *obj)
+void   SubMenu::addBox(const std::string &key, const std::string &img, SubObject *obj)
 {
     SelectBox *box = new SelectBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
     box->addSubObject(obj);
     box->setTexture(img);
+    box->setKey(key);
     addObject(box);
 }
 
-void	SubMenu::addBackBox(const std::string &img)
+void	SubMenu::addBox(const std::string &key, const std::list<std::string> &imgs) 
+{
+    ListBox *box;
+    box = new ListBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
+    box->setImgs(imgs);
+    box->setKey(key);
+    addObject(box);
+}
+
+void   SubMenu::addBackBox(const std::string &img)
 {
     SelectBox *box = new SelectBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
     box->setRet(false);
@@ -217,14 +250,24 @@ void	SubMenu::addBackBox(const std::string &img)
     addObject(box);
 }
 
-void	SubMenu::addBox(const std::string &img1, const std::string &img2)
-{
-    CheckBox *box = new CheckBox(_pos.x - (sbox_ * intervalV_), _pos.y, _pos.z - (sbox_ * intervalV_), _rot.x);
-    box->setTexture(img1, img2);
-    addObject(box);
-}
+
 
 bool SubMenu::select ()
 {
     return true;
+}
+
+SubObject *SubMenu::operator [] (const std::string &key)
+{
+    SelectBox *box;
+    for (std::list<SelectBox *>::iterator it = boxes_.begin(); 
+	    it != boxes_.end(); ++it){
+	if ((*it)->getKey() == key){
+	    if ((box = dynamic_cast<SelectBox*>(*it)) != NULL)
+		if (box->getSubObject())
+		    return box->getSubObject();
+	    return *it;
+	}
+    }
+    return NULL;
 }

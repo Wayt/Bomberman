@@ -20,7 +20,7 @@ LDFLAGS	= -lGL -lGLU -lgdl_gl -L../Library -Wl,-rpath=../Library -lSOIL
 
 NAME	= bomberman
 
-SRCS	= main.cpp GameMonitor.cpp Vector.cpp Camera.cpp SelectBox.cpp Menu.cpp SubMenu.cpp SubObject.cpp CheckBox.cpp
+SRCS	= main.cpp GameMonitor.cpp Vector.cpp Camera.cpp SelectBox.cpp Menu.cpp SubMenu.cpp SubObject.cpp CheckBox.cpp ListBox.cpp InputBox.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

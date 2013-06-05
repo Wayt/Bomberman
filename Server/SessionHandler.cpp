@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Wed Jun 05 17:11:55 2013 maxime ginters
+** Last update Wed Jun 05 22:53:11 2013 fabien casters
 */
 
 #include "Bomb.h"
@@ -43,8 +43,8 @@ void Session::HandleEnterGame(Packet& recvData)
     map->GetWidthAndHeight(width, height);
 
     Packet data(SMSG_ADD_TO_MAP, 20);
-    data << uint32(width * MAP_PRECISION);
-    data << uint32(height * MAP_PRECISION);
+    data << uint32(width);
+    data << uint32(height);
     float x, y;
     map->GetRandomStartPosition(x, y);
     _player->UpdatePosition(x, y, 0.0f, 0.0f);
@@ -126,19 +126,8 @@ void Session::HandleMovement(Packet& recvData)
 void Session::HandleDropBomb(Packet& recvData)
 {
     (void)recvData;
-    float x, y, z, o;
-    _player->GetPosition(x, y, z, o);
+    _player->DropBombIfPossible();
 
-    Bomb* bomb = new Bomb(_player->GetMap()->MakeNewGuid(), _player);
-    bomb->UpdatePosition(x, y, z, 0.0f);
-    _player->GetMap()->AddObject(bomb);
-    std::cout << "BOMB PLANTED" << std::endl;
-
-    if (Score* sc = _player->GetMap()->GetScoreMgr().GetScore(_player->GetGUID()))
-    {
-        sc->bomb += 1;
-        _player->GetMap()->SendScores(_player->GetGUID());
-    }
 }
 
 void Session::HandleGlobalChatText(Packet& recvData)

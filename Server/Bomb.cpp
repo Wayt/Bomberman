@@ -5,10 +5,11 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Thu Jun 06 00:46:04 2013 Aymeric Girault
+** Last update Thu Jun 06 00:53:21 2013 Aymeric Girault
 */
 
 #include <iostream>
+#include <cmath>
 #include "Map.h"
 #include "Bomb.h"
 
@@ -17,6 +18,7 @@ Bomb::Bomb(uint64 guid, MapObject* obj) :
 {
     SetOwner(obj->GetGUID());
     InitializeAI("Scripts/bomb.lua");
+    _bombPower = obj->GetBombRange();
 }
 
 void Bomb::DoAction(uint32 id)
@@ -120,5 +122,13 @@ void Bomb::HandleExplode()
       {
 	obj->HandleHit(this);
       }
+}
+
+void Bomb::Despawn()
+{
+    if (MapObject* owner = _map->GetObject(_owner))
+        owner->DecreasBombCount();
+
+    Object::Despawn();
 }
 

@@ -5,17 +5,18 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 18:59:09 2013 maxime ginters
+** Last update Thu Jun 06 00:23:37 2013 maxime ginters
 */
 
 #include <iostream>
 #include "MapObject.h"
 #include "Map.h"
 #include "ObjectAI.h"
+#include "Bomb.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
     _isInWorld(false), _currGrid(NULL), _typeId(type),
-    _motionMaster(NULL), _owner(0)
+    _motionMaster(NULL), _owner(0), _maxBomb(2), _currBomb(0), _bombPower(10.0f)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -77,6 +78,9 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << float(GetPositionZ());
     data << float(GetOrientation());
     data << uint64(_owner);
+    data << float(GetSpeed());
+    data << float(GetSpeedOr());
+    data << uint8(IsAlive());
 }
 
 
@@ -161,6 +165,10 @@ void MapObject::RegisterLua(lua_State* state)
     luabind::module(state) [
         luabind::class_<MapObject>("MapObject")
         .def("GetName", &MapObject::GetName)
+        .def("SetSpeed", &MapObject::SetSpeed)
+        .def("AddMaxBombCount", &MapObject::AddMaxBombCount)
+        .def("RandomTeleport", &MapObject::RandomTeleport)
+        .def("IncrBombRange", &MapObject::IncrBombRange)
         ];
 }
 
@@ -174,4 +182,84 @@ std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj)
 {
     stream << obj.GetModelId() << "," << obj.GetName() << "," << obj.GetSpeed() << "," << obj.GetSpeedOr() << "," << obj.GetPositionX() << "," << obj.GetPositionY() << "," << obj.GetPositionZ() << "," << obj.GetOrientation() << "," << obj.GetGUID();
     return stream;
+}
+
+void MapObject::SetSpeed(float speed)
+{
+    GameObject::SetSpeed(speed);
+
+    if (IsInWorld())
+        _map->GridUpdater(this, GRIDUPDATE_SPEED, UPDATE_FULL);
+}
+
+void MapObject::DropBombIfPossible()
+{
+    if (_currBomb >= _maxBomb)
+        return;
+
+    ++_currBomb;
+    float x, y, z, o;
+    GetPosition(x, y, z, o);
+
+    Bomb* bomb = new Bomb(_map->MakeNewGuid(), this);
+    bomb->UpdatePosition(x, y, z, 0.0f);
+    _map->AddObject(bomb);
+
+    if (Score* sc = _map->GetScoreMgr().GetScore(GetGUID()))
+    {
+        sc->bomb += 1;
+        _map->SendScores(GetGUID());
+    }
+}
+
+void MapObject::DecreasBombCount()
+{
+    if (_currBomb > 0)
+        --_currBomb;
+}
+
+void MapObject::HandleRespawn()
+{
+    GameObject::HandleRespawn();
+
+    SetSpeed(1.0f);
+    _maxBomb = 2;
+    _bombPower = 10.0f;
+}
+
+void MapObject::AddMaxBombCount(uint32 value)
+{
+    _maxBomb += value;
+}
+
+void MapObject::RandomTeleport()
+{
+    if (GetTypeId() != TYPEID_PLAYER)
+    {
+        std::cerr << "NO PLAYER" << std::endl;
+        return;
+    }
+
+    Player* player = reinterpret_cast<Player*>(this);
+    if (!player)
+    {
+        std::cout << "NO REINTEREPREPOK:KA: " << std::endl;
+        return;
+    }
+
+    float x, y;
+    _map->GetRandomStartPosition(x, y);
+    _map->TeleportPlayer(player, x, y);
+}
+
+float MapObject::GetBombRange() const
+{
+    return _bombPower;
+}
+
+void MapObject::IncrBombRange(float value)
+{
+    _bombPower += value;
+    if (_bombPower >= 100.0f)
+        _bombPower = 100.0f;
 }

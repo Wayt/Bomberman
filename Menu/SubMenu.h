@@ -21,7 +21,7 @@ class SubMenu : public SubObject
 public:
     SubMenu (float, float, float, float);
     virtual ~SubMenu ();
-   
+
     /*{ AObject */
     void initialize ();
     void update (gdl::GameClock const&, gdl::Input &);
@@ -31,11 +31,12 @@ public:
     bool select ();
 
     void	addObject(SelectBox *obj);
-    void	addBox(const std::string &);
-    void	addBox(const std::string &, SubObject *);
-    void	addBox(const std::string &img1, const std::string &img2);
-    void	addBackBox(const std::string &);
+    void	addBox(const std::string &, SelectBox::e_boxtype);
+    void   	addBox(const std::string &key, const std::string &img, SubObject *obj);
+    void	addBox(const std::string &key, const std::list<std::string> &imgs);
+    void   	addBackBox(const std::string &img);
 
+    SubObject *operator [] (const std::string &);
 
 private:
 
@@ -50,6 +51,7 @@ private:
     std::vector<bool> 			keyVector_;
     unsigned int			sbox_;
     unsigned int 			currentBox_;
+
 };
 
 

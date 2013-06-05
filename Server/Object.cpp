@@ -5,11 +5,15 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Mon Jun 03 19:08:34 2013 maxime ginters
+** Last update Wed Jun 05 23:57:56 2013 maxime ginters
 */
 
 #include "Object.h"
 #include "ObjectAI.h"
+#include "Speed.h"
+#include "Range.h"
+#include "More.h"
+#include "Teleport.h"
 
 Object::Object(uint64 guid, uint32 modelId, std::string const& name) : MapObject(guid, modelId, TYPEID_OBJECT, name),
     _AI(NULL)
@@ -73,6 +77,8 @@ void Object::RegisterLua(lua_State* state)
         .def("GetName", &Object::GetName)
         .def("Despawn", &Object::Despawn)
         .def("DoAction", &Object::DoAction)
+        .def("SpawnBonus", &Object::SpawnBonus)
+        .def("CheckBonusCross", &Object::CheckBonusCross)
         ];
 }
 
@@ -95,4 +101,55 @@ void Object::HandleHit(MapObject* obj)
             savedMap->SendScores(obj->GetOwner());
         }
     }
+}
+
+void Object::HandleCross(MapObject* by)
+{
+    if (GetAI())
+        GetAI()->HandleCross(by);
+}
+
+void Object::SpawnBonus()
+{
+    if ((rand() % 1/*0*/) != 0)
+        return ;
+
+    uint32 r = rand() % 4;
+    Object *bonus = NULL;
+
+    switch (r)
+    {
+        case 0:
+            bonus = new Speed(GetMap()->MakeNewGuid());
+            break;
+        case 1:
+            bonus = new Range(GetMap()->MakeNewGuid());
+            break;
+        case 2:
+            bonus = new More(GetMap()->MakeNewGuid());
+            break;
+        case 3:
+            bonus = new Teleport(GetMap()->MakeNewGuid());
+        default:
+            break;
+    }
+
+    if (!bonus)
+        return ;
+
+    bonus->UpdatePosition(GetPositionX(), GetPositionY(), GetPositionZ(), 0.f);
+    GetMap()->AddObject(bonus);
+}
+
+void Object::CheckBonusCross(float range)
+{
+    std::list<MapObject*> list;
+    GetObjectListInRange(range, list);
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+        {
+            HandleCross(*itr);
+            break;
+        }
 }

@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Tue Jun 04 19:01:40 2013 maxime ginters
+** Last update Wed Jun 05 22:55:10 2013 fabien casters
 */
 
 #include <iostream>
@@ -54,18 +54,6 @@ void GameMonitor::draw(void)
     glClearColor(0.74f, 0.84f, 95.0f, 1.0f);
     glClearDepth(1.0f);
 
-    glBegin(GL_LINES);
-    glColor3ub(255, 0, 0); // Rouge
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 20.0, 0.0);
-    glColor3ub(0, 0, 255); // Bleu
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(20.0, 0.0, 0.0);
-    glColor3ub(0, 255, 0); // Vert
-    glVertex3f(0.0, 0.0, 0.0);
-    glVertex3f(0.0, 0.0, 20.0);
-    glEnd();
-
     glBegin(GL_QUADS);
     glColor3ub(0x99, 0x6F, 0x3A);
     glVertex3f(0.0f, 0.0f, 0.0f);
@@ -83,7 +71,6 @@ void GameMonitor::draw(void)
     for(iter = map.begin(); iter != map.end(); ++iter)
         if (iter->second->IsAlive())
             iter->second->GetGraphicObject().draw();
-
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);

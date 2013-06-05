@@ -9,5 +9,6 @@ end
 
 function HandleHit(me, by)
     Log:print("Wall get hit")
+    me:SpawnBonus()
     me:Despawn()
 end

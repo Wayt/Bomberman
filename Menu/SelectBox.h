@@ -19,29 +19,35 @@
 class SelectBox : public SubObject
 {
     public:
+	enum e_boxtype {
+	    SELECTBOX,
+	    CHECKBOX,
+	    INPUTBOX
+	};
+
+
 	SelectBox (float, float, float, float);
 	virtual ~SelectBox ();
 
-	void initialize ();
-	void update (gdl::GameClock const&, gdl::Input &);
-	void draw ();
+	virtual void initialize ();
+	virtual void update (gdl::GameClock const&, gdl::Input &);
+	virtual void draw ();
 
 	bool moveUp ();
 	bool moveDown ();
 	bool moveLeft ();
 	bool moveRight ();
 
-	void setTexture (const std::string &);
 	void addSubObject (SubObject *);
+	SubObject *getSubObject();
 
 	virtual bool select ();
+	void	initpos(int, int, int, int);
 
-    private:
-	SubObject		*obj_;
+	virtual SubObject *operator [] (const std::string &);
 
     protected:
-
-	gdl::Image 		texture_;
+	SubObject		*obj_;
 };
 
 

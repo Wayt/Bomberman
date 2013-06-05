@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:40:51 2013 maxime ginters
-** Last update Fri May 24 20:21:31 2013 maxime ginters
+** Last update Wed Jun 05 22:23:40 2013 maxime ginters
 */
 
 #ifndef BOMB_H_
@@ -23,6 +23,8 @@ public:
     void DoAction(uint32 id);
 
     void HandleExplode();
+
+    void Despawn();
 
 private:
 };

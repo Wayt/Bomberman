@@ -46,6 +46,12 @@ class SubObject : public AObject
 	void setId (int);
 	int getId ();
 
+	void setKey (const std::string &);
+	std::string &getKey ();
+
+	void setValue (int);
+	int value ();
+
 	void setRet (bool ret);
 	bool getRet ();
 
@@ -55,6 +61,9 @@ class SubObject : public AObject
 	virtual bool select () = 0;
 	e_movement 	getMvt();
 
+	void setTexture (const std::string &s);
+	void setTexture (const std::string &img1, const std::string &img2);
+
 	//scroll & movements
 
 	void 		setMovableH();
@@ -62,16 +71,25 @@ class SubObject : public AObject
 	void 		setIntervalV(int);
 	void 		setIntervalH(int);
 
+	//get elem
+	virtual SubObject *operator [] (const std::string &) = 0;
+
     protected:
 	Vector 			oldpos_;
 	e_status		status_;
 	int			id_;
+	std::string		key_;
+	int			value_;
 	bool			ret_;
 
 	e_movement 		mvt_;
 	int			intervalV_;
 	int			intervalH_;
 	bool			h_;
+
+	gdl::Image 		texture_;
+	std::string		img1_;
+	std::string		img2_;
 };
 
 #endif /*__SUBOBJECT__*/

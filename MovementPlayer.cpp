@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 13:31:28 2013 maxime ginters
-** Last update Mon Jun 03 17:32:55 2013 maxime ginters
+** Last update Wed Jun 05 23:47:02 2013 maxime ginters
 */
 
 #include <iostream>
@@ -31,7 +31,7 @@ void MovementPlayer::Update(uint32 const diff)
     float x = _owner->GetPositionX();
     float y = _owner->GetPositionY();
     float o = _owner->GetOrientation();
-    float dist = _owner->GetSpeed() * diff / 1000.f;
+    float dist = _owner->GetSpeed() * 10.0f * diff / 1000.f;
     float angle = (_owner->HasMovementFlag(MOVEMENT_BACKWARD) ? M_PI : 0.f) + _owner->GetOrientation();
     float dx = x;
     float dy = y;
@@ -66,10 +66,10 @@ void MovementPlayer::Abort(MovementTypes newType)
 
 void MovementPlayer::CollisionManager(float x, float y, float angle, float dist, float &dx, float &dy) const
 {
-    std::list<const GameObject*> list;
+    std::list<GameObject*> list;
     _owner->GetVisibleObject(list);
 
-    std::list<const GameObject*>::const_iterator it;
+    std::list<GameObject*>::const_iterator it;
     for (it = list.begin(); it != list.end(); ++it)
     {
         if (*it == _owner || (*it)->GetModelId() == 0 || AlreadyInWall(*it))
@@ -80,26 +80,14 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
             ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
             ModelBox self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
             if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
-                (self.max.y > box.min.y && self.min.y < box.max.y))
-            {
-                for (uint32 i = 0; i < 4; ++i)
-                    if (angle >= i * M_PI_2 && angle <= (i + 1) * M_PI_2)
-                    {
-                        angle = i * M_PI_2;
-                        break;
-                    }
-
-                dx = x + dist * cosf(angle);
-                dy = y + dist * sinf(angle);
-
-                self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
-                if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
                     (self.max.y > box.min.y && self.min.y < box.max.y))
+            {
+                if (!box.crossable)
                 {
                     for (uint32 i = 0; i < 4; ++i)
-                        if (FuzzyCompare(angle, i * M_PI_2))
+                        if (angle >= i * M_PI_2 && angle <= (i + 1) * M_PI_2)
                         {
-                            angle = (i + 1) * M_PI_2;
+                            angle = i * M_PI_2;
                             break;
                         }
 
@@ -108,11 +96,26 @@ void MovementPlayer::CollisionManager(float x, float y, float angle, float dist,
 
                     self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
                     if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
-                        (self.max.y > box.min.y && self.min.y < box.max.y))
+                            (self.max.y > box.min.y && self.min.y < box.max.y))
                     {
-                        dx = x;
-                        dy = y;
-                        break;
+                        for (uint32 i = 0; i < 4; ++i)
+                            if (FuzzyCompare(angle, i * M_PI_2))
+                            {
+                                angle = (i + 1) * M_PI_2;
+                                break;
+                            }
+
+                        dx = x + dist * cosf(angle);
+                        dy = y + dist * sinf(angle);
+
+                        self = sModelMgr->GetModelBoxAtPos(dx, dy, _owner->GetPositionZ(), _owner->GetModelId());
+                        if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
+                                (self.max.y > box.min.y && self.min.y < box.max.y))
+                        {
+                            dx = x;
+                            dy = y;
+                            break;
+                        }
                     }
                 }
             }

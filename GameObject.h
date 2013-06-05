@@ -5,14 +5,13 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 15:52:42 2013 maxime ginters
+** Last update Wed Jun 05 23:50:39 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
 # define GAMEOBJECT_H_
 
 #include <list>
-
 #include "Position.h"
 
 class Map;
@@ -20,10 +19,14 @@ class Client;
 
 enum ModelIds
 {
-    MODELID_PLAYER  = 0,
-    MODELID_WALL    = 1,
-    MODELID_BOMB    = 2,
-    MODELID_BORDER  = 3
+    MODELID_PLAYER      = 0,
+    MODELID_WALL        = 1,
+    MODELID_BOMB        = 2,
+    MODELID_BORDER      = 3,
+    MODELID_SPEED       = 4,
+    MODELID_RANGE       = 5,
+    MODELID_MORE        = 6,
+    MODELID_TELEPORT    = 7
 };
 
 class GameObject : public Position
@@ -41,7 +44,7 @@ public:
     bool UpdateMovementFlag(uint32 flag, bool add);
     bool HasMovementFlag(uint32 flag) const;
 
-    void SetSpeed(float speed);
+    virtual void SetSpeed(float speed);
     float GetSpeed() const;
     void SetSpeedOr(float speed_or);
     float GetSpeedOr() const;
@@ -54,7 +57,7 @@ public:
     Map* GetMap();
     Client* GetClient();
 
-    void GetVisibleObject(std::list<const GameObject*> &list) const;
+    void GetVisibleObject(std::list< GameObject*> &list) const;
 
     bool IsAlive() const;
     void SetAlive(bool alive);

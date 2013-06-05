@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 23:50:26 2013 Aymeric Girault
+** Last update Thu Jun 06 00:51:47 2013 Aymeric Girault
 */
 
 #ifndef MAP_H_
@@ -32,7 +32,9 @@ enum GridUpdaterActions
     GRIDUPDATE_DELOBJ   = 0x0008,
     GRIDUPDATE_KILLED   = 0x0010,
     GRIDUPDATE_RESPAWN  = 0x0020,
-    GRIDUPDATE_TELEPORT = 0x0040
+    GRIDUPDATE_TELEPORT = 0x0040,
+    GRIDUPDATE_SPEED    = 0x0080,
+    GRIDUPDATE_BOUM     = 0x0100,
 };
 
 enum GridUpdaterFlags
@@ -73,6 +75,8 @@ public:
     void GridUpdateKilled(MapObject *obj);
     void GridUpdateRespawn(MapObject *obj);
     void GridUpdateTeleport(MapObject *obj);
+    void GridUpdateSpeed(MapObject *obj);
+    void GridUpdateBoum(MapObject *obj);
     void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list) const;
@@ -85,7 +89,7 @@ private:
 
     struct GridUpdaterFunction
     {
-        uint8 flag;
+        uint16 flag;
         void (MapGrid::*update)(MapObject*);
     };
 };
@@ -111,6 +115,7 @@ public:
     uint32 GetHeight() const;
 
     MapObject const* GetObject(uint64 guid) const;
+    MapObject* GetObject(uint64 guid);
 
     void Update(uint32 const diff);
 
@@ -119,10 +124,10 @@ public:
     uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
-    void GetObjectList(float x, float y, std::list<const GameObject*> &list, uint32 &w, uint32 &h) const;
-    void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;
+    void GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const;
+    void GetObjectList(const GameObject *obj, std::list<GameObject*> &list) const;
 
-    void GetAllObject(std::list<const GameObject*> &list) const;
+    void GetAllObject(std::list<GameObject*> &list) const;
 
     ScoreMgr& GetScoreMgr();
     ScoreMgr const& GetScoreMgr() const;

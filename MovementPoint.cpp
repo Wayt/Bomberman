@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Wed Jun 05 12:44:22 2013 vincent leroy
+** Last update Wed Jun 05 20:59:00 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -37,7 +37,7 @@ void MovementPoint::Update(uint32 const diff)
     _owner->SetMovementFlags(MOVEMENT_FORWARD);
     point actu = point(_owner->GetPositionX(), _owner->GetPositionY());
     point dest = *_path.begin();
-    float dist = _owner->GetSpeed() * diff / 1000.f;
+    float dist = _owner->GetSpeed() * 10.0f * diff / 1000.f;
     float maxDist = sqrt(CARRE(dest.first - actu.first) + CARRE(dest.second - actu.second));
     if (std::max(dist, maxDist) == maxDist)
     {
@@ -71,7 +71,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
 {
     PathFinderRequest request;
 
-    std::list<const GameObject*> list;
+    std::list<GameObject*> list;
     map->GetAllObject(list);
 
     request.map = new uint8*[map->GetHeight()];
@@ -82,7 +82,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
             request.map[i][j] = 0;
     }
 
-    std::list<const GameObject*>::const_iterator it;
+    std::list<GameObject*>::const_iterator it;
     for (it = list.begin(); it != list.end(); ++it)
     {
         float x, y;
