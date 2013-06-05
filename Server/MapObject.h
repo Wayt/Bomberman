@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed Jun 05 20:46:56 2013 maxime ginters
+** Last update Wed Jun 05 22:22:41 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -67,12 +67,18 @@ public:
 
     static void RegisterLua(lua_State* state);
 
+    void DropBombIfPossible();
+    void DecreasBombCount();
+
 protected:
     bool _isInWorld;
     MapGrid* _currGrid;
     TypeId _typeId;
     MotionMaster* _motionMaster;
     uint64 _owner;
+
+    uint32 _maxBomb;
+    uint32 _currBomb;
 };
 
 std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj);

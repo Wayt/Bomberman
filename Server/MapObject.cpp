@@ -5,17 +5,18 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 20:53:42 2013 maxime ginters
+** Last update Wed Jun 05 22:23:25 2013 maxime ginters
 */
 
 #include <iostream>
 #include "MapObject.h"
 #include "Map.h"
 #include "ObjectAI.h"
+#include "Bomb.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
     _isInWorld(false), _currGrid(NULL), _typeId(type),
-    _motionMaster(NULL), _owner(0)
+    _motionMaster(NULL), _owner(0), _maxBomb(2), _currBomb(0)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -184,4 +185,30 @@ void MapObject::SetSpeed(float speed)
 
     if (IsInWorld())
         _map->GridUpdater(this, GRIDUPDATE_SPEED, UPDATE_FULL);
+}
+
+void MapObject::DropBombIfPossible()
+{
+    if (_currBomb >= _maxBomb)
+        return;
+
+    ++_currBomb;
+    float x, y, z, o;
+    GetPosition(x, y, z, o);
+
+    Bomb* bomb = new Bomb(_map->MakeNewGuid(), this);
+    bomb->UpdatePosition(x, y, z, 0.0f);
+    _map->AddObject(bomb);
+
+    if (Score* sc = _map->GetScoreMgr().GetScore(GetGUID()))
+    {
+        sc->bomb += 1;
+        _map->SendScores(GetGUID());
+    }
+}
+
+void MapObject::DecreasBombCount()
+{
+    if (_currBomb > 0)
+        --_currBomb;
 }

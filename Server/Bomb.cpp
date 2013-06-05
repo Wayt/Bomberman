@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Wed Jun 05 21:13:25 2013 maxime ginters
+** Last update Wed Jun 05 22:23:13 2013 maxime ginters
 */
 
 #include <iostream>
@@ -57,3 +57,10 @@ void Bomb::HandleExplode()
 
 }
 
+void Bomb::Despawn()
+{
+    if (MapObject* owner = _map->GetObject(_owner))
+        owner->DecreasBombCount();
+
+    Object::Despawn();
+}

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 20:52:56 2013 maxime ginters
+** Last update Wed Jun 05 22:25:02 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -679,6 +679,18 @@ MapObject const* Map::GetObject(uint64 guid) const
         itr->second->AddObjectForUpdate(list);
 
     for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if ((*itr)->GetGUID() == guid)
+            return (*itr);
+    return NULL;
+}
+
+MapObject* Map::GetObject(uint64 guid)
+{
+    std::list<MapObject*> list;
+    for (std::map<std::pair<float, float>, MapGrid*>::iterator itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->AddObjectForUpdate(list);
+
+    for (std::list<MapObject*>::iterator itr = list.begin(); itr != list.end(); ++itr)
         if ((*itr)->GetGUID() == guid)
             return (*itr);
     return NULL;
