@@ -1,12 +1,12 @@
 /*
-** Bomb.cpp for Server in /home/fest/Epitech/Bomberman/Server
-**
-** Made by maxime ginters
-** Login  <ginter_m@epitech.eu>
-**
-** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Thu Jun 06 01:07:33 2013 Aymeric Girault
-*/
+ ** Bomb.cpp for Server in /home/fest/Epitech/Bomberman/Server
+ **
+ ** Made by maxime ginters
+ ** Login  <ginter_m@epitech.eu>
+ **
+ ** Started on  Sat May 18 13:43:16 2013 maxime ginters
+ ** Last update Thu Jun 06 01:07:33 2013 Aymeric Girault
+ */
 
 #include <iostream>
 #include <cmath>
@@ -43,12 +43,12 @@ class BombRangeMatch
 
         bool operator()(MapObject* obj) const
         {
-	  if (obj->IsInWorld() && obj->IsAlive())
-	    if ((obj->GetPositionX() > (_blockx - 2.5f) && obj->GetPositionX() < (_blockx + 2.5f)) ||
-		(obj->GetPositionY() > (_blocky - 2.5f) && obj->GetPositionY() < (_blocky + 2.5f)))
-	      return false;
-	  return true;
-	}
+            if (obj->IsInWorld() && obj->IsAlive())
+                if ((obj->GetPositionX() > (_blockx - 2.5f) && obj->GetPositionX() < (_blockx + 2.5f)) ||
+                        (obj->GetPositionY() > (_blocky - 2.5f) && obj->GetPositionY() < (_blocky + 2.5f)))
+                    return false;
+            return true;
+        }
 
     private:
         float _blockx;
@@ -57,15 +57,15 @@ class BombRangeMatch
 
 uint32 countWall(std::list<MapObject*> torm)
 {
-  std::list<MapObject*>::iterator itr;
-  uint32 i = 0;
+    std::list<MapObject*>::iterator itr;
+    uint32 i = 0;
 
-  for(itr = torm.begin(); itr != torm.end(); ++itr)
-  {
-    if ((*itr)->GetModelId() == MODELID_WALL || (*itr)->GetModelId() == MODELID_BORDER)
-      i++;
-  }
-  return i;
+    for(itr = torm.begin(); itr != torm.end(); ++itr)
+    {
+        if ((*itr)->GetModelId() == MODELID_WALL || (*itr)->GetModelId() == MODELID_BORDER)
+            i++;
+    }
+    return i;
 }
 
 void Bomb::HandleExplode()
@@ -81,47 +81,49 @@ void Bomb::HandleExplode()
     uint32 coefy = (uint32)y / 5;
     float blocky = 5 * coefy;
 
+    _map->GridUpdater(this, GRIDUPDATE_BOUM, UPDATE_FULL);
+
     std::list<MapObject*> torm;
     _map->GetObjectListInRange(blockx, blocky, 2.5f, torm);
     uint32 nbWall = 0;
     /* X positif */
     for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
-      if (_map->GetObjectListInRange(i * 5.0f + blockx, blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
-      {
-	nbWall = countWall(torm);
-	break;
-      }
+        if (_map->GetObjectListInRange(i * 5.0f + blockx, blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
+        {
+            nbWall = countWall(torm);
+            break;
+        }
     }
     /* Y positif */
     for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
-      if (_map->GetObjectListInRange(blockx, i * 5.0f + blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
-      {
-	nbWall = countWall(torm);
-	break;
-      }
+        if (_map->GetObjectListInRange(blockx, i * 5.0f + blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
+        {
+            nbWall = countWall(torm);
+            break;
+        }
     }
     /* X negatif */
     for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
-      if (_map->GetObjectListInRange(i * - 5.0f + blockx, blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
-      {
-	nbWall = countWall(torm);
-	break;
-      }
+        if (_map->GetObjectListInRange(i * - 5.0f + blockx, blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
+        {
+            nbWall = countWall(torm);
+            break;
+        }
     }
     /* Y negatif */
     for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
-      if (_map->GetObjectListInRange(blockx, i * - 5.0f + blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
-      {
-	nbWall = countWall(torm);
-	break;
-      }
+        if (_map->GetObjectListInRange(blockx, i * - 5.0f + blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
+        {
+            nbWall = countWall(torm);
+            break;
+        }
     }
     std::list<MapObject*>::iterator itr;
     for (itr = torm.begin(); itr != torm.end(); ++itr)
-      if (MapObject* obj = *itr)
-      {
-	obj->HandleHit(this);
-      }
+        if (MapObject* obj = *itr)
+        {
+            obj->HandleHit(this);
+        }
 }
 
 void Bomb::Despawn()
