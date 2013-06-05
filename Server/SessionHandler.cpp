@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Wed Jun 05 13:47:55 2013 maxime ginters
+** Last update Wed Jun 05 17:11:55 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -156,3 +156,12 @@ void Session::HandleGlobalChatText(Packet& recvData)
    _server->BroadcastToAll(data);
 }
 
+
+void Session::HandleSaveMap(Packet& recvData)
+{
+    std::cout << "Saving map ..." << std::endl;
+    (void)recvData;
+    _player->GetMap()->SaveToFile("dust2.map");
+    Packet data(SMSG_MAP_SAVED, 0);
+    SendPacket(data);
+}

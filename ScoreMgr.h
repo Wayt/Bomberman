@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Jun 03 17:58:56 2013 maxime ginters
-** Last update Mon Jun 03 18:42:20 2013 maxime ginters
+** Last update Wed Jun 05 17:35:24 2013 maxime ginters
 */
 
 #ifndef SCOREMGR_H_
@@ -39,6 +39,8 @@ public:
 
     void WriteScores(Packet& data, uint64 guid = 0) const;
     void ReadScores(Packet& data);
+
+    void SaveScore(std::ofstream& stream) const;
 
 private:
     std::map<uint64, Score*> _scores;

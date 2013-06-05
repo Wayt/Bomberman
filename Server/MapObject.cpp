@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 16:41:58 2013 maxime ginters
+** Last update Wed Jun 05 16:51:02 2013 maxime ginters
 */
 
 #include <iostream>
@@ -14,7 +14,7 @@
 #include "ObjectAI.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
-    _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
+    _isInWorld(false), _currGrid(NULL), _typeId(type),
     _motionMaster(NULL), _owner(0)
 {
     _motionMaster = new MotionMaster(this);
@@ -172,7 +172,6 @@ std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj)
 
 std::ofstream& operator<<(std::ofstream& stream, MapObject const& obj)
 {
-    (void)obj;
-    std::cout << "Coucou" << std::endl;
+    stream << obj.GetModelId() << "," << obj.GetName() << "," << obj.GetSpeed() << "," << obj.GetSpeedOr() << obj.GetPositionX() << "," << obj.GetPositionY() << "," << obj.GetPositionZ() << "," << obj.GetOrientation() << "," << obj.GetGUID();
     return stream;
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed Jun 05 16:14:17 2013 maxime ginters
+** Last update Wed Jun 05 17:04:10 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -243,4 +243,10 @@ void Client::HandleGameFinish(Packet& recvData)
     (void)recvData;
     _gameTimer = 0;
     _scoreOpen = true;
+}
+
+void Client::HandleMapSaved(Packet& recvData)
+{
+    (void)recvData;
+    _chatBox.PushMessage("Map saved");
 }

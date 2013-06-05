@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed Jun 05 16:41:36 2013 maxime ginters
+** Last update Wed Jun 05 16:50:07 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -68,7 +68,6 @@ public:
 protected:
     bool _isInWorld;
     MapGrid* _currGrid;
-    std::string _name;
     TypeId _typeId;
     MotionMaster* _motionMaster;
     uint64 _owner;
