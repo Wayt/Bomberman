@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 18:33:21 2013 maxime ginters
+** Last update Wed Jun 05 20:48:50 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -32,7 +32,8 @@ enum GridUpdaterActions
     GRIDUPDATE_DELOBJ   = 0x0008,
     GRIDUPDATE_KILLED   = 0x0010,
     GRIDUPDATE_RESPAWN  = 0x0020,
-    GRIDUPDATE_TELEPORT = 0x0040
+    GRIDUPDATE_TELEPORT = 0x0040,
+    GRIDUPDATE_SPEED    = 0x0080,
 };
 
 enum GridUpdaterFlags
@@ -73,12 +74,13 @@ public:
     void GridUpdateKilled(MapObject *obj);
     void GridUpdateRespawn(MapObject *obj);
     void GridUpdateTeleport(MapObject *obj);
+    void GridUpdateSpeed(MapObject *obj);
     void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list) const;
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
-    void GetObjectList(std::list<const GameObject*> &list) const;
+    void GetObjectList(std::list<GameObject*> &list) const;
 private:
     std::list<MapObject*> _objectList;
     bool _isActive;
@@ -119,10 +121,10 @@ public:
     void GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     void GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
-    void GetObjectList(float x, float y, std::list<const GameObject*> &list, uint32 &w, uint32 &h) const;
-    void GetObjectList(const GameObject *obj, std::list<const GameObject*> &list) const;
+    void GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const;
+    void GetObjectList(const GameObject *obj, std::list<GameObject*> &list) const;
 
-    void GetAllObject(std::list<const GameObject*> &list) const;
+    void GetAllObject(std::list<GameObject*> &list) const;
 
     ScoreMgr& GetScoreMgr();
     ScoreMgr const& GetScoreMgr() const;

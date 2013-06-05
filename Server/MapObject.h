@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed Jun 05 16:50:07 2013 maxime ginters
+** Last update Wed Jun 05 20:46:56 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -38,6 +38,8 @@ public:
     virtual void SetGrid(MapGrid* grid);
     void SetMap(Map* map);
     TypeId GetTypeId() const;
+
+    void SetSpeed(float speed);
 
     void BuildObjectCreateForPlayer(Packet& data) const;
 

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed Jun 05 19:32:46 2013 vincent leroy
+** Last update Wed Jun 05 20:22:34 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -99,6 +99,12 @@ void Object::HandleHit(MapObject* obj)
             savedMap->SendScores(obj->GetOwner());
         }
     }
+}
+
+void Object::HandleCross(GameObject* by)
+{
+    if (GetAI())
+        GetAI()->HandleCross(by);
 }
 
 void Object::SpawnBonus()

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed Jun 05 19:38:26 2013 maxime ginters
+** Last update Wed Jun 05 21:05:03 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -50,6 +50,7 @@ void Client::HandleSendObject(Packet& recvData)
         uint32 modelid;
         std::string name;
         float x, y, z, o;
+        float speed, speedor;
         uint64 owner;
         recvData >> guid;
         recvData >> modelid;
@@ -59,12 +60,16 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> z;
         recvData >> o;
         recvData >> owner;
+        recvData >> speed;
+        recvData >> speedor;
 
         if (guid != _player->GetGUID())
         {
             ClientObjectPtr obj(new ClientObject(guid, modelid, name));
             obj->SetClient(this);
             obj->UpdatePosition(x, y, z, o);
+            obj->SetSpeed(speed);
+            obj->SetSpeedOr(speedor);
             AddObject(obj);
 
             if (modelid == MODELID_BOMB && owner == _player->GetGUID())
@@ -251,4 +256,24 @@ void Client::HandleMapSaved(Packet& recvData)
 {
     (void)recvData;
     _chatBox.PushMessage("Map saved");
+}
+
+void Client::HandleUpdateSpeed(Packet& recvData)
+{
+    uint64 guid;
+    float speed;
+    recvData >> guid;
+    recvData >> speed;
+
+    ClientObjectPtr obj = GetObject(guid);
+    if (!obj)
+    {
+        if (_player->GetGUID() == guid)
+            obj = _player;
+        else
+            return;
+    }
+
+    obj->SetSpeed(speed);
+    obj->ReadPosition(recvData);
 }
