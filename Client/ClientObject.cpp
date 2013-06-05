@@ -5,14 +5,15 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Thu Jun 06 01:42:38 2013 maxime ginters
+** Last update Thu Jun 06 01:52:11 2013 maxime ginters
 */
 
 #include "ClientObject.h"
 #include "Client.h"
 
 ClientObject::ClientObject(uint64 guid, uint32 modelid, std::string const& name) :
-    GameObject(guid, modelid, name), _modelId(modelid), _name(name), _graphicObject(this), _motionMaster(NULL)
+    GameObject(guid, modelid, name), _modelId(modelid), _name(name), _graphicObject(this), _motionMaster(NULL),
+    _despawnTimer(0)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelid == 0 ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
