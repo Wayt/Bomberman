@@ -22,5 +22,6 @@
 !Scripts
 !*.lua
 !*.cfg
-!Sounds
-!*.ogg
+!Menu
+!Menu/images
+!*.png

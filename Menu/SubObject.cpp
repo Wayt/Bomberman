@@ -22,6 +22,7 @@ SubObject::SubObject (float x, float y, float z, float o) :
     oldpos_.z = z;
     ret_ = true;
     h_ = false;
+    value_ = 0;
 }
 
 SubObject::~SubObject ()
@@ -79,7 +80,39 @@ bool SubObject::isMovableH()
     return h_;
 }
 
+void SubObject::setKey (const std::string &key)
+{
+    key_ = key;
+}
+
+std::string &SubObject::getKey ()
+{
+    return key_;
+}
+
 SubObject::e_movement SubObject::getMvt()
 {
     return mvt_;
+}
+
+void SubObject::setTexture (const std::string &s)
+{
+    texture_ = gdl::Image::load(s);
+}
+
+void SubObject::setTexture (const std::string &img1, const std::string &img2)
+{
+    img1_ = img1;
+    img2_ = img2;
+
+    setTexture(img1);
+}
+
+void SubObject::setValue (int value)
+{
+    value_ = value;
+}
+int SubObject::value ()
+{
+    return value_;
 }

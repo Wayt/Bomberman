@@ -5,11 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Mon Jun 03 19:08:34 2013 maxime ginters
+** Last update Wed Jun 05 19:32:46 2013 vincent leroy
 */
 
 #include "Object.h"
 #include "ObjectAI.h"
+#include "Speed.h"
+#include "Range.h"
+#include "More.h"
 
 Object::Object(uint64 guid, uint32 modelId, std::string const& name) : MapObject(guid, modelId, TYPEID_OBJECT, name),
     _AI(NULL)
@@ -73,6 +76,7 @@ void Object::RegisterLua(lua_State* state)
         .def("GetName", &Object::GetName)
         .def("Despawn", &Object::Despawn)
         .def("DoAction", &Object::DoAction)
+        .def("SpawnBonus", &Object::SpawnBonus)
         ];
 }
 
@@ -95,4 +99,34 @@ void Object::HandleHit(MapObject* obj)
             savedMap->SendScores(obj->GetOwner());
         }
     }
+}
+
+void Object::SpawnBonus()
+{
+    if ((rand() % 10) != 0)
+        return ;
+
+    uint32 r = rand() % 3;
+    Object *bonus = NULL;
+
+    switch (r)
+    {
+        case 0:
+            bonus = new Speed(GetMap()->MakeNewGuid());
+            break;
+        case 1:
+            bonus = new Range(GetMap()->MakeNewGuid());
+            break;
+        case 2:
+            bonus = new More(GetMap()->MakeNewGuid());
+            break;
+        default:
+            break;
+    }
+
+    if (!bonus)
+        return ;
+
+    bonus->UpdatePosition(GetPositionX(), GetPositionY(), GetPositionZ(), 0.f);
+    GetMap()->AddObject(bonus);
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Wed May 29 16:42:07 2013 maxime ginters
+** Last update Wed Jun 05 19:14:42 2013 vincent leroy
 */
 
 #include "ObjectAI.h"
@@ -37,7 +37,6 @@ bool ObjectAI::Initialize()
             .def("print", &Log::print)
             ];
         luabind::globals(_luastate)["Log"] = sLog;
-
     }
     catch (std::exception const& e)
     {

@@ -11,10 +11,10 @@
 #include "CheckBox.h"
 
 CheckBox::CheckBox (float x, float y, float z, float o) :
-    SelectBox(x, y, z, o), status_(false)
+    SelectBox(x, y, z, o)
 {
-    //SubObject::setMovableH();
     ret_ = false;
+    value_ = 0;
     intervalH_ = 500;
 }
 
@@ -22,25 +22,16 @@ CheckBox::~CheckBox ()
 {
 }
 
-
 bool CheckBox::select ()
 {
     mvt_ = SubObject::NONE;
-    if (status_){
-	SelectBox::setTexture(img1_);
+    if (!value_){
+	SubObject::setTexture(img2_);
+	value_ = 1;
     }
     else {
-	SelectBox::setTexture(img2_);
+	SubObject::setTexture(img1_);
+	value_ = 0;
     }
-    status_ = !status_;
-    std::cout << "status:" << status_ << std::endl;
     return true;
-}
-
-void CheckBox::setTexture (const std::string &img1, const std::string &img2)
-{
-    img1_ = img1;
-    img2_ = img2;
-
-    SelectBox::setTexture(img1);
 }

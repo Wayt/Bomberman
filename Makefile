@@ -5,7 +5,7 @@
 ## Login   <ginter_m@epitech.eu>
 ## 
 ## Started on  Mon May 06 13:39:56 2013 maxime ginters
-## Last update Wed Jun 05 16:44:00 2013 maxime ginters
+## Last update Wed Jun 05 19:40:40 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -22,8 +22,7 @@ UNAME	:= $(shell uname -a)
 
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
-LDFLAGS	+= -lsfml-audio
-LDFLAGS	+= -llua
+#LDFLAGS	+= -llua
 LDFLAGS	+= -llua5.1
 LDFLAGS	+= -lluabind
 LDFLAGS	+= -lSOIL
@@ -32,17 +31,15 @@ NAME	= bomberman
 
 SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cpp MovementPoint.cpp GameObject.cpp \
 		  Opcodes.cpp ModelMgr.cpp ScoreMgr.cpp \
-		  Server/SessionHandler.cpp Server/Map.cpp Server/MapObject.cpp Server/Player.cpp \
+		  Server/SessionHandler.cpp Server/Map.cpp Server/MapObject.cpp Server/Player.cpp Server/Speed.cpp Server/Range.cpp Server/More.cpp \
 		  Server/Server.cpp Server/SessionSocketAcceptor.cpp Server/Session.cpp Server/SessionSocket.cpp \
 		  Server/SessionSocketMgr.cpp Server/Bomb.cpp Server/Object.cpp Server/AI/ObjectAI.cpp \
 		  Client/Client.cpp Client/ClientSocket.cpp Client/ClientHandler.cpp Client/ClientObject.cpp \
-		  Client/ChatBox.cpp Client/SoundMgr.cpp \
+		  Client/ChatBox.cpp \
 		  Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/GraphicObject.cpp Graphic/ModelFactory.cpp \
 		  Server/PathFinder.cpp Server/PathFindingRunnable.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
-
-
 
 all: $(NAME)
 
@@ -57,8 +54,5 @@ fclean: clean
 
 re: fclean all
 
-depend:
-	makedepend -I. $(SRCS)
-
-.PHONY: all clean fclean re depend
+.PHONY: all clean fclean re
 
