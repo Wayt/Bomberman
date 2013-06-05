@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed Jun 05 15:03:13 2013 maxime ginters
-** Last update Wed Jun 05 19:36:59 2013 maxime ginters
+** Last update Wed Jun 05 19:44:16 2013 maxime ginters
 */
 
 #include <iostream>
@@ -41,6 +41,7 @@ SoundMgr::SoundMgr() :
     if (_music.OpenFromFile("Sounds/music.ogg"))
     {
         _music.SetLoop(true);
+        _music.SetVolume(80.0f);
         _music.Play();
     }
 }
