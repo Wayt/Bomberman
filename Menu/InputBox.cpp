@@ -51,7 +51,7 @@ void InputBox::draw ()
 	    text.setText(input_);
 	    text.setSize(10);
 	    text.setPosition(_pos.x, _pos.y);
-	    text.draw();
+	    //text.draw();
 	    break;
 	case HIDDEN:
 	    break;
