@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:26 2013 fabien casters
-** Last update Tue May 28 17:30:08 2013 fabien casters
+** Last update Wed Jun 05 17:05:57 2013 vincent leroy
 */
 
 #include <fstream>
@@ -33,6 +33,7 @@ void ModelFactory::init(const std::string &filename)
         split(line, ';', elems);
         if (elems.size() < 10)
             continue;
+
         uint32 modelId = to<uint32>(elems[0].c_str());
         model.nbAnim = addModel(model, elems);
         for (uint32 i = 0; i < model.nbAnim && std::getline(ifs, line); ++i)
@@ -42,16 +43,30 @@ void ModelFactory::init(const std::string &filename)
             if (elems.size() < 3)
                 --i;
             else
-                addAnimation(model, elems);
+            {
+                animation anim;
+                anim.name = elems[0];
+                anim.frameBegin = to<uint32>(elems[1].c_str());
+                anim.frameEnd = to<uint32>(elems[2].c_str());
+                model.elems.push_back(anim);
+            }
         }
+
         _modelConfig[modelId] = model;
     }
     ifs.close();
 }
 
-modelConfig const &ModelFactory::load(uint32 id)
+modelConfig ModelFactory::load(uint32 id)
 {
-    return _modelConfig[id];
+    modelConfig model;
+
+    model = _modelConfig[id];
+    model.model = new gdl::Model(gdl::Model::load(model.name));
+    for (uint32 i = 0; i < model.elems.size(); ++i)
+        addAnimation(model, model.elems[i]);
+
+    return model;
 }
 
 uint32 ModelFactory::addModel(modelConfig &model, const std::vector<std::string> &elems)
@@ -64,11 +79,11 @@ uint32 ModelFactory::addModel(modelConfig &model, const std::vector<std::string>
     model.scaleX = to<float>(elems[6].c_str());
     model.scaleY = to<float>(elems[7].c_str());
     model.scaleZ = to<float>(elems[8].c_str());
-    model.model = gdl::Model::load(model.name);
+    model.model = NULL;
     return to<uint32>(elems[9].c_str());
 }
 
-void ModelFactory::addAnimation(modelConfig &model, const std::vector<std::string> &elems)
+void ModelFactory::addAnimation(modelConfig &model, const animation &anim) const
 {
-    gdl::Model::cut_animation(model.model, model.stackAnim, to<uint32>(elems[1].c_str()), to<uint32>(elems[2].c_str()), elems[0]);
+    gdl::Model::cut_animation(*(model.model), model.stackAnim, anim.frameBegin, anim.frameEnd, anim.name);
 }

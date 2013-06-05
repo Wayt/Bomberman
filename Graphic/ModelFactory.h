@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Wed May 22 16:47:23 2013 fabien casters
-** Last update Tue May 28 17:29:24 2013 fabien casters
+** Last update Wed Jun 05 17:06:22 2013 vincent leroy
 */
 
 #ifndef MODELFACTORY_H_
@@ -17,6 +17,13 @@
 #include "MapObject.h"
 #include "Model.hpp"
 
+struct animation
+{
+    std::string name;
+    uint32 frameBegin;
+    uint32 frameEnd;
+};
+
 struct modelConfig
 {
     std::string name;
@@ -27,7 +34,8 @@ struct modelConfig
     float scaleX;
     float scaleY;
     float scaleZ;
-    gdl::Model model;
+    std::vector<animation> elems;
+    gdl::Model *model;
     uint32 nbAnim;
 };
 
@@ -37,11 +45,11 @@ public:
     ModelFactory();
 
     void init(const std::string &filename);
-    modelConfig const &load(uint32);
+    modelConfig load(uint32);
 
 private:
     uint32 addModel(modelConfig &model, const std::vector<std::string> &elems);
-    void addAnimation(modelConfig &model, const std::vector<std::string> &elems);
+    void addAnimation(modelConfig &model, const animation &anim) const;
 
     std::map<uint32, modelConfig> _modelConfig;
 };
