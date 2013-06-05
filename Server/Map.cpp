@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 19:08:17 2013 maxime ginters
+** Last update Wed Jun 05 19:31:27 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -37,6 +37,10 @@ Map::Map(uint32 width, uint32 height, uint32 nguid, uint32 time) :
 Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density)
 {
     sLog->out(">> Generating random map ");
+
+    timeval t1;
+    gettimeofday(&t1, NULL);
+    srand(t1.tv_usec * t1.tv_sec);
 
     uint32** map = new uint32*[height + 1];
     for (uint32 i = 0; i <= height; ++i)
@@ -81,6 +85,8 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
                 if (map[y_][x_] == 0)
                 {
                     map[y_][x_] = 1;
+                    if ((rand() * y_ * x_) % 2 == 0)
+                        map[y_][x_] = 2;
                     map[y_ + ((int32)y - (int32)y_) / 2][x_ + ((int32)x - (int32)x_) / 2] = 1;
                     x = x_;
                     y = y_;
