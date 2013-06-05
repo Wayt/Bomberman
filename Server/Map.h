@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Wed Jun 05 22:24:21 2013 maxime ginters
+** Last update Thu Jun 06 00:10:54 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -34,6 +34,7 @@ enum GridUpdaterActions
     GRIDUPDATE_RESPAWN  = 0x0020,
     GRIDUPDATE_TELEPORT = 0x0040,
     GRIDUPDATE_SPEED    = 0x0080,
+    GRIDUPDATE_BOUM     = 0x0100,
 };
 
 enum GridUpdaterFlags
@@ -75,6 +76,7 @@ public:
     void GridUpdateRespawn(MapObject *obj);
     void GridUpdateTeleport(MapObject *obj);
     void GridUpdateSpeed(MapObject *obj);
+    void GridUpdateBoum(MapObject *obj);
     void BroadcastToGrid(Packet const& pkt, MapObject* except = NULL);
 
     void AddObjectForUpdate(std::list<MapObject*>& list) const;
@@ -87,7 +89,7 @@ private:
 
     struct GridUpdaterFunction
     {
-        uint8 flag;
+        uint16 flag;
         void (MapGrid::*update)(MapObject*);
     };
 };

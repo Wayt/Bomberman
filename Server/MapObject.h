@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Wed Jun 05 23:50:50 2013 maxime ginters
+** Last update Thu Jun 06 00:14:26 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -76,6 +76,9 @@ public:
 
     virtual void RandomTeleport();
 
+    float GetBombRange() const;
+    void IncrBombRange(float value);
+
 protected:
     bool _isInWorld;
     MapGrid* _currGrid;
@@ -85,6 +88,7 @@ protected:
 
     uint32 _maxBomb;
     uint32 _currBomb;
+    float _bombPower;
 };
 
 std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj);

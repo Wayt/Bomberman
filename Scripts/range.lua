@@ -21,4 +21,6 @@ end
 
 function HandleCross(me, by)
     Log:print("CROSSED")
+    by:IncrBombRange(5.0)
+    me:Despawn()
 end

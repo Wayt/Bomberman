@@ -5,10 +5,11 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Wed Jun 05 22:23:13 2013 maxime ginters
+** Last update Thu Jun 06 00:18:40 2013 maxime ginters
 */
 
 #include <iostream>
+#include <cmath>
 #include "Map.h"
 #include "Bomb.h"
 
@@ -17,6 +18,7 @@ Bomb::Bomb(uint64 guid, MapObject* obj) :
 {
     SetOwner(obj->GetGUID());
     InitializeAI("Scripts/bomb.lua");
+    _bombPower = obj->GetBombRange();
 }
 
 void Bomb::DoAction(uint32 id)
@@ -44,8 +46,11 @@ void Bomb::HandleExplode()
     uint32 coefy = (uint32)y / 5;
     float blocky = 5 * coefy;
 
+    _map->GridUpdater(this, GRIDUPDATE_BOUM, UPDATE_FULL);
+
+    float range = std::sqrt((2.5f * 2.5f) + (_bombPower * _bombPower));
     std::list<MapObject*> list;
-    _map->GetObjectListInRange(blockx, blocky, 12.7f, list);
+    _map->GetObjectListInRange(blockx, blocky, range, list);
 
     std::list<MapObject*>::iterator itr;
     for (itr = list.begin(); itr != list.end(); ++itr)
@@ -64,3 +69,4 @@ void Bomb::Despawn()
 
     Object::Despawn();
 }
+

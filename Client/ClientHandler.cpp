@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 00:03:00 2013 maxime ginters
+** Last update Thu Jun 06 00:24:43 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -281,4 +281,18 @@ void Client::HandleUpdateSpeed(Packet& recvData)
 
     obj->SetSpeed(speed);
     obj->ReadPosition(recvData);
+}
+
+void Client::HandleBombBoumed(Packet& recvData)
+{
+    uint64 guid;
+    float range;
+    recvData >> guid;
+    recvData >> range;
+
+    ClientObjectPtr obj = GetObject(guid);
+    if (!obj)
+        return;
+    (void)obj;
+    (void)range;
 }

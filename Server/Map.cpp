@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 00:00:33 2013 maxime ginters
+** Last update Thu Jun 06 00:24:22 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -185,7 +185,7 @@ void MapGrid::RemoveObject(MapObject* obj)
 
 void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
 {
-    static GridUpdaterFunction updaterFunction[8] = {
+    static GridUpdaterFunction updaterFunction[9] = {
         {GRIDUPDATE_ACTIVE, &MapGrid::GridUpdateActive},
         {GRIDUPDATE_SENDOBJ, &MapGrid::GridUpdateSendObject},
         {GRIDUPDATE_MOVEFLAGS, &MapGrid::GridUpdateMoveFlags},
@@ -193,10 +193,11 @@ void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
         {GRIDUPDATE_KILLED, &MapGrid::GridUpdateKilled},
         {GRIDUPDATE_RESPAWN, &MapGrid::GridUpdateRespawn},
         {GRIDUPDATE_TELEPORT, &MapGrid::GridUpdateTeleport},
-        {GRIDUPDATE_SPEED, &MapGrid::GridUpdateSpeed}
+        {GRIDUPDATE_SPEED, &MapGrid::GridUpdateSpeed},
+        {GRIDUPDATE_BOUM, &MapGrid::GridUpdateBoum}
     };
 
-    for (uint32 i = 0; i < 8; ++i)
+    for (uint32 i = 0; i < 9; ++i)
         if (action & updaterFunction[i].flag)
             (this->*updaterFunction[i].update)(obj);
 }
@@ -273,6 +274,14 @@ void MapGrid::GridUpdateSpeed(MapObject* obj)
     data << uint64(obj->GetGUID());
     data << float(obj->GetSpeed());
     obj->WritePosition(data);
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::GridUpdateBoum(MapObject* obj)
+{
+    Packet data(SMSG_BOMB_BOUMED, 8 + 4);
+    data << uint64(obj->GetGUID());
+    data << float(obj->GetBombRange());
     BroadcastToGrid(data, NULL);
 }
 

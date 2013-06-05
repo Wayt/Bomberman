@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Wed Jun 05 20:44:00 2013 maxime ginters
+** Last update Thu Jun 06 00:05:04 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -43,6 +43,7 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
         {CMSG_SAVE_MAP, STATUS_INGAME, &Session::HandleSaveMap, NULL},
         {SMSG_MAP_SAVED, STATUS_INGAME, NULL, &Client::HandleMapSaved},
         {SMSG_UPDATE_SPEED, STATUS_INGAME, NULL, &Client::HandleUpdateSpeed},
+        {SMSG_BOMB_BOUMED, STATUS_INGAME, NULL, &Client::HandleBombBoumed},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}
     };
 
