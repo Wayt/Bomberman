@@ -37,6 +37,7 @@ class SelectBox : public SubObject
 	bool moveDown ();
 	bool moveLeft ();
 	bool moveRight ();
+	virtual void handleKeyDown(gdl::Keys::Key key);
 
 	void addSubObject (SubObject *);
 	SubObject *getSubObject();

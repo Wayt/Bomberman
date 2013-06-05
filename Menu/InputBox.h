@@ -26,6 +26,10 @@ class InputBox : public SelectBox
 	InputBox (float, float, float, float);
 	~InputBox ();
 	virtual bool select ();
+	void handleKeyDown(gdl::Keys::Key);
+
+
+    private:
 	std::string input_;
 };
 

@@ -137,6 +137,9 @@ void SubMenu::HandleKeyDown(gdl::Keys::Key key)
 		mvt_ = RIGHT;
 	if ( key == gdl::Keys::Left)
 		mvt_ = LEFT;
+	    std::list<SelectBox *>::iterator sit = boxes_.begin();
+	    std::advance(sit, currentBox_);
+	    (*sit)->handleKeyDown(key);
     }
 }
 /*}*/

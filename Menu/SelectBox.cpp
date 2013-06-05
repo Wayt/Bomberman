@@ -100,6 +100,7 @@ void SelectBox::addSubObject (SubObject *obj)
 {
     obj_ = obj;
 }
+
 SubObject *SelectBox::getSubObject()
 {
     return obj_;
@@ -169,4 +170,9 @@ void	SelectBox::initpos(int x, int y, int z, int v)
     oldpos_.y = _pos.y;
     oldpos_.z = _pos.z;
 }
+
+void SelectBox::handleKeyDown(gdl::Keys::Key)
+{
+}
+
 /*}*/
