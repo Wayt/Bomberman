@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 16:00:45 2013 maxime ginters
+** Last update Wed Jun 05 18:14:28 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -89,12 +89,16 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         }
     }
 
-    for (uint32 i = 0; i < width; ++i)
+    for (uint32 i = 0; i < height; ++i)
     {
         map[i][0] = 2;
         map[i][width - 1] = 2;
+    }
+
+    for (uint32 i = 0; i < width; ++i)
+    {
         map[0][i] = 2;
-        map[width - 1][i] = 2;
+        map[height - 1][i] = 2;
     }
 
     for (uint32 i = 0; i < height; i += BORDER_DENSITY)
