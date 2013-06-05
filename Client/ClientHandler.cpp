@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Wed Jun 05 17:04:10 2013 maxime ginters
+** Last update Wed Jun 05 19:38:26 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -92,6 +92,8 @@ void Client::HandleAddToMap(Packet& recvData)
 
     _gameMonitor = new GameMonitor(this, width, height);
     _gameMonitorThread.CreateThread(*_gameMonitor);
+
+    sSoundMgr->PlaySound(SOUND_NONE);
 }
 
 void Client::HandleUpdateMoveflags(Packet& recvData)
