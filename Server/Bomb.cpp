@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 18 13:43:16 2013 maxime ginters
-** Last update Thu Jun 06 00:53:21 2013 Aymeric Girault
+** Last update Thu Jun 06 01:07:33 2013 Aymeric Girault
 */
 
 #include <iostream>
@@ -62,7 +62,7 @@ uint32 countWall(std::list<MapObject*> torm)
 
   for(itr = torm.begin(); itr != torm.end(); ++itr)
   {
-    if ((*itr)->GetModelId() == MODELID_WALL)
+    if ((*itr)->GetModelId() == MODELID_WALL || (*itr)->GetModelId() == MODELID_BORDER)
       i++;
   }
   return i;
@@ -85,7 +85,7 @@ void Bomb::HandleExplode()
     _map->GetObjectListInRange(blockx, blocky, 2.5f, torm);
     uint32 nbWall = 0;
     /* X positif */
-    for (uint32 i = 1; i <= 4; i++) {
+    for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
       if (_map->GetObjectListInRange(i * 5.0f + blockx, blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
       {
 	nbWall = countWall(torm);
@@ -93,7 +93,7 @@ void Bomb::HandleExplode()
       }
     }
     /* Y positif */
-    for (uint32 i = 1; i <= 10.0f / 5.0f; i++) {
+    for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
       if (_map->GetObjectListInRange(blockx, i * 5.0f + blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
       {
 	nbWall = countWall(torm);
@@ -101,7 +101,7 @@ void Bomb::HandleExplode()
       }
     }
     /* X negatif */
-    for (uint32 i = 1; i <= 10.0f / 5.0f; i++) {
+    for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
       if (_map->GetObjectListInRange(i * - 5.0f + blockx, blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
       {
 	nbWall = countWall(torm);
@@ -109,7 +109,7 @@ void Bomb::HandleExplode()
       }
     }
     /* Y negatif */
-    for (uint32 i = 1; i <= 10.0f / 5.0f; i++) {
+    for (uint32 i = 1; i <= GetBombRange() / 5.0f; i++) {
       if (_map->GetObjectListInRange(blockx, i * - 5.0f + blocky, 2.5f, torm) > 0 && countWall(torm) > nbWall)
       {
 	nbWall = countWall(torm);
