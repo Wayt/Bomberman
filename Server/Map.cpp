@@ -5,20 +5,25 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri May 31 16:18:52 2013 vincent leroy
+** Last update Tue Jun 04 19:10:31 2013 maxime ginters
 */
 
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
+
+#include "ModelMgr.h"
 #include "Map.h"
 #include "Session.h"
 #include "MapObject.h"
 #include "Player.h"
 #include "Object.h"
 
+#define BORDER_DENSITY 5
+
 Map::Map(uint32 width, uint32 height) :
-    _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList()
+    _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList(),
+    _gameTimer(60000)
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -91,6 +96,10 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         map[0][i] = 2;
         map[width - 1][i] = 2;
     }
+
+    for (uint32 i = 0; i < height; i += BORDER_DENSITY)
+        for (uint32 j = 0; j < width; j += BORDER_DENSITY)
+            map[i][j] = 2;
 
     Map* newMap = new Map(width * MAP_PRECISION, height * MAP_PRECISION);
     for (uint32 y = 0; y < height; ++y)
@@ -168,13 +177,17 @@ void MapGrid::RemoveObject(MapObject* obj)
 
 void MapGrid::UpdateForMapObject(MapObject* obj, uint16 action)
 {
-    static GridUpdaterFunction updaterFunction[4] =
-        {{GRIDUPDATE_ACTIVE, &MapGrid::GridUpdateActive},
+    static GridUpdaterFunction updaterFunction[7] = {
+        {GRIDUPDATE_ACTIVE, &MapGrid::GridUpdateActive},
         {GRIDUPDATE_SENDOBJ, &MapGrid::GridUpdateSendObject},
         {GRIDUPDATE_MOVEFLAGS, &MapGrid::GridUpdateMoveFlags},
-        {GRIDUPDATE_DELOBJ, &MapGrid::GridUpdateDelObj}};
+        {GRIDUPDATE_DELOBJ, &MapGrid::GridUpdateDelObj},
+        {GRIDUPDATE_KILLED, &MapGrid::GridUpdateKilled},
+        {GRIDUPDATE_RESPAWN, &MapGrid::GridUpdateRespawn},
+        {GRIDUPDATE_TELEPORT, &MapGrid::GridUpdateTeleport}
+    };
 
-    for (uint32 i = 0; i < 4; ++i)
+    for (uint32 i = 0; i < 7; ++i)
         if (action & updaterFunction[i].flag)
             (this->*updaterFunction[i].update)(obj);
 }
@@ -220,13 +233,40 @@ void MapGrid::GridUpdateDelObj(MapObject *obj)
     BroadcastToGrid(data, obj);
 }
 
-void MapGrid::BroadcastToGrid(Packet& pkt, MapObject* except)
+void MapGrid::GridUpdateKilled(MapObject *obj)
+{
+    Packet data(SMSG_PLAYER_KILLED, 8 + 4 + obj->GetLastKiller().length());
+    data << uint64(obj->GetGUID());
+    data << uint32(obj->GetRespawnTime());
+    data << obj->GetLastKiller();
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::GridUpdateRespawn(MapObject *obj)
+{
+    Packet data(SMSG_PLAYER_RESPAWN, 8);
+    data << uint64(obj->GetGUID());
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::GridUpdateTeleport(MapObject *obj)
+{
+    Packet data(SMSG_TELEPORT, 8 + 16);
+    data << uint64(obj->GetGUID());
+    obj->WritePosition(data);
+    BroadcastToGrid(data, NULL);
+}
+
+void MapGrid::BroadcastToGrid(Packet const& pkt, MapObject* except)
 {
     std::list<MapObject*>::const_iterator itr;
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if ((*itr)->GetTypeId() == TYPEID_PLAYER)
             if ((*itr) != except)
+            {
                 (*itr)->SendPacket(pkt);
+                std::cout << "Send packet to " << (*itr)->GetName() << std::endl;
+            }
 }
 
 void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list)
@@ -296,6 +336,9 @@ uint8 Map::BuildGridUpdaterFlags(MapGrid* old, MapGrid* newGrid) const
     if (!_GetGridXY(old, oldX, oldY) || !_GetGridXY(newGrid, newX, newY))
         return 0;
 
+    if (std::abs(oldX - newX) > GRID_SIZE || std::abs(oldY - newY) > GRID_SIZE)
+        return UPDATE_FULL;
+
     uint8 flags = 0;
     flags |= (oldY < newY ? UPDATE_UP : (oldY > newY ? UPDATE_DOWN : 0));
     flags |= (oldX < newX ? UPDATE_RIGHT : (oldX > newX ? UPDATE_LEFT : 0));
@@ -335,6 +378,17 @@ void Map::GetWidthAndHeight(uint32& width, uint32& height) const
 
 void Map::Update(uint32 const diff)
 {
+    if (IsFinish())
+        return;
+
+    if (_gameTimer <= diff)
+    {
+        HandleGameFinish();
+        _gameTimer = 0;
+        return;
+    }
+    else
+        _gameTimer -= diff;
     std::list<MapObject*> toUpdate;
     std::map<std::pair<float, float>, MapGrid*>::iterator itr;
     for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
@@ -424,4 +478,96 @@ void Map::RegisterLua(lua_State* state)
         ];
 }
 
+ScoreMgr& Map::GetScoreMgr()
+{
+    return _scoreMgr;
+}
 
+ScoreMgr const& Map::GetScoreMgr() const
+{
+    return _scoreMgr;
+}
+
+void Map::SendScores(uint64 from)
+{
+    Packet data(SMSG_SEND_SCORE);
+    _scoreMgr.WriteScores(data, from);
+    BroadcastToAll(data);
+}
+
+void Map::BroadcastToAll(Packet const& pkt)
+{
+    std::map<std::pair<float, float>, MapGrid*>::iterator itr;
+    for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
+        itr->second->BroadcastToGrid(pkt);
+}
+
+void Map::GetRandomStartPosition(float& x, float& y)
+{
+    bool ok = true;
+
+    do
+    {
+        x = rand() % (_width - MAP_PRECISION);
+        y = rand() % (_height - MAP_PRECISION);
+
+        MapGrid *grid = GetGridAt(x, y);
+        if (!grid)
+            ok = false;
+        else
+        {
+            std::list<const GameObject*> list;
+            grid->GetObjectList(list);
+            try
+            {
+                ModelBox self = sModelMgr->GetModelBoxAtPos(x, y, 0.f, MODELID_PLAYER);
+                std::list<const GameObject*>::const_iterator it;
+                for (it = list.begin(); it != list.end(); ++it)
+                {
+                    if ((*it)->GetModelId() == MODELID_PLAYER)
+                        continue;
+
+                    ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                    if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
+                        (self.max.y > box.min.y && self.min.y < box.max.y))
+                    {
+                        ok = false;
+                        break;
+                    }
+                    else
+                        ok = true;
+                }
+            }
+            catch (const std::exception&)
+            {
+                ok = false;
+            }
+        }
+    }
+    while (!ok);
+}
+
+void Map::TeleportPlayer(Player* player, float x, float y)
+{
+    player->UpdatePosition(x, y, 0.0f);
+
+    UpdateObjectGrid(player);
+
+    GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
+}
+
+bool Map::IsFinish() const
+{
+    return _gameTimer == 0;
+}
+
+void Map::HandleGameFinish()
+{
+    Packet data(SMSG_GAME_FINISH, 0);
+    BroadcastToAll(data);
+}
+
+uint32 Map::GetGameTimer() const
+{
+    return _gameTimer;
+}

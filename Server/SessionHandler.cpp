@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Tue May 28 18:40:29 2013 vincent leroy
+** Last update Tue Jun 04 19:03:47 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -45,19 +45,30 @@ void Session::HandleEnterGame(Packet& recvData)
     Packet data(SMSG_ADD_TO_MAP, 20);
     data << uint32(width * MAP_PRECISION);
     data << uint32(height * MAP_PRECISION);
-    _player->UpdatePosition(5.0f, 5.0f, 0.0f, 0.0f);
+    float x, y;
+    map->GetRandomStartPosition(x, y);
+    _player->UpdatePosition(x, y, 0.0f, 0.0f);
     _player->WritePosition(data);
 
     SendPacket(data);
 
     map->AddObject(_player);
+    map->GetScoreMgr().AddPlayer(_player);
     _status = STATUS_INGAME;
+    map->SendScores();
+
+    Packet data2(SMSG_SEND_GAMETIMER, 4);
+    data2 << uint32(map->GetGameTimer());
+    SendPacket(data2);
 }
 
 void Session::HandleMovement(Packet& recvData)
 {
     bool add;
     recvData >> add;
+
+    if (!_player->IsAlive())
+        return;
 
     _player->ReadPosition(recvData);
 
@@ -122,6 +133,12 @@ void Session::HandleDropBomb(Packet& recvData)
     bomb->UpdatePosition(x, y, z, 0.0f);
     _player->GetMap()->AddObject(bomb);
     std::cout << "BOMB PLANTED" << std::endl;
+
+    if (Score* sc = _player->GetMap()->GetScoreMgr().GetScore(_player->GetGUID()))
+    {
+        sc->bomb += 1;
+        _player->GetMap()->SendScores(_player->GetGUID());
+    }
 }
 
 void Session::HandleGlobalChatText(Packet& recvData)

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Wed May 29 15:29:50 2013 maxime ginters
+** Last update Tue Jun 04 16:42:10 2013 maxime ginters
 */
 
 #ifndef CLIENTOBJECT_H_
@@ -23,14 +23,14 @@ public:
     ClientObject(uint64 guid, uint32 modelid, std::string const& name);
     virtual ~ClientObject();
 
-    uint64 GetGUID() const;
     uint32 GetModelId() const;
     GraphicObject &GetGraphicObject();
 
     void Update(uint32 const diff);
 
+    void HandleRespawn();
+
 private:
-    uint64 _guid;
     uint32 _modelId;
     std::string _name;
     GraphicObject _graphicObject;

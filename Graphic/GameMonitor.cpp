@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Tue May 28 17:21:39 2013 fabien casters
+** Last update Tue Jun 04 19:01:40 2013 maxime ginters
 */
 
 #include <iostream>
@@ -13,6 +13,9 @@
 #include "Client.h"
 #include "Text.hpp"
 #include "ModelFactory.h"
+
+#define SIZE_SCORE_BOX_X 600
+#define SIZE_SCORE_BOX_Y 400
 
 GameMonitor::GameMonitor(Client *cli, uint32 width, uint32 height) :
     _client(cli), _width(width), _height(height), _cam(),
@@ -33,9 +36,10 @@ void GameMonitor::update(void)
     _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
-        iter->second->GetGraphicObject().update(gameClock_);
+        if (iter->second->IsAlive())
+            iter->second->GetGraphicObject().update(gameClock_);
     ClientObjectPtr obj = _client->GetPlayer();
-    if (obj.get())
+    if (obj.get() && obj->IsAlive())
         obj->GetGraphicObject().update(gameClock_);
 
     _cam.update(_client->GetPlayer());
@@ -71,13 +75,14 @@ void GameMonitor::draw(void)
     glEnd();
 
     ClientObjectPtr obj = _client->GetPlayer();
-    if (obj.get())
+    if (obj.get() && obj->IsAlive())
         obj->GetGraphicObject().draw();
     std::map<uint64, ClientObjectPtr> map;
     _client->GetObjectMap(map);
     std::map<uint64, ClientObjectPtr>::iterator iter;
     for(iter = map.begin(); iter != map.end(); ++iter)
-        iter->second->GetGraphicObject().draw();
+        if (iter->second->IsAlive())
+            iter->second->GetGraphicObject().draw();
 
 
     glEnable(GL_DEPTH_TEST);
@@ -102,7 +107,16 @@ void GameMonitor::draw(void)
     glVertex3f(300, 0, 0);
     glEnd();
 
-
+    if (_client->IsScoreOpen())
+    {
+        glColor3f(0, 0, 0);
+        glBegin(GL_QUADS);
+        glVertex3f(window_.getWidth() / 2 - SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2, 0.f);
+        glVertex3f(window_.getWidth() / 2 + SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2, 0.f);
+        glVertex3f(window_.getWidth() / 2 + SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 + SIZE_SCORE_BOX_Y / 2, 0.f);
+        glVertex3f(window_.getWidth() / 2 - SIZE_SCORE_BOX_X / 2, window_.getHeight() / 2 + SIZE_SCORE_BOX_Y / 2, 0.f);
+        glEnd();
+    }
 
     glPopMatrix();
     glMatrixMode(GL_PROJECTION);
@@ -153,6 +167,74 @@ void GameMonitor::draw(void)
         prompt.setSize(font_size);
         //prompt.setFont("Assets/SIXTY.TTF");
         prompt.draw();
+    }
+    if (obj.get() && !obj->IsAlive())
+    {
+        std::stringstream ss;
+        ss << "Vous avez ete tue par [";
+        ss << obj->GetLastKiller();
+        ss << "] repop dans ";
+        ss << uint32(obj->GetRespawnTime() / 1000);
+        ss << "s";
+        gdl::Text killed;
+        killed.setText(ss.str());
+        killed.setPosition(10, 10);
+        killed.setSize(15);
+        killed.draw();
+    }
+
+    if (_client->IsScoreOpen())
+    {
+        gdl::Text prompt;
+        prompt.setText("Score");
+        prompt.setPosition(window_.getWidth() / 2 - 30, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2 + 10);
+        prompt.setSize(26);
+        prompt.draw();
+
+        uint32 x = 0;
+        uint32 y = 0;
+        std::map<uint64, Score*>::const_iterator it = _client->GetScoreMgr().ScoreBegin();
+        for (; it != _client->GetScoreMgr().ScoreEnd(); ++it)
+        {
+            if (!it->second)
+                continue;
+
+            std::ostringstream oss;
+
+            oss << it->second->name << std::endl;
+            oss << it->second->died;
+            oss << " died" << std::endl;
+            oss << it->second->bomb;
+            oss << " bomb planted" << std::endl;
+            oss << it->second->killed;
+            oss << " kill" << std::endl;
+            oss << it->second->wall;
+            oss << " wall destructed" << std::endl;
+
+            gdl::Text name;
+            name.setSize(12);
+            name.setText(oss.str());
+            name.setPosition(window_.getWidth() / 2 - SIZE_SCORE_BOX_X / 2 + x * 120 + 40, window_.getHeight() / 2 - SIZE_SCORE_BOX_Y / 2 + y * 120 + 60);
+            name.draw();
+
+            ++x;
+            if (x >= 4)
+            {
+                x = 0;
+                ++y;
+            }
+        }
+    }
+
+    if (_client->GetGameTimer() > 0)
+    {
+        std::stringstream ss;
+        ss << "Fin de la partie dans : " << uint32(_client->GetGameTimer() / 1000) << "s";
+        gdl::Text timer;
+        timer.setText(ss.str());
+        timer.setPosition(window_.getWidth() / 2 - 40, 10);
+        timer.setSize(15);
+        timer.draw();
     }
 
     // After drawing the text

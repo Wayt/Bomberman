@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Tue May 28 16:58:28 2013 maxime ginters
+** Last update Tue Jun 04 19:03:33 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -63,6 +63,12 @@ public:
     void HandleForcePosition(Packet& recvData);
     void HandleGlobalChatText(Packet& recvData);
     void HandleGridChange(Packet& recvData);
+    void HandleSendScore(Packet& recvData);
+    void HandleTeleport(Packet& recvData);
+    void HandlePlayerKilled(Packet& recvData);
+    void HandlePlayerRespawn(Packet& recvData);
+    void HandleSendGameTimer(Packet& recvData);
+    void HandleGameFinish(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void RemoveObject(ClientObjectPtr obj);
@@ -75,6 +81,12 @@ public:
     void HandleReceivPong();
 
     void GetObjectList(std::list<const GameObject*> &list) const;
+
+    bool IsScoreOpen() const;
+    ScoreMgr const& GetScoreMgr() const;
+
+    uint32 GetGameTimer() const;
+    bool IsFinish() const;
 
 private:
     void Update(uint32 const diff);
@@ -108,6 +120,10 @@ private:
         PING_SIZE       = 3
     };
     uint32 _pingData[PING_SIZE];
+
+    bool _scoreOpen;
+    ScoreMgr _scoreMgr;
+    uint32 _gameTimer;
 };
 
 #endif /* !CLIENT_H_ */

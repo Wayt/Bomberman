@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Wed May 29 15:08:49 2013 maxime ginters
+** Last update Tue Jun 04 17:32:08 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -14,7 +14,7 @@
 
 Player::Player(uint64 guid, std::string const& name, Session* sess) :
     MapObject(guid, MODELID_PLAYER, TYPEID_PLAYER, name),
-    _session(sess)
+    _session(sess), _telTimer(0)
 {}
 
 void Player::SetGrid(MapGrid* grid)
@@ -53,5 +53,51 @@ void Player::HandleLogout()
 
 void Player::HandleHit(MapObject* obj)
 {
+    MapObject::HandleHit(obj);
     std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
+
+    SetAlive(false);
+    SetKilledBy(obj->GetName());
+    SetMovementFlags(0);
+    SetRespawnTime(TIME_TO_RESPAWN);
+    _telTimer = TIME_TO_RESPAWN / 3;
+
+    _map->GridUpdater(this, GRIDUPDATE_KILLED, UPDATE_FULL);
+
+    if (Score* sc = _map->GetScoreMgr().GetScore(GetGUID()))
+    {
+        sc->died += 1;
+        _map->SendScores(GetGUID());
+    }
+
+    if (Score* sc = _map->GetScoreMgr().GetScore(obj->GetOwner()))
+    {
+        sc->killed += 1;
+        _map->SendScores(obj->GetOwner());
+    }
+}
+
+void Player::Update(uint32 const diff)
+{
+    MapObject::Update(diff);
+
+    if (_telTimer > 0)
+    {
+        if (_telTimer <= diff)
+        {
+            float x, y;
+            _map->GetRandomStartPosition(x, y);
+            _map->TeleportPlayer(this, x, y);
+            _telTimer = 0;
+        }
+        else
+            _telTimer -= diff;
+    }
+}
+
+void Player::HandleRespawn()
+{
+    GameObject::HandleRespawn();
+
+    _map->GridUpdater(this, GRIDUPDATE_RESPAWN, UPDATE_FULL);
 }

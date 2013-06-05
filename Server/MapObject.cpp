@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed May 29 16:41:15 2013 maxime ginters
+** Last update Mon Jun 03 18:31:32 2013 maxime ginters
 */
 
 #include <iostream>
@@ -13,9 +13,9 @@
 #include "Map.h"
 #include "ObjectAI.h"
 
-MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(modelId, name),
+MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
     _modelId(modelId), _isInWorld(false), _currGrid(NULL), _name(name), _typeId(type),
-    _guid(guid), _motionMaster(NULL), _owner(NULL), _alive(true)
+    _motionMaster(NULL), _owner(0)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -72,11 +72,6 @@ TypeId MapObject::GetTypeId() const
     return _typeId;
 }
 
-uint64 MapObject::GetGUID() const
-{
-    return _guid;
-}
-
 void MapObject::BuildObjectCreateForPlayer(Packet& data) const
 {
     data << uint64(GetGUID());
@@ -118,6 +113,7 @@ void MapObject::Update(uint32 const diff)
 {
     if (_motionMaster)
         _motionMaster->Update(diff);
+    UpdateRespawnTime(diff);
 }
 
 void MapObject::HandlePositionChange()
@@ -129,14 +125,14 @@ void MapObject::HandlePositionChange()
         _map->UpdateObjectGrid(this);
 }
 
-MapObject* MapObject::GetOwner()
+uint64 MapObject::GetOwner()
 {
     return _owner;
 }
 
-void MapObject::SetOwner(MapObject* obj)
+void MapObject::SetOwner(uint64 guid)
 {
-    _owner = obj;
+    _owner = guid;
 }
 
 void MapObject::GetObjectListInRange(float range, std::list<MapObject*>& list) const
@@ -162,11 +158,6 @@ void MapObject::HandleHit(MapObject* obj)
 {
     _alive = false;
     (void)obj;
-}
-
-bool MapObject::IsAlive() const
-{
-    return _alive;
 }
 
 void MapObject::RegisterLua(lua_State* state)
