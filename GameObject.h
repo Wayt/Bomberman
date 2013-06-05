@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 15:52:42 2013 maxime ginters
+** Last update Wed Jun 05 18:27:55 2013 vincent leroy
 */
 
 #ifndef GAMEOBJECT_H_
@@ -23,7 +23,10 @@ enum ModelIds
     MODELID_PLAYER  = 0,
     MODELID_WALL    = 1,
     MODELID_BOMB    = 2,
-    MODELID_BORDER  = 3
+    MODELID_BORDER  = 3,
+    MODELID_SPEED   = 4,
+    MODELID_RANGE   = 5,
+    MODELID_MORE    = 6
 };
 
 class GameObject : public Position

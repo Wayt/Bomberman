@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Wed May 29 15:11:37 2013 maxime ginters
+** Last update Wed Jun 05 18:33:57 2013 vincent leroy
 */
 
 #ifndef OBJECT_H_
@@ -36,6 +36,8 @@ public:
     virtual void DoAction(uint32 id);
 
     void HandleHit(MapObject* obj);
+
+    void SpawnBonus();
 private:
     ObjectAI* _AI;
 };

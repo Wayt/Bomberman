@@ -8,7 +8,6 @@ function UpdateAI(me, diff)
 end
 
 function HandleHit(me, by)
-    Log:print("Wall get hit")
-    me:SpawnBonus()
+    Log:print("Speed catch")
     me:Despawn()
 end
