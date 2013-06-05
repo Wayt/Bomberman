@@ -5,15 +5,13 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 22:22:24 2013 vincent leroy
+** Last update Wed Jun 05 22:34:55 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
 # define GAMEOBJECT_H_
 
 #include <list>
-#include "luabind.h"
-
 #include "Position.h"
 
 class Map;
@@ -73,8 +71,6 @@ public:
     uint64 GetLastKillerGUID() const;
 
     virtual void HandleCross(GameObject* by);
-
-    static void RegisterLua(lua_State* state);
 
 protected:
     uint32 _modelId;

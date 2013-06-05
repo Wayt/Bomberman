@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Wed Jun 05 20:57:35 2013 maxime ginters
+** Last update Wed Jun 05 22:34:38 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -193,11 +193,3 @@ void GameObject::HandleCross(GameObject* by)
     (void)by;
 }
 
-void GameObject::RegisterLua(lua_State* state)
-{
-    luabind::module(state) [
-        luabind::class_<GameObject>("GameObject")
-        .def("GetModelId", &GameObject::GetModelId)
-        .def("SetSpeed", &GameObject::SetSpeed)
-        ];
-}

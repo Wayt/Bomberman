@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Wed Jun 05 22:23:25 2013 maxime ginters
+** Last update Wed Jun 05 22:39:19 2013 maxime ginters
 */
 
 #include <iostream>
@@ -164,6 +164,8 @@ void MapObject::RegisterLua(lua_State* state)
     luabind::module(state) [
         luabind::class_<MapObject>("MapObject")
         .def("GetName", &MapObject::GetName)
+        .def("SetSpeed", &MapObject::SetSpeed)
+        .def("AddMaxBombCount", &MapObject::AddMaxBombCount)
         ];
 }
 
@@ -211,4 +213,17 @@ void MapObject::DecreasBombCount()
 {
     if (_currBomb > 0)
         --_currBomb;
+}
+
+void MapObject::HandleRespawn()
+{
+    GameObject::HandleRespawn();
+
+    SetSpeed(1.0f);
+    _maxBomb = 2;
+}
+
+void MapObject::AddMaxBombCount(uint32 value)
+{
+    _maxBomb += value;
 }

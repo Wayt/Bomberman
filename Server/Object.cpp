@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed Jun 05 22:22:12 2013 vincent leroy
+** Last update Wed Jun 05 22:36:51 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -104,8 +104,9 @@ void Object::HandleHit(MapObject* obj)
 
 void Object::HandleCross(GameObject* by)
 {
-    if (GetAI())
-        GetAI()->HandleCross(by);
+    MapObject* obj = dynamic_cast<MapObject*>(by);
+    if (obj && GetAI())
+        GetAI()->HandleCross(obj);
 }
 
 void Object::SpawnBonus()

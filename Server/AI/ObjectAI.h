@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Wed Jun 05 20:32:09 2013 maxime ginters
+** Last update Wed Jun 05 22:36:07 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
@@ -16,7 +16,6 @@
 #include <iostream>
 #include <string>
 #include "Shared.h"
-#include "GameObject.h"
 
 #define LUA_RUNTIME_ERROR(a) sLog->error("LUA ERROR: %s", lua_tostring(a, -1))
 
@@ -34,7 +33,7 @@ public:
 
     void UpdateAI(uint32 const diff);
     void HandleHit(MapObject* obj);
-    void HandleCross(GameObject* by);
+    void HandleCross(MapObject* by);
 
 private:
     Object* _me;
