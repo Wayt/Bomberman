@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Wed Jun 05 17:42:44 2013 maxime ginters
+** Last update Wed Jun 05 18:52:16 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -21,9 +21,9 @@
 
 #define BORDER_DENSITY 5
 
-Map::Map(uint32 width, uint32 height) :
-    _mapGridMap(), _nextGuid(1), _width(width), _height(height), _removeList(),
-    _gameTimer(60000)
+Map::Map(uint32 width, uint32 height, uint32 nguid, uint32 time) :
+    _mapGridMap(), _nextGuid(nguid), _width(width), _height(height), _removeList(),
+    _gameTimer(time)
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -662,4 +662,100 @@ MapObject const* Map::GetObject(uint64 guid) const
         if ((*itr)->GetGUID() == guid)
             return (*itr);
     return NULL;
+}
+
+Map* Map::LoadFromFile(std::string const& filename)
+{
+    std::ifstream file;
+    file.open(filename.c_str());
+
+    std::string line;
+    if (!std::getline(file, line))
+        throw std::logic_error("invalide map file");
+
+    Map* newMap = NULL;
+
+    {
+        std::vector<std::string> s;
+        split(line, ',', s);
+        if (s.size() != 4)
+            throw std::logic_error("invalide map file");
+
+        newMap = new Map(to<uint32>(s[0]), to<uint32>(s[1]),
+                to<uint32>(s[2]), to<uint32>(s[3]));
+    }
+
+    if (!std::getline(file, line))
+        throw std::logic_error("invalide map file");
+    newMap->LoadScore(to<uint32>(line), file);
+
+    if (!std::getline(file, line))
+        throw std::logic_error("invalide map file");
+
+    uint32 count = to<uint32>(line);
+    for (; count > 0; --count)
+    {
+        if (!std::getline(file, line))
+            throw std::logic_error("invalide map file");
+
+        std::vector<std::string> s;
+        split(line, ',', s);
+        if (s.size() != 9)
+            throw std::logic_error("invalide map file");
+
+        uint32 model = to<uint32>(s[0]);
+        std::string name = s[1];
+        float speed = to<float>(s[2]);
+        float speedor = to<float>(s[3]);
+        float posx = to<float>(s[4]);
+        float posy = to<float>(s[5]);
+        float posz = to<float>(s[6]);
+        float orr = to<float>(s[7]);
+        uint64 guid = to<uint64>(s[8]);
+
+        Object* obj = new Object(guid, model, name);
+        obj->SetSpeed(speed);
+        obj->SetSpeedOr(speedor);
+        obj->UpdatePosition(posx, posy, posz, orr);
+
+        switch (model)
+        {
+            case MODELID_WALL:
+                obj->InitializeAI("Scripts/wall.lua");
+                break;
+            case MODELID_BORDER:
+                obj->InitializeAI("Scripts/border.lua");
+                break;
+            default:
+                break;
+        }
+
+        newMap->AddObject(obj);
+    }
+    file.close();
+    return newMap;
+}
+
+void Map::LoadScore(uint32 count, std::ifstream& stream)
+{
+    for (; count > 0; --count)
+    {
+        std::string line;
+        if (!std::getline(stream, line))
+            throw std::logic_error("invalide map file");
+
+        std::vector<std::string> s;
+        split(line, ',', s);
+        if (s.size() != 6)
+            throw std::logic_error("invalide map file");
+
+        uint64 guid = to<uint64>(s[0]);
+        Score* sc = new Score();
+        sc->name = s[1];
+        sc->died = to<uint32>(s[2]);
+        sc->killed = to<uint32>(s[3]);
+        sc->bomb = to<uint32>(s[4]);
+        sc->wall = to<uint32>(s[5]);
+        _scoreMgr.AddPlayer(guid, sc);
+    }
 }
