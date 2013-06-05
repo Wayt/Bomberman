@@ -5,7 +5,7 @@
 ## Login <ginter_m@epitech.eu>
 ##
 ## Started on Mon May 06 13:39:56 2013 maxime ginters
-## Last update Wed Jun 05 20:11:48 2013 maxime ginters
+## Last update Wed Jun 05 22:21:03 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -24,15 +24,15 @@ LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
 LDFLAGS	+= -lsfml-audio
 LDFLAGS	+= -llua
-LDFLAGS	+= -llua5.1
+#LDFLAGS	+= -llua5.1
 LDFLAGS	+= -lluabind
-LDFLAGS	+= -lSOIL
+#LDFLAGS	+= -lSOIL
 
 NAME	= bomberman
 
 SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cpp MovementPoint.cpp GameObject.cpp \
 	Opcodes.cpp ModelMgr.cpp ScoreMgr.cpp \
-	Server/SessionHandler.cpp Server/Map.cpp Server/MapObject.cpp Server/Player.cpp Server/Speed.cpp Server/Range.cpp Server/More.cpp \
+	Server/SessionHandler.cpp Server/Map.cpp Server/MapObject.cpp Server/Player.cpp Server/Speed.cpp Server/Range.cpp Server/More.cpp Server/Teleport.cpp \
 	Server/Server.cpp Server/SessionSocketAcceptor.cpp Server/Session.cpp Server/SessionSocket.cpp \
 	Server/SessionSocketMgr.cpp Server/Bomb.cpp Server/Object.cpp Server/AI/ObjectAI.cpp \
 	Client/Client.cpp Client/ClientSocket.cpp Client/ClientHandler.cpp Client/ClientObject.cpp \

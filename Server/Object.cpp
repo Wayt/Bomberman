@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed Jun 05 19:32:46 2013 vincent leroy
+** Last update Wed Jun 05 22:20:39 2013 vincent leroy
 */
 
 #include "Object.h"
@@ -13,6 +13,7 @@
 #include "Speed.h"
 #include "Range.h"
 #include "More.h"
+#include "Teleport.h"
 
 Object::Object(uint64 guid, uint32 modelId, std::string const& name) : MapObject(guid, modelId, TYPEID_OBJECT, name),
     _AI(NULL)
@@ -106,7 +107,7 @@ void Object::SpawnBonus()
     if ((rand() % 10) != 0)
         return ;
 
-    uint32 r = rand() % 3;
+    uint32 r = rand() % 4;
     Object *bonus = NULL;
 
     switch (r)
@@ -120,6 +121,8 @@ void Object::SpawnBonus()
         case 2:
             bonus = new More(GetMap()->MakeNewGuid());
             break;
+        case 3:
+            bonus = new Teleport(GetMap()->MakeNewGuid());
         default:
             break;
     }
