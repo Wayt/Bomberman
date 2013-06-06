@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu Jun 06 22:38:46 2013 vincent leroy
+** Last update Thu Jun 06 22:48:27 2013 vincent leroy
 */
 
 #include <iostream>
@@ -120,19 +120,22 @@ bool PathFindingRunnable::isInList(const point &p, const l_noeud &l) const
 void PathFindingRunnable::addAdjacentBox(const point &n, const PathFinderRequest *request)
 {
     if (n.second >= 0)
-        checkForAddInList(n.first, n.second - 1);
+        checkForAddInList(n.first, n.second - 1, n, request);
     if (n.first >= 0)
-        checkForAddInList(n.first - 1, n.second);
-    if (n.first < request->width);
-        checkForAddInList(n.first + 1, n.second);
+        checkForAddInList(n.first - 1, n.second, n, request);
+    if (n.first < request->width)
+        checkForAddInList(n.first + 1, n.second, n, request);
     if (n.second < request->height)
-        checkForAddInList(n.first, n.second + 1);
+        checkForAddInList(n.first, n.second + 1, n, request);
 }
 
-void PathFindingRunnable::checkForAddInList(uint32 x, uint32 y)
+void PathFindingRunnable::checkForAddInList(uint32 x, uint32 y, const point &n, const PathFinderRequest *request)
 {
     noeud tmp;
     point p(x, y);
+
+    if (request->map[y][x] != 0)
+        return ;
 
     if (!isInList(p, _close))
     {
@@ -143,7 +146,7 @@ void PathFindingRunnable::checkForAddInList(uint32 x, uint32 y)
 
         if (isInList(p, _open))
         {
-            if (tmp.cout_f < open[p].cout_f)
+            if (tmp.cout_f < _open[p].cout_f)
                 _open[p] = tmp;
         }
         else
