@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu Jun 06 02:36:07 2013 maxime ginters
+** Last update Thu Jun 06 02:49:29 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -95,6 +95,7 @@ public:
     bool IsFinish() const;
 
     bool HasWallAtPos(float x, float y) const;
+    bool HasBorderAtPos(float x, float y) const;
 
 private:
     void Update(uint32 const diff);

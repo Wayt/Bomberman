@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 02:39:21 2013 maxime ginters
+** Last update Thu Jun 06 02:50:08 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -468,7 +468,22 @@ bool Client::HasWallAtPos(float x, float y) const
         ClientObjectPtr obj = it->second;
         if (FuzzyCompare(x, obj->GetPositionX()) && FuzzyCompare(y, obj->GetPositionY()))
         {
-            if (obj->GetModelId() == MODELID_WALL || obj->GetModelId() == MODELID_BORDER)
+            if (obj->GetModelId() == MODELID_WALL)
+                return true;
+        }
+    }
+    return false;
+}
+
+bool Client::HasBorderAtPos(float x, float y) const
+{
+    std::map<uint64, ClientObjectPtr>::const_iterator it;
+    for (it = _clientObjectMap.begin(); it != _clientObjectMap.end(); ++it)
+    {
+        ClientObjectPtr obj = it->second;
+        if (FuzzyCompare(x, obj->GetPositionX()) && FuzzyCompare(y, obj->GetPositionY()))
+        {
+            if (obj->GetModelId() == MODELID_BORDER)
                 return true;
         }
     }
