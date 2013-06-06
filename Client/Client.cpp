@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 02:31:15 2013 maxime ginters
+** Last update Thu Jun 06 02:37:37 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -458,4 +458,16 @@ void Client::SaveMapRequest()
 {
     Packet data(CMSG_SAVE_MAP, 0);
     SendPacket(data);
+}
+
+bool Client::HasWallAtPos(float x, float y) const
+{
+    std::map<uint64, ClientObjectPtr>::const_iterator it;
+    for (it = _clientObjectMap.begin(); it != _clientObjectMap.end(); ++it)
+    {
+        ClientObjectPtr obj = it->second;
+        if (FuzzyCompare(x, obj->GetPositionX()) && FuzzyCompare(y, obj->GetPositionY()))
+            return true;
+    }
+    return false;
 }
