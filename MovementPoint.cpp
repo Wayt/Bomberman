@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Thu Jun 06 20:01:07 2013 vincent leroy
+** Last update Thu Jun 06 20:18:57 2013 vincent leroy
 */
 
 #include "GameObject.h"
@@ -75,11 +75,11 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
     std::list<GameObject*> list;
     map->GetAllObject(list);
 
-    request.map = new uint8*[map->GetHeight()];
-    for (uint32 i = 0; i < map->GetHeight(); ++i)
+    request.map = new uint8*[map->GetHeight() / MAP_PRECISION];
+    for (uint32 i = 0; i < map->GetHeight() / MAP_PRECISION; ++i)
     {
-        request.map[i] = new uint8[map->GetWidth()];
-        for (uint32 j = 0; j < map->GetWidth(); ++j)
+        request.map[i] = new uint8[map->GetWidth() / MAP_PRECISION];
+        for (uint32 j = 0; j < map->GetWidth() / MAP_PRECISION; ++j)
             request.map[i][j] = 0;
     }
 
@@ -94,8 +94,8 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
             request.map[(uint32)x / MAP_PRECISION][(uint32)y / MAP_PRECISION] = 0;
     }
 
-    request.width = map->GetWidth();
-    request.height = map->GetHeight();
+    request.width = map->GetWidth() / MAP_PRECISION;
+    request.height = map->GetHeight() / MAP_PRECISION;
     request.begin = point(_owner->GetPositionX(), _owner->GetPositionY());
     request.end = p;
     request.object = this;
