@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 02:50:18 2013 fabien casters
+** Last update Thu Jun 06 03:05:42 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -280,6 +280,9 @@ void Client::HandleUpdateSpeed(Packet& recvData)
 
     obj->SetSpeed(speed);
     obj->ReadPosition(recvData);
+
+    if (obj.get() == _player.get())
+        sSoundMgr->PlaySound(SOUND_GOGOGO);
 }
 
 void Client::HandleBombBoumed(Packet& recvData)
