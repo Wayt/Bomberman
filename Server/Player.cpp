@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Thu Jun 06 12:59:44 2013 maxime ginters
+** Last update Thu Jun 06 13:08:48 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -74,11 +74,12 @@ bool Player::HandleHit(MapObject* obj)
         _map->SendScores(GetGUID());
     }
 
-    if (Score* sc = _map->GetScoreMgr().GetScore(obj->GetOwner()))
-    {
-        sc->killed += 1;
-        _map->SendScores(obj->GetOwner());
-    }
+    if (obj->GetOwner() != GetGUID())
+        if (Score* sc = _map->GetScoreMgr().GetScore(obj->GetOwner()))
+        {
+            sc->killed += 1;
+            _map->SendScores(obj->GetOwner());
+        }
     return true;
 }
 
