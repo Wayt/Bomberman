@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Thu Jun 06 15:28:00 2013 maxime ginters
+** Last update Thu Jun 06 17:56:09 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -50,6 +50,9 @@ public:
     void HandlePathGenerated(std::list<point> const& path);
     void HandleFailToCreatePath();
     void HandleFinishMovePoint();
+
+    MapObject* FindNearestPlayer();
+    bool IsPositionSafe() const;
 
 private:
     ObjectAI* _AI;

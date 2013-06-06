@@ -70,16 +70,8 @@ uint32 countWall(std::list<MapObject*> torm)
 
 void Bomb::HandleExplode()
 {
-    float x, y;
-    GetPosition(x, y);
-    x += 2.5f;
-    y += 2.5f;
-
-    uint32 coefx = (uint32)x / 5;
-    float blockx = 5 * coefx;
-
-    uint32 coefy = (uint32)y / 5;
-    float blocky = 5 * coefy;
+    float blockx, blocky;
+    GetBoxCenter(blockx, blocky);
 
     _map->GridUpdater(this, GRIDUPDATE_BOUM, UPDATE_FULL);
 

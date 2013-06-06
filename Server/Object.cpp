@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 15:49:36 2013 maxime ginters
+** Last update Thu Jun 06 18:16:52 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -198,4 +198,55 @@ void Object::HandleFinishMovePoint()
 {
     if (GetAI())
         GetAI()->HandleFinishMovePoint();
+}
+
+MapObject* Object::FindNearestPlayer()
+{
+    std::list<MapObject*> list;
+    GetObjectListInRange(100.0f, list);
+
+    MapObject* obj = NULL;
+    float dist = 200.0f * 200.0f;
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+        {
+            if (!obj)
+                obj = *itr;
+            else
+            {
+                float d = GetDistance2dSquare(*itr);
+                if (d < dist)
+                {
+                    dist = d;
+                    obj = *itr;
+                }
+            }
+        }
+    return obj;
+}
+
+bool Object::IsPositionSafe() const
+{
+    std::list<MapObject*> list;
+    float bx, by;
+
+    GetBoxCenter(bx, by);
+    GetMap()->GetObjectListInRange(bx, by, 100.0f, list);
+
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if (MapObject* obj = *itr)
+            if (obj->GetModelId() == MODELID_BOMB)
+            {
+                float x, y;
+                obj->GetPosition(x, y);
+                if ((x >= (bx - 2.5f) && x <= (bx + 2.5f)) ||
+                        (y >= (by - 2.5f) && y <= (by + 2.5f)))
+                {
+                    if (obj->GetDistance2dSquare(bx, by) <= (obj->GetBombRange() * obj->GetBombRange()))
+                        return false;
+                }
+            }
+    return true;
 }

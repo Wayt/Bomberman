@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu Jun 06 15:09:39 2013 maxime ginters
+** Last update Thu Jun 06 18:16:12 2013 maxime ginters
 */
 
 #include <iostream>
@@ -102,6 +102,11 @@ void MapObject::SendPacket(Packet const& data)
 }
 
 Map* MapObject::GetMap()
+{
+    return _map;
+}
+
+Map const* MapObject::GetMap() const
 {
     return _map;
 }
@@ -302,4 +307,18 @@ void MapObject::Kill(MapObject* by)
             sc->killed += 1;
             _map->SendScores(by->GetOwner());
         }
+}
+
+void MapObject::GetBoxCenter(float& blockx, float& blocky) const
+{
+    float x, y;
+    GetPosition(x, y);
+    x += 2.5f;
+    y += 2.5f;
+
+    uint32 coefx = (uint32)x / 5;
+    blockx = 5 * coefx;
+
+    uint32 coefy = (uint32)y / 5;
+    blocky = 5 * coefy;
 }

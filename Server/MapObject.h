@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Thu Jun 06 15:27:45 2013 maxime ginters
+** Last update Thu Jun 06 18:16:27 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -51,6 +51,7 @@ public:
     virtual void SendPacket(Packet const& data);
 
     Map* GetMap();
+    Map const* GetMap() const;
     MapGrid* GetGrid();
 
     virtual void Update(uint32 const diff);
@@ -83,6 +84,7 @@ public:
 
     void Kill(MapObject* by);
 
+    void GetBoxCenter(float& x, float& y) const;
 
 protected:
     bool _isInWorld;
