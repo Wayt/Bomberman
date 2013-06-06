@@ -109,11 +109,11 @@ SubObject *SelectBox::getSubObject()
 /*{ Movements */
 bool SelectBox::moveUp ()
 {
-    _pos.x -= 1;
+    _pos.x -= 3;
     if (_pos.x > 0)
-	_pos.z += 1;
+	_pos.z += 3;
     else
-	_pos.z -= 1;
+	_pos.z -= 3;
     if (_pos.x <= oldpos_.x - intervalV_){
 	oldpos_.x = _pos.x;
 	return false;
@@ -123,11 +123,11 @@ bool SelectBox::moveUp ()
 
 bool SelectBox::moveDown ()
 {
-    _pos.x += 1;
+    _pos.x += 3;
     if (_pos.x > 0)
-	_pos.z -= 1;
+	_pos.z -= 3;
     else
-	_pos.z += 1;
+	_pos.z += 3;
     if (_pos.x >= oldpos_.x + intervalV_){
 	oldpos_.x = _pos.x;
 	return false;
