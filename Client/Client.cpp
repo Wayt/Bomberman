@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 02:17:34 2013 maxime ginters
+** Last update Thu Jun 06 02:31:15 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -119,9 +119,17 @@ void Client::Update(uint32 const diff)
         if (IsFinish())
             return;
 
+        std::map<uint64, ClientObjectPtr> map;
+        GetObjectMap(map);
         std::map<uint64, ClientObjectPtr>::iterator itr;
-        for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
+        for (itr = map.begin(); itr != map.end(); ++itr)
             itr->second->Update(diff);
+
+        std::list<ClientObjectPtr> list;
+        GetClientOnlyObject(list);
+        std::list<ClientObjectPtr>::iterator itr2;
+        for (itr2 = list.begin(); itr2 != list.end(); ++itr2)
+            (*itr2)->Update(diff);
 
         _player->Update(diff);
         _player->UpdateRespawnTime(diff);
