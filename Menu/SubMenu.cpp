@@ -107,7 +107,7 @@ void SubMenu::HandleKeyUp(gdl::Keys::Key key)
 void SubMenu::HandleKeyDown(gdl::Keys::Key key)
 {
     if (mvt_ == NONE){
-	if ( key == gdl::Keys::Space){
+	if ( key == gdl::Keys::Space || key == gdl::Keys::Return){
 	    std::list<SelectBox *>::iterator sit = boxes_.begin();
 	    std::advance(sit, currentBox_);
 	    if ((*sit)->getRet() == true){
