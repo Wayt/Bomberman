@@ -5,15 +5,13 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:44:16 2013 maxime ginters
-** Last update Tue Jun 04 16:51:55 2013 maxime ginters
+** Last update Thu Jun 06 14:57:14 2013 maxime ginters
 */
 
 #ifndef PLAYER_H_
 # define PLAYER_H_
 
 #include "MapObject.h"
-
-#define TIME_TO_RESPAWN 30000
 
 class Session;
 
@@ -30,7 +28,7 @@ public:
 
     void HandleLogout();
 
-    void HandleHit(MapObject* obj);
+    bool HandleHit(MapObject* obj);
 
     void Update(uint32 const diff);
 
@@ -38,7 +36,6 @@ public:
 
 private:
     Session* _session;
-    uint32 _telTimer;
 };
 
 #endif /* !PLAYER_H_ */

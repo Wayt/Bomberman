@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Wed Jun 05 23:50:28 2013 maxime ginters
+** Last update Thu Jun 06 15:28:00 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -35,13 +35,22 @@ public:
 
     virtual void DoAction(uint32 id);
 
-    void HandleHit(MapObject* obj);
+    bool HandleHit(MapObject* obj);
 
     void SpawnBonus();
 
     void HandleCross(MapObject* by);
 
     void CheckBonusCross(float range);
+
+    void HandleRespawn();
+
+    void MovePoint(float x, float y);
+
+    void HandlePathGenerated(std::list<point> const& path);
+    void HandleFailToCreatePath();
+    void HandleFinishMovePoint();
+
 private:
     ObjectAI* _AI;
 };

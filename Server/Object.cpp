@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 02:43:20 2013 maxime ginters
+** Last update Thu Jun 06 15:49:36 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -79,19 +79,21 @@ void Object::RegisterLua(lua_State* state)
         .def("DoAction", &Object::DoAction)
         .def("SpawnBonus", &Object::SpawnBonus)
         .def("CheckBonusCross", &Object::CheckBonusCross)
+        .def("Kill", &Object::Kill)
+        .def("MovePoint", &Object::MovePoint)
         ];
 }
 
-void Object::HandleHit(MapObject* obj)
+bool Object::HandleHit(MapObject* obj)
 {
     (void)obj;
     if (!IsInWorld())
-        return;
+        return false;
+    if (!MapObject::HandleHit(obj))
+        return false;
     Map* savedMap = _map;
     if (GetAI())
         GetAI()->HandleHit(obj);
-    //std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
-    //_map->RemoveObject(this);
 
     if (GetModelId() == MODELID_WALL)
     {
@@ -101,6 +103,7 @@ void Object::HandleHit(MapObject* obj)
             savedMap->SendScores(obj->GetOwner());
         }
     }
+    return true;
 }
 
 void Object::HandleCross(MapObject* by)
@@ -111,7 +114,7 @@ void Object::HandleCross(MapObject* by)
 
 void Object::SpawnBonus()
 {
-    if ((rand() % 10) != 0)
+    if ((rand() % 5) != 0)
         return ;
 
     uint32 r = rand() % 4;
@@ -152,4 +155,47 @@ void Object::CheckBonusCross(float range)
             HandleCross(*itr);
             break;
         }
+}
+
+void Object::HandleRespawn()
+{
+    MapObject::HandleRespawn();
+
+    if (GetAI())
+        GetAI()->HandleRespawn();
+}
+
+void Object::MovePoint(float x, float y)
+{
+    point pt = std::pair<float, float>(x, y);
+    GetMotionMaster()->MovePoint(pt);
+}
+
+void Object::HandlePathGenerated(std::list<point> const& path)
+{
+    Packet data(SMSG_SEND_PATH, 8 + 16 + 4 + (path.size() * 8));
+    data << uint64(GetGUID());
+    WritePosition(data);
+    data << uint32(path.size());
+    for (std::list<point>::const_iterator itr = path.begin(); itr != path.end(); ++itr)
+    {
+        data << float((*itr).first);
+        data << float((*itr).second);
+    }
+    GetMap()->BroadcastToAll(data);
+
+    if (GetAI())
+        GetAI()->HandlePathGenerated();
+}
+
+void Object::HandleFailToCreatePath()
+{
+    if (GetAI())
+        GetAI()->HandleFailToCreatePath();
+}
+
+void Object::HandleFinishMovePoint()
+{
+    if (GetAI())
+        GetAI()->HandleFinishMovePoint();
 }

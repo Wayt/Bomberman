@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 00:52:37 2013 Aymeric Girault
+** Last update Thu Jun 06 14:59:55 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -149,6 +149,14 @@ void Map::AddObject(MapObject* obj)
 
     obj->SetMap(this);
     grid->AddObject(obj);
+
+    if (obj->GetTypeId() == TYPEID_PLAYER)
+    {
+        Packet data(SMSG_PLAYER_JOIN, 8 + obj->GetName().size());
+        data << uint64(obj->GetGUID());
+        data << obj->GetName();
+        BroadcastToAll(data);
+    }
 }
 
 void Map::RemoveObject(MapObject* obj)
@@ -161,6 +169,14 @@ void Map::RemoveObject(MapObject* obj)
     obj->SetGrid(NULL);
     obj->SetMap(NULL);
     _removeList.push_back(obj);
+
+    if (obj->GetTypeId() == TYPEID_PLAYER)
+    {
+        Packet data(SMSG_PLAYER_LEAVE, 8 + obj->GetName().size());
+        data << uint64(obj->GetGUID());
+        data << obj->GetName();
+        BroadcastToAll(data);
+    }
 }
 
 MapGrid::MapGrid() :
@@ -291,10 +307,7 @@ void MapGrid::BroadcastToGrid(Packet const& pkt, MapObject* except)
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if ((*itr)->GetTypeId() == TYPEID_PLAYER)
             if ((*itr) != except)
-            {
                 (*itr)->SendPacket(pkt);
-                std::cout << "Send packet to " << (*itr)->GetName() << std::endl;
-            }
 }
 
 void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list) const
@@ -511,19 +524,12 @@ uint32 Map::GetObjectListInRange(float x, float y, float range, std::list<MapObj
     return i;
 }
 
-void Map::GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const
+void Map::GetObjectList(float x, float y, std::list<GameObject*> &list) const
 {
-    w = 0;
-    h = 0;
-
     for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
-            {
-                w += GRID_SIZE;
-                h += GRID_SIZE;
                 grid->GetObjectList(list);
-            }
 }
 
 void Map::GetObjectList(const GameObject *obj, std::list<GameObject*> &list) const
@@ -578,62 +584,50 @@ void Map::BroadcastToAll(Packet const& pkt)
 
 void Map::GetRandomStartPosition(float& x, float& y)
 {
-    bool ok = true;
+    bool ok;
 
     do
     {
         x = rand() % (_width - MAP_PRECISION);
         y = rand() % (_height - MAP_PRECISION);
 
-        MapGrid *grid = GetGridAt(x, y);
-        if (!grid)
-            ok = false;
-        else
+        std::list<GameObject*> list;
+        GetObjectList(x, y, list);
+        try
         {
-            std::list<GameObject*> list;
-            grid->GetObjectList(list);
-            try
+            ModelBox self = sModelMgr->GetModelBoxAtPos(x, y, 0.f, MODELID_PLAYER);
+            std::list<GameObject*>::const_iterator it;
+            for (it = list.begin(); it != list.end(); ++it)
             {
-                ModelBox self = sModelMgr->GetModelBoxAtPos(x, y, 0.f, MODELID_PLAYER);
-                std::list<GameObject*>::const_iterator it;
-                for (it = list.begin(); it != list.end(); ++it)
+                ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                if (box.crossable == true)
+                    continue;
+
+                if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
+                    (self.max.y > box.min.y && self.min.y < box.max.y))
                 {
-                    ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
-                    if (box.crossable == true)
-                        continue;
-                    if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
-                        (self.max.y > box.min.y && self.min.y < box.max.y))
-                    {
-                        ok = false;
-                        break;
-                    }
-                    else
-                        ok = true;
+                    ok = false;
+                    break;
                 }
+                else
+                    ok = true;
             }
-            catch (const std::exception&)
-            {
-                ok = false;
-            }
+        }
+        catch (const std::exception&)
+        {
+            ok = false;
         }
     }
     while (!ok);
 }
 
-void Map::TeleportPlayer(Player* player, float x, float y)
+void Map::TeleportPlayer(MapObject* obj, float x, float y)
 {
-    player->UpdatePosition(x, y, 0.0f);
+    obj->UpdatePosition(x, y, 0.0f);
 
-    UpdateObjectGrid(player);
+    UpdateObjectGrid(obj);
 
-    GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
-
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
+    GridUpdater(obj, GRIDUPDATE_TELEPORT, UPDATE_FULL);
 }
 
 bool Map::IsFinish() const
@@ -816,5 +810,18 @@ void Map::LoadScore(uint32 count, std::ifstream& stream)
         sc->bomb = to<uint32>(s[4]);
         sc->wall = to<uint32>(s[5]);
         _scoreMgr.AddPlayer(guid, sc);
+    }
+}
+
+void Map::SpawnBot(uint32 count)
+{
+    for (; count > 0; --count)
+    {
+        Object* obj = new Object(MakeNewGuid(), MODELID_BOT, "Bot");
+        float x, y;
+        GetRandomStartPosition(x, y);
+        obj->UpdatePosition(x, y, 0.0f, 0.0f);
+        obj->InitializeAI("Scripts/bot.lua");
+        AddObject(obj);
     }
 }

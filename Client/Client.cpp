@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 02:50:08 2013 maxime ginters
+** Last update Thu Jun 06 14:51:24 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -165,10 +165,7 @@ void Client::AddObject(ClientObjectPtr obj)
 {
     std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.find(obj->GetGUID());
     if (itr != _clientObjectMap.end())
-    {
-        sLog->error("Error : try to add an existing object");
         return;
-    }
     _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));
 }
 
@@ -254,37 +251,31 @@ void Client::SendMovementPacket(MovementFlags move, bool add)
     {
         case MOVEMENT_FORWARD:
             {
-                std::cout << "SEND AVANT" << std::endl;
                 data.SetOpcode(CMSG_MOVE_FORWARD);
                 break;
             }
         case MOVEMENT_BACKWARD:
             {
-                std::cout << "SEND ARRIERE" << std::endl;
                 data.SetOpcode(CMSG_MOVE_BACKWARD);
                 break;
             }
         case MOVEMENT_TURN_LEFT:
             {
-                std::cout << "SEND GAUCHE" << std::endl;
                 data.SetOpcode(CMSG_MOVE_TURN_LEFT);
                 break;
             }
         case MOVEMENT_TURN_RIGHT:
             {
-                std::cout << "SEND DROITE" << std::endl;
                 data.SetOpcode(CMSG_MOVE_TURN_RIGHT);
                 break;
             }
         case MOVEMENT_STRAF_LEFT:
             {
-                std::cout << "SEND STRAFT GAUCHE" << std::endl;
                 data.SetOpcode(CMSG_MOVE_STRAF_LEFT);
                 break;
             }
         case MOVEMENT_STRAF_RIGHT:
             {
-                std::cout << "SEND STRAFT DROITE" << std::endl;
                 data.SetOpcode(CMSG_MOVE_STRAF_RIGHT);
                 break;
             }
@@ -331,7 +322,6 @@ void Client::HandleSendChat()
 
 void Client::HandleKeyDown(gdl::Keys::Key key)
 {
-    std::cout << "KEYDOWN : " << (uint32)key << std::endl;
     if (_chatBox.IsOpen() && key != gdl::Keys::Return)
     {
         _chatBox.HandleInput((int)key);
@@ -360,6 +350,13 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
                 if (!IsFinish())
                     SaveMapRequest();
                 break;
+                case gdl::Keys::B:
+                if (!IsFinish())
+                {
+                    Packet data(CMSG_SPAWN_BOT, 0);
+                    SendPacket(data);
+                }
+                break;
         default:
                 break;
 
@@ -386,7 +383,6 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
 
 void Client::HandleKeyUp(gdl::Keys::Key key)
 {
-    std::cout << "KEYUP : " << (uint32)key << std::endl;
 
     if (IsFinish())
         return;

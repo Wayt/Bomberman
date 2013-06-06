@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Wed Jun 05 22:53:11 2013 fabien casters
+** Last update Thu Jun 06 14:51:43 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -18,7 +18,6 @@ void Session::HandleLoginPlayer(Packet& recvData)
     std::string name;
     recvData >> name;
 
-    std::cout << "Player name : " << name << std::endl;
     // Check nick availability
 
     _status = STATUS_AUTHED;
@@ -76,29 +75,23 @@ void Session::HandleMovement(Packet& recvData)
     {
         case CMSG_MOVE_FORWARD:
             _player->UpdateMovementFlag(MOVEMENT_FORWARD, add);
-            std::cout << "EN AVANT " << add << std::endl;
             break;
         case CMSG_MOVE_BACKWARD:
             _player->UpdateMovementFlag(MOVEMENT_BACKWARD, add);
-            std::cout << "EN ARRIERE " << add << std::endl;
             break;
         case CMSG_MOVE_TURN_LEFT:
             _player->UpdateMovementFlag(MOVEMENT_TURN_LEFT, add);
-            std::cout << "EN GAUCHE " << add << std::endl;
             break;
         case CMSG_MOVE_TURN_RIGHT:
             _player->UpdateMovementFlag(MOVEMENT_TURN_RIGHT, add);
-            std::cout << "EN DROITE " << add << std::endl;
             break;
         case CMSG_MOVE_STRAF_LEFT:
             _player->UpdateMovementFlag(MOVEMENT_STRAF_LEFT, add);
             _player->UpdateOrientation(_player->GetOrientation() + (add ? M_PI_4 : -M_PI_4));
-            std::cout << "EN STRAF GAUCHE" << std::endl;
             break;
         case CMSG_MOVE_STRAF_RIGHT:
             _player->UpdateMovementFlag(MOVEMENT_STRAF_RIGHT, add);
             _player->UpdateOrientation(_player->GetOrientation() + (add ? -M_PI_4 : M_PI_4));
-            std::cout << "EN STRAF DROITE" << std::endl;
             break;
         default:
             break;
@@ -106,9 +99,6 @@ void Session::HandleMovement(Packet& recvData)
     Position pos;
     _player->GetPosition(pos);
 
-    std::cout << "OLD POS : " << pos << std::endl;
-    std::cout << "NEW POS : " << *_player->GetPosition() << std::endl;
-    std::cout << "Decalage : " << _player->GetDistance2d(&pos) << std::endl;
 
     if (_player->GetDistance2d(&pos) >= 0.5f)
     {
@@ -148,9 +138,15 @@ void Session::HandleGlobalChatText(Packet& recvData)
 
 void Session::HandleSaveMap(Packet& recvData)
 {
-    std::cout << "Saving map ..." << std::endl;
+    sLog->out("Saving map ...");
     (void)recvData;
     _player->GetMap()->SaveToFile("dust2.map");
     Packet data(SMSG_MAP_SAVED, 0);
     SendPacket(data);
+}
+
+void Session::HandleSpawnBot(Packet& recvData)
+{
+    (void)recvData;
+    _player->GetMap()->SpawnBot(1);
 }

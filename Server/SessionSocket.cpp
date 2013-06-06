@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 17:26:18 2013 maxime ginters
-** Last update Wed May 29 01:33:44 2013 maxime ginters
+** Last update Thu Jun 06 13:01:17 2013 maxime ginters
 */
 
 #include "SessionSocket.h"
@@ -30,7 +30,6 @@ bool SessionSocket::IsClosed() const
 
 void SessionSocket::OnOpen()
 {
-    std::cout << "SessionSocket start" << std::endl;
     boost::asio::ip::tcp::no_delay option(true);
     _socket.set_option(option);
     _session = new Session(this, _sockMgr->GetServer());
@@ -39,7 +38,6 @@ void SessionSocket::OnOpen()
 
 void SessionSocket::OnClose()
 {
-    std::cout << "SessionSocket close" << std::endl;
 }
 
 void SessionSocket::Close()
@@ -52,7 +50,7 @@ void SessionSocket::HandleInput(boost::system::error_code const& error, std::siz
 {
     if (error)
     {
-        std::cout << "Error: " << error.message() << std::endl;
+        sLog->error("Error: %s", error.message().c_str());
         if (_session)
             _session->Close();
         return;

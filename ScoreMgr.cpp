@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Jun 03 17:58:56 2013 maxime ginters
-** Last update Wed Jun 05 18:36:57 2013 maxime ginters
+** Last update Thu Jun 06 12:40:21 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -28,6 +28,11 @@ void ScoreMgr::AddPlayer(GameObject* obj)
 void ScoreMgr::AddPlayer(uint64 guid, Score* sc)
 {
     _scores.insert(std::pair<uint64, Score*>(guid, sc));
+}
+
+void ScoreMgr::RemovePlayer(uint64 guid)
+{
+    _scores.erase(guid);
 }
 
 

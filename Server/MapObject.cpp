@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu Jun 06 00:23:37 2013 maxime ginters
+** Last update Thu Jun 06 15:09:39 2013 maxime ginters
 */
 
 #include <iostream>
@@ -13,10 +13,12 @@
 #include "Map.h"
 #include "ObjectAI.h"
 #include "Bomb.h"
+#include "Client.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
     _isInWorld(false), _currGrid(NULL), _typeId(type),
-    _motionMaster(NULL), _owner(0), _maxBomb(2), _currBomb(0), _bombPower(10.0f)
+    _motionMaster(NULL), _owner(0), _maxBomb(2), _currBomb(0), _bombPower(10.0f),
+    _telTimer(0)
 {
     _motionMaster = new MotionMaster(this);
     _motionMaster->Initialize(modelId == MODELID_PLAYER ? MOVEMENTTYPE_PLAYER : MOVEMENTTYPE_IDLE);
@@ -113,7 +115,21 @@ void MapObject::Update(uint32 const diff)
 {
     if (_motionMaster)
         _motionMaster->Update(diff);
+
     UpdateRespawnTime(diff);
+
+    if (_telTimer > 0)
+    {
+        if (_telTimer <= diff)
+        {
+            float x, y;
+            _map->GetRandomStartPosition(x, y);
+            _map->TeleportPlayer(this, x, y);
+            _telTimer = 0;
+        }
+        else
+            _telTimer -= diff;
+    }
 }
 
 void MapObject::HandlePositionChange()
@@ -154,10 +170,13 @@ ObjectAI* MapObject::GetAI()
     return NULL;
 }
 
-void MapObject::HandleHit(MapObject* obj)
+bool MapObject::HandleHit(MapObject* obj)
 {
+    if (!IsAlive())
+        return false;
     _alive = false;
     (void)obj;
+    return true;
 }
 
 void MapObject::RegisterLua(lua_State* state)
@@ -169,6 +188,7 @@ void MapObject::RegisterLua(lua_State* state)
         .def("AddMaxBombCount", &MapObject::AddMaxBombCount)
         .def("RandomTeleport", &MapObject::RandomTeleport)
         .def("IncrBombRange", &MapObject::IncrBombRange)
+        .def("Kill", &MapObject::Kill)
         ];
 }
 
@@ -195,6 +215,9 @@ void MapObject::SetSpeed(float speed)
 void MapObject::DropBombIfPossible()
 {
     if (_currBomb >= _maxBomb)
+        return;
+
+    if (_client && _client->IsFinish())
         return;
 
     ++_currBomb;
@@ -225,6 +248,8 @@ void MapObject::HandleRespawn()
     SetSpeed(1.0f);
     _maxBomb = 2;
     _bombPower = 10.0f;
+
+    _map->GridUpdater(this, GRIDUPDATE_RESPAWN, UPDATE_FULL);
 }
 
 void MapObject::AddMaxBombCount(uint32 value)
@@ -234,22 +259,9 @@ void MapObject::AddMaxBombCount(uint32 value)
 
 void MapObject::RandomTeleport()
 {
-    if (GetTypeId() != TYPEID_PLAYER)
-    {
-        std::cerr << "NO PLAYER" << std::endl;
-        return;
-    }
-
-    Player* player = reinterpret_cast<Player*>(this);
-    if (!player)
-    {
-        std::cout << "NO REINTEREPREPOK:KA: " << std::endl;
-        return;
-    }
-
     float x, y;
     _map->GetRandomStartPosition(x, y);
-    _map->TeleportPlayer(player, x, y);
+    _map->TeleportPlayer(this, x, y);
 }
 
 float MapObject::GetBombRange() const
@@ -262,4 +274,32 @@ void MapObject::IncrBombRange(float value)
     _bombPower += value;
     if (_bombPower >= 100.0f)
         _bombPower = 100.0f;
+}
+
+void MapObject::Kill(MapObject* by)
+{
+    SetAlive(false);
+    SetKilledBy(by->GetName());
+    if (by->GetOwner() > 0)
+        SetKillerGUID(by->GetOwner());
+    else
+        SetKillerGUID(by->GetGUID());
+    SetMovementFlags(0);
+    SetRespawnTime(TIME_TO_RESPAWN);
+    _telTimer = TIME_TO_RESPAWN / 3;
+
+    _map->GridUpdater(this, GRIDUPDATE_KILLED, UPDATE_FULL);
+
+   if (Score* sc = _map->GetScoreMgr().GetScore(GetGUID()))
+    {
+        sc->died += 1;
+        _map->SendScores(GetGUID());
+    }
+
+    if (by->GetOwner() != GetGUID())
+        if (Score* sc = _map->GetScoreMgr().GetScore(by->GetOwner()))
+        {
+            sc->killed += 1;
+            _map->SendScores(by->GetOwner());
+        }
 }

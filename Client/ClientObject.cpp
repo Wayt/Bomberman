@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Thu Jun 06 02:13:56 2013 maxime ginters
+** Last update Thu Jun 06 15:50:48 2013 maxime ginters
 */
 
 #include "ClientObject.h"
@@ -60,4 +60,9 @@ void ClientObject::HandleRespawn()
 void ClientObject::TimedRemove(uint32 time)
 {
     _despawnTimer = time;
+}
+
+MotionMaster* ClientObject::GetMotionMaster()
+{
+    return _motionMaster;
 }
