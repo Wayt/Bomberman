@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Thu Jun 06 20:18:57 2013 vincent leroy
+** Last update Thu Jun 06 20:20:36 2013 vincent leroy
 */
 
 #include "GameObject.h"
@@ -16,7 +16,7 @@
 
 MovementPoint::MovementPoint(GameObject *obj) :
     AMovement(obj, MOVEMENTTYPE_POINT),
-    _path()
+    _path(), _notified(false), _notifMutex()
 {
 }
 
@@ -32,7 +32,18 @@ void MovementPoint::Update(uint32 const diff)
 {
     _owner->SetMovementFlags(0);
     if (_path.empty())
-        return ;
+        return;
+    {
+        ScopLock lock(_notifMutex);
+        if (!_notified)
+        {
+            if (_path.size() > 0)
+                _owner->HandlePathGenerated(_path);
+            else
+                _owner->HandleFailToCreatePath();
+            _notified = true;
+        }
+    }
 
     _owner->SetMovementFlags(MOVEMENT_FORWARD);
     point actu = point(_owner->GetPositionX(), _owner->GetPositionY());
@@ -110,11 +121,9 @@ void MovementPoint::GetPath(std::list<point> &path) const
 
 void MovementPoint::PathGenerated(const std::list<point>& points)
 {
+    ScopLock lock(_notifMutex);;
     _path = points;
-    if (points.size() > 0)
-        _owner->HandlePathGenerated(points);
-    else
-        _owner->HandleFailToCreatePath();
+    _notified = false;
 }
 
 void MovementPoint::MovePoint(const std::list<point> &points)
