@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu Jun 06 20:06:10 2013 maxime ginters
+** Last update Fri Jun 07 01:12:57 2013 maxime ginters
 */
 
 #include <iostream>
@@ -227,6 +227,9 @@ void MapObject::DropBombIfPossible()
     if (_client && _client->IsFinish())
         return;
 
+    if (!IsAlive())
+        return;
+
     ++_currBomb;
     float x, y, z, o;
     GetPosition(x, y, z, o);
@@ -323,4 +326,124 @@ void MapObject::GetBoxCenter(float& blockx, float& blocky) const
 
     uint32 coefy = (uint32)y / 5;
     blocky = 5 * coefy;
+}
+
+bool MapObject::CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const
+{
+    float bx, by, sx, sy;
+    bomb->GetBoxCenter(bx, by);
+    GetBoxCenter(sx, sy);
+
+    if (!((bx >= (sx - 2.5f) && bx <= (sx + 2.5f)) ||
+            (by >= (sy - 2.5f) && by <= (sy + 2.5f))))
+        return false;
+
+    if (bomb->GetDistance2dSquare(sx, sy) > (bomb->GetBombRange() * bomb->GetBombRange()))
+        return false;
+
+    if (FuzzyCompare(sx, bx)) // Translate on y
+    {
+        if (sy < by)
+        {
+            for (float y = sy + 5.0f; y < by; y += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float y = sy - 5.0f; y > by; y -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+
+    }
+    else if (FuzzyCompare(sy, by)) // Translate on x
+    {
+        if (sx < bx)
+        {
+            for (float x = sx + 5.0f; x < bx; x += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float x = sx - 5.0f; x > bx; x -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+
+    }
+    return true;
+}
+
+bool MapObject::CanBeHitByAtPos(MapObject* bomb, float sx, float sy, std::list<MapObject*> const& list) const
+{
+    float bx, by;
+    bomb->GetBoxCenter(bx, by);
+
+    if (!((bx >= (sx - 2.5f) && bx <= (sx + 2.5f)) ||
+            (by >= (sy - 2.5f) && by <= (sy + 2.5f))))
+        return false;
+
+    float range = bomb->GetBombRange() + 5.0f;
+    if (bomb->GetDistance2dSquare(sx, sy) > (range * range))
+        return false;
+
+    if (FuzzyCompare(sx, bx)) // Translate on y
+    {
+        if (sy < by)
+        {
+            for (float y = sy + 5.0f; y < by; y += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float y = sy - 5.0f; y > by; y -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+
+    }
+    else if (FuzzyCompare(sy, by)) // Translate on x
+    {
+        if (sx < bx)
+        {
+            for (float x = sx + 5.0f; x < bx; x += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float x = sx - 5.0f; x > bx; x -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+
+    }
+    return true;
+}
+
+bool MapObject::IsPositionSafe() const
+{
+    std::list<MapObject*> list;
+    float bx, by;
+
+    GetBoxCenter(bx, by);
+    GetMap()->GetObjectListInRange(bx, by, 100.0f, list);
+
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if (MapObject* obj = *itr)
+            if (obj->GetModelId() == MODELID_BOMB)
+            {
+                if (CanBeHitBy(obj, list))
+                    return false;
+            }
+    return true;
+}
+
+void MapObject::HandleBombBoum()
+{
+    std::cout << "Handle BOUM" << std::endl;
 }

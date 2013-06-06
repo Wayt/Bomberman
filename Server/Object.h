@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Thu Jun 06 19:19:05 2013 maxime ginters
+** Last update Fri Jun 07 01:33:53 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -46,35 +46,23 @@ public:
     void HandleRespawn();
 
     void MovePoint(float x, float y);
+    void MovePoint(MapObject const* to);
 
     void HandlePathGenerated(std::list<point> const& path);
     void HandleFailToCreatePath();
     void HandleFinishMovePoint();
 
-    MapObject* FindNearestPlayer();
-    bool IsPositionSafe() const;
+    MapObject const* FindNearestPlayer() const;
+    bool MoveToSafePosition();
+
+    void HandleBombBoum();
+
+    bool HasPlayerInRange(float range) const;
 
 private:
-    bool CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const;
     ObjectAI* _AI;
 
-    class WallPositionCheck
-    {
-    public:
-        WallPositionCheck(float x, float y) :
-            _posx(x), _posy(y)
-        {}
 
-        bool operator()(MapObject const* obj)
-        {
-            if (FuzzyCompare(_posx, obj->GetPositionX()) && FuzzyCompare(_posy, obj->GetPositionY()))
-                return true;
-            return false;
-        }
-    private:
-        float _posx;
-        float _posy;
-    };
 };
 
 #endif /* !OBJECT_H_ */

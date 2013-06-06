@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 20:07:35 2013 vincent leroy
+** Last update Fri Jun 07 01:36:09 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -80,9 +80,13 @@ void Object::RegisterLua(lua_State* state)
         .def("SpawnBonus", &Object::SpawnBonus)
         .def("CheckBonusCross", &Object::CheckBonusCross)
         .def("Kill", &Object::Kill)
-        .def("MovePoint", &Object::MovePoint)
+        .def("MovePoint", (void(Object::*)(float, float))&Object::MovePoint)
+        .def("MovePointTarget", (void(Object::*)(MapObject const*))&Object::MovePoint)
         .def("FindNearestPlayer", &Object::FindNearestPlayer)
         .def("IsPositionSafe", &Object::IsPositionSafe)
+        .def("DropBombIfPossible", &Object::DropBombIfPossible)
+        .def("MoveToSafePosition", &Object::MoveToSafePosition)
+        .def("HasPlayerInRange", &Object::HasPlayerInRange)
         ];
 }
 
@@ -169,8 +173,17 @@ void Object::HandleRespawn()
 
 void Object::MovePoint(float x, float y)
 {
+    if (!IsAlive())
+        return;
     point pt = std::pair<float, float>(x, y);
     GetMotionMaster()->MovePoint(pt, GetMap());
+}
+
+void Object::MovePoint(MapObject const* to)
+{
+    float x, y;
+    to->GetPosition(x, y);
+    MovePoint(x, y);
 }
 
 void Object::HandlePathGenerated(std::list<point> const& path)
@@ -202,7 +215,7 @@ void Object::HandleFinishMovePoint()
         GetAI()->HandleFinishMovePoint();
 }
 
-MapObject* Object::FindNearestPlayer()
+MapObject const* Object::FindNearestPlayer() const
 {
     std::list<MapObject*> list;
     GetObjectListInRange(100.0f, list);
@@ -211,7 +224,8 @@ MapObject* Object::FindNearestPlayer()
     float dist = 200.0f * 200.0f;
 
     for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
-        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+        if (((*itr)->GetTypeId() == TYPEID_PLAYER || (*itr)->GetModelId() == MODELID_BOT)
+            && (*itr)->IsAlive())
         {
             if (!obj)
                 obj = *itr;
@@ -228,71 +242,83 @@ MapObject* Object::FindNearestPlayer()
     return obj;
 }
 
-
-
-bool Object::CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const
+bool Object::MoveToSafePosition()
 {
-    float bx, by, sx, sy;
-    bomb->GetBoxCenter(bx, by);
-    GetBoxCenter(sx, sy);
-
-    if (!((bx >= (sx - 2.5f) && bx <= (sx + 2.5f)) ||
-            (by >= (sy - 2.5f) && by <= (sy + 2.5f))))
-        return false;
-
-    if (bomb->GetDistance2dSquare(sx, sy) > (bomb->GetBombRange() * bomb->GetBombRange()))
-        return false;
-
-    if (FuzzyCompare(sx, bx)) // Translate on y
+    if (MapObject const* player = FindNearestPlayer())
     {
-        if (sy < by)
+        if (player->IsPositionSafe())
         {
-            for (float y = sy + 5.0f; y < by; y += 5.0f)
-                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
-                    return false;
+            float x, y;
+            player->GetPosition(x, y);
+            MovePoint(x, y);
+            return true;
         }
-        else
-        {
-            for (float y = sy - 5.0f; y > by; y -= 5.0f)
-                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
-                    return false;
-        }
-
     }
-    else if (FuzzyCompare(sy, by)) // Translate on x
-    {
-        if (sx < bx)
-        {
-            for (float x = sx + 5.0f; x < bx; x += 5.0f)
-                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
-                    return false;
-        }
-        else
-        {
-            for (float x = sx - 5.0f; x > bx; x -= 5.0f)
-                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
-                    return false;
-        }
 
-    }
-    return true;
-}
-
-bool Object::IsPositionSafe() const
-{
     std::list<MapObject*> list;
     float bx, by;
-
     GetBoxCenter(bx, by);
     GetMap()->GetObjectListInRange(bx, by, 100.0f, list);
 
+    float maxRange = 0.0f;
 
     for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
         if (MapObject* obj = *itr)
             if (obj->GetModelId() == MODELID_BOMB)
             {
                 if (CanBeHitBy(obj, list))
-                    return false;
+                {
+                    if (obj->GetBombRange() > maxRange)
+                        maxRange = obj->GetBombRange();
+                }
             }
-    return true;
+    if (maxRange == 0.0f)
+        return false;
+
+    for (float y = by - maxRange; y <= by + maxRange; y += 5.0f)
+        for (float x = bx - maxRange; x <= bx + maxRange; x += 5.0f)
+        {
+            if (!GetMap()->IsValidPosition(x, y))
+                continue;
+
+            float safe = true;
+            GetMap()->GetObjectListInRange(x, y, 100.0f, list);
+
+
+            for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+                if (MapObject* obj = *itr)
+                    if (obj->GetModelId() == MODELID_BOMB)
+                    {
+                        if (CanBeHitByAtPos(obj, x, y, list))
+                        {
+                            safe = false;
+                            break;
+                        }
+                    }
+            if (safe)
+            {
+                MovePoint(x, y);
+                return true;
+            }
+        }
+    return false;
+}
+
+void Object::HandleBombBoum()
+{
+    MapObject::HandleBombBoum();
+
+    if (GetAI())
+        GetAI()->HandleBombBoum();
+}
+
+bool Object::HasPlayerInRange(float range) const
+{
+    MapObject const* pl = FindNearestPlayer();
+    if (!pl)
+        return false;
+    if (pl->GetDistance2dSquare(this) <= range * range)
+        return true;
+    return false;
+
 }

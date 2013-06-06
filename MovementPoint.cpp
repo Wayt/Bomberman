@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Thu Jun 06 22:56:49 2013 vincent leroy
+** Last update Fri Jun 07 01:01:26 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -31,7 +31,7 @@ void MovementPoint::Initialize()
 void MovementPoint::Update(uint32 const diff)
 {
     _owner->SetMovementFlags(0);
-    if (_path.empty())
+    if (_path.empty() || !_owner->IsAlive())
         return;
     {
         ScopLock lock(_notifMutex);
@@ -65,11 +65,6 @@ void MovementPoint::Update(uint32 const diff)
 
         dx += actu.first;
         dy += actu.second;
-        if (dx != dx || dy != dy)
-        {
-            std::cout << "NAN NAN NAN NAN NAN NAN NAN NAN NAN NAN NAN" << std::endl;
-            _owner = NULL;
-        }
         _owner->UpdatePosition(dx, dy, angle);
 
         _owner->HandlePositionChange();

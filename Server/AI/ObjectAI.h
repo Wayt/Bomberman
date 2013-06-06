@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Thu Jun 06 15:29:39 2013 maxime ginters
+** Last update Fri Jun 07 00:11:54 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
@@ -38,6 +38,7 @@ public:
     void HandlePathGenerated();
     void HandleFailToCreatePath();
     void HandleFinishMovePoint();
+    void HandleBombBoum();
 
 private:
     Object* _me;

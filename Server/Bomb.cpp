@@ -116,6 +116,9 @@ void Bomb::HandleExplode()
         {
             obj->HandleHit(this);
         }
+
+    if (MapObject* owner = _map->GetObject(GetOwner()))
+        owner->HandleBombBoum();
 }
 
 void Bomb::Despawn()

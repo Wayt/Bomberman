@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Thu Jun 06 15:31:04 2013 maxime ginters
+** Last update Fri Jun 07 00:11:50 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
@@ -190,6 +190,23 @@ void ObjectAI::HandleFinishMovePoint()
     catch (std::exception const& e)
     {
         std::cerr << "ObjectAI::HandleFinishMovePoint - " << e.what() << std::endl;
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+}
+
+void ObjectAI::HandleBombBoum()
+{
+    if (!_luastate)
+        return;
+
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["HandleBombBoum"])
+            f(_me);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "ObjectAI::HandleBombBoum - " << e.what() << std::endl;
         LUA_RUNTIME_ERROR(_luastate);
     }
 }

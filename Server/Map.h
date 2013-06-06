@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Thu Jun 06 15:00:29 2013 maxime ginters
+** Last update Fri Jun 07 00:46:10 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -149,6 +149,8 @@ public:
     void LoadScore(uint32 count, std::ifstream& stream);
 
     void SpawnBot(uint32 count);
+
+    bool IsValidPosition(float x, float y) const;
 
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 20:07:53 2013 vincent leroy
+** Last update Fri Jun 07 00:51:25 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -829,4 +829,26 @@ void Map::SpawnBot(uint32 count)
         AddObject(obj);
         obj->InitializeAI("Scripts/bot.lua");
     }
+}
+
+bool Map::IsValidPosition(float x, float y) const
+{
+    std::list<MapObject*> list;
+    MapGrid const* grid = GetGridAt(x, y);
+    if (!grid)
+        return false;
+    grid->GetObjectListInRange(x, y, 10.0f, list);
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if (MapObject* obj = *itr)
+        {
+            if (obj->GetModelId() != MODELID_WALL && obj->GetModelId() != MODELID_BORDER)
+                continue;
+
+            float px, py;
+            obj->GetPosition(px, py);
+            if (FuzzyCompare(x, px) && FuzzyCompare(y, py))
+                return false;
+        }
+    return true;
 }

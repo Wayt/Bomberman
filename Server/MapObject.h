@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Thu Jun 06 18:16:27 2013 maxime ginters
+** Last update Fri Jun 07 00:44:07 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -85,8 +85,15 @@ public:
     void Kill(MapObject* by);
 
     void GetBoxCenter(float& x, float& y) const;
+    bool IsPositionSafe() const;
 
+    virtual void HandleBombBoum();
+
+
+    bool CanBeHitByAtPos(MapObject* bomb, float sx, float sy, std::list<MapObject*> const& list) const;
 protected:
+    bool CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const;
+
     bool _isInWorld;
     MapGrid* _currGrid;
     TypeId _typeId;
@@ -97,6 +104,24 @@ protected:
     uint32 _currBomb;
     float _bombPower;
     uint32 _telTimer;
+
+    class WallPositionCheck
+    {
+    public:
+        WallPositionCheck(float x, float y) :
+            _posx(x), _posy(y)
+        {}
+
+        bool operator()(MapObject const* obj)
+        {
+            if (FuzzyCompare(_posx, obj->GetPositionX()) && FuzzyCompare(_posy, obj->GetPositionY()))
+                return true;
+            return false;
+        }
+    private:
+        float _posx;
+        float _posy;
+    };
 };
 
 std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj);
