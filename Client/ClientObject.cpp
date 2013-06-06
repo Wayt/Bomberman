@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:44 2013 maxime ginters
-** Last update Thu Jun 06 01:52:11 2013 maxime ginters
+** Last update Thu Jun 06 02:13:56 2013 maxime ginters
 */
 
 #include "ClientObject.h"
@@ -43,7 +43,8 @@ void ClientObject::Update(uint32 const diff)
     {
         if (_despawnTimer <= diff)
         {
-            _client->RemoveObject(this);
+            if (_client)
+                _client->RemoveClientObject(this);
             _despawnTimer = 0;
         }
         else
