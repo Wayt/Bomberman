@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 02:18:55 2013 fabien casters
+** Last update Thu Jun 06 02:40:29 2013 fabien casters
 */
 
 #include "SoundMgr.h"
@@ -306,7 +306,7 @@ void Client::HandleBombBoumed(Packet& recvData)
     obj2->SetClient(this);
     obj2->TimedRemove(1500);
     AddClientObject(obj2);
-    for (float i = x - range; i <= x + range; i += 5.0f)
+    for (float i = x; i <= x + range; i += 5.0f)
     {
         if (FuzzyCompare(i, x))
             continue;
@@ -315,8 +315,22 @@ void Client::HandleBombBoumed(Packet& recvData)
         obj2->SetClient(this);
         obj2->TimedRemove(1500);
         AddClientObject(obj2);
+        if (HasWallAtPos(i, y))
+            break;
     }
-    for (float i = y - range; i <= y + range; i += 5.0f)
+    for (float i = x; i >= x - range; i -= 5.0f)
+    {
+        if (FuzzyCompare(i, x))
+            continue;
+        ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
+        obj2->UpdatePosition(i, y, 0.0f);
+        obj2->SetClient(this);
+        obj2->TimedRemove(1500);
+        AddClientObject(obj2);
+        if (HasWallAtPos(i, y))
+            break;
+    }
+    for (float i = y; i <= y + range; i += 5.0f)
     {
         if (FuzzyCompare(i, y))
             continue;
@@ -325,5 +339,19 @@ void Client::HandleBombBoumed(Packet& recvData)
         obj2->SetClient(this);
         obj2->TimedRemove(1500);
         AddClientObject(obj2);
+        if (HasWallAtPos(x, i))
+            break;
+    }
+    for (float i = y; i >= y - range; i -= 5.0f)
+    {
+        if (FuzzyCompare(i, y))
+            continue;
+        ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
+        obj2->UpdatePosition(x, i, 0.0f);
+        obj2->SetClient(this);
+        obj2->TimedRemove(1500);
+        AddClientObject(obj2);
+        if (HasWallAtPos(x, i))
+            break;
     }
 }
