@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 00:24:43 2013 maxime ginters
+** Last update Thu Jun 06 02:18:55 2013 fabien casters
 */
 
 #include "SoundMgr.h"
@@ -242,7 +242,6 @@ void Client::HandlePlayerRespawn(Packet& recvData)
 
     obj->SetMovementFlags(0);
     obj->SetAlive(true);
-
 }
 
 void Client::HandleSendGameTimer(Packet& recvData)
@@ -295,4 +294,36 @@ void Client::HandleBombBoumed(Packet& recvData)
         return;
     (void)obj;
     (void)range;
+
+    float x, y;
+    obj->GetPosition(x, y);
+    x += 2.5f;
+    y += 2.5f;
+    x = (float)((uint32)x / 5) * 5;
+    y = (float)((uint32)y / 5) * 5;
+    ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
+    obj2->UpdatePosition(x, y, 0.0f);
+    obj2->SetClient(this);
+    obj2->TimedRemove(1500);
+    AddClientObject(obj2);
+    for (float i = x - range; i <= x + range; i += 5.0f)
+    {
+        if (FuzzyCompare(i, x))
+            continue;
+        ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
+        obj2->UpdatePosition(i, y, 0.0f);
+        obj2->SetClient(this);
+        obj2->TimedRemove(1500);
+        AddClientObject(obj2);
+    }
+    for (float i = y - range; i <= y + range; i += 5.0f)
+    {
+        if (FuzzyCompare(i, y))
+            continue;
+        ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
+        obj2->UpdatePosition(x, i, 0.0f);
+        obj2->SetClient(this);
+        obj2->TimedRemove(1500);
+        AddClientObject(obj2);
+    }
 }

@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Wed Jun 05 22:55:10 2013 fabien casters
+** Last update Thu Jun 06 02:13:33 2013 fabien casters
 */
 
 #include <iostream>
@@ -57,9 +57,9 @@ void GameMonitor::draw(void)
     glBegin(GL_QUADS);
     glColor3ub(0x99, 0x6F, 0x3A);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, _height, 0.0f);
-    glVertex3f(_width, _height, 0.0f);
-    glVertex3f(_width, 0.0f, 0.0f);
+    glVertex3f(0.0f, _height - 2.5f, 0.0f);
+    glVertex3f(_width - 2.5f, _height - 2.5f, 0.0f);
+    glVertex3f(_width - 2.5f, 0.0f, 0.0f);
     glEnd();
 
     ClientObjectPtr obj = _client->GetPlayer();
@@ -232,9 +232,7 @@ void GameMonitor::draw(void)
     glPopAttrib();
 
     window_.display();
-
     usleep(25000);
-
 }
 
 void GameMonitor::unload(void)
