@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu Jun 06 19:49:19 2013 vincent leroy
+** Last update Thu Jun 06 21:08:16 2013 maxime ginters
 */
 
 #include <iostream>
@@ -81,6 +81,30 @@ void PathFindingRunnable::findPath(std::list<point> &path, const PathFinderReque
 
     if (actu == request->end)
         restaurePath(path, request);
+
+    for (uint32 y = 0; y < request->height ; ++y)
+    {
+        for (uint32 x = 0; x < request->width; ++x)
+        {
+            if (x == request->begin.first && request->begin.second == y)
+                std::cout << "B ";
+            else if (x == request->end.first && request->end.second == y)
+                std::cout << "E ";
+            else
+            {
+                bool fount = false;
+                for (std::list<point>::const_iterator itr = path.begin(); itr != path.end(); ++itr)
+                    if ((*itr).first == x && (*itr).second == y)
+                    {
+                        std::cout << ". ";
+                        fount = true;
+                    }
+                if (!fount)
+                    std::cout << uint32(request->map[y][x]) << " ";
+            }
+        }
+            std::cout << std::endl;
+    }
 }
 
 float PathFindingRunnable::distance(const point &p1, const point &p2) const
@@ -103,7 +127,7 @@ void PathFindingRunnable::addAdjacentBox(const point &n, const PathFinderRequest
             continue;
         for (int32 j = n.second - 1; j <= n.second + 1; ++j)
         {
-            if (j < 0 || (uint32)j >= request->height || (i == n.first && j == n.second) || request->map[i][j] != 0)
+            if (j < 0 || (uint32)j >= request->height || (i == n.first && j == n.second) || request->map[j][i] != 0)
                 continue;
 
             point p(i, j);

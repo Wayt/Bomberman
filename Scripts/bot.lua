@@ -7,11 +7,11 @@ function LoadScript(me)
 end
 
 function UpdateAI(me, diff)
-    if me:IsPositionSafe() == false then
-        Log:print("Position pas safe !")
-    else
-        Log:print("Position SAFE !")
-    end
+    --if me:IsPositionSafe() == false then
+    --    Log:print("Position pas safe !")
+    --else
+    --    Log:print("Position SAFE !")
+    --end
 end
 
 function HandleHit(me, by)
