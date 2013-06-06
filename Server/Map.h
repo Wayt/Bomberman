@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Thu Jun 06 00:56:59 2013 maxime ginters
+** Last update Thu Jun 06 12:48:48 2013 vincent leroy
 */
 
 #ifndef MAP_H_
@@ -124,7 +124,7 @@ public:
     uint32 GetObjectListInRange(MapObject const* obj, float range, std::list<MapObject*>& list) const;
     uint32 GetObjectListInRange(float x, float y, float range, std::list<MapObject*>& list) const;
 
-    void GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const;
+    void GetObjectList(float x, float y, std::list<GameObject*> &list) const;
     void GetObjectList(const GameObject *obj, std::list<GameObject*> &list) const;
 
     void GetAllObject(std::list<GameObject*> &list) const;

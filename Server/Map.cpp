@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 00:52:37 2013 Aymeric Girault
+** Last update Thu Jun 06 12:52:07 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -511,19 +511,12 @@ uint32 Map::GetObjectListInRange(float x, float y, float range, std::list<MapObj
     return i;
 }
 
-void Map::GetObjectList(float x, float y, std::list<GameObject*> &list, uint32 &w, uint32 &h) const
+void Map::GetObjectList(float x, float y, std::list<GameObject*> &list) const
 {
-    w = 0;
-    h = 0;
-
     for (int32 iy = -GRID_SIZE; iy <= GRID_SIZE; iy += GRID_SIZE)
         for (int32 ix = -GRID_SIZE; ix <= GRID_SIZE; ix += GRID_SIZE)
             if (MapGrid const* grid = GetGridAt(x + ix, y + iy))
-            {
-                w += GRID_SIZE;
-                h += GRID_SIZE;
                 grid->GetObjectList(list);
-            }
 }
 
 void Map::GetObjectList(const GameObject *obj, std::list<GameObject*> &list) const
@@ -578,43 +571,38 @@ void Map::BroadcastToAll(Packet const& pkt)
 
 void Map::GetRandomStartPosition(float& x, float& y)
 {
-    bool ok = true;
+    bool ok;
 
     do
     {
         x = rand() % (_width - MAP_PRECISION);
         y = rand() % (_height - MAP_PRECISION);
 
-        MapGrid *grid = GetGridAt(x, y);
-        if (!grid)
-            ok = false;
-        else
+        std::list<GameObject*> list;
+        GetObjectList(x, y, list);
+        try
         {
-            std::list<GameObject*> list;
-            grid->GetObjectList(list);
-            try
+            ModelBox self = sModelMgr->GetModelBoxAtPos(x, y, 0.f, MODELID_PLAYER);
+            std::list<GameObject*>::const_iterator it;
+            for (it = list.begin(); it != list.end(); ++it)
             {
-                ModelBox self = sModelMgr->GetModelBoxAtPos(x, y, 0.f, MODELID_PLAYER);
-                std::list<GameObject*>::const_iterator it;
-                for (it = list.begin(); it != list.end(); ++it)
+                ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
+                if (box.crossable == true)
+                    continue;
+
+                if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
+                    (self.max.y > box.min.y && self.min.y < box.max.y))
                 {
-                    ModelBox box = sModelMgr->GetModelBoxAtPos(*it);
-                    if (box.crossable == true)
-                        continue;
-                    if ((self.max.x > box.min.x && self.min.x < box.max.x) &&
-                        (self.max.y > box.min.y && self.min.y < box.max.y))
-                    {
-                        ok = false;
-                        break;
-                    }
-                    else
-                        ok = true;
+                    ok = false;
+                    break;
                 }
+                else
+                    ok = true;
             }
-            catch (const std::exception&)
-            {
-                ok = false;
-            }
+        }
+        catch (const std::exception&)
+        {
+            ok = false;
         }
     }
     while (!ok);
