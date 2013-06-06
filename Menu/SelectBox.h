@@ -33,11 +33,12 @@ class SelectBox : public SubObject
 	virtual void update (gdl::GameClock const&, gdl::Input &);
 	virtual void draw ();
 
-	bool moveUp ();
-	bool moveDown ();
+	virtual bool moveUp ();
+	virtual bool moveDown ();
 	bool moveLeft ();
 	bool moveRight ();
 	virtual void handleKeyDown(gdl::Keys::Key key);
+	void setFocus(bool);
 
 	void addSubObject (SubObject *);
 	SubObject *getSubObject();
@@ -49,6 +50,7 @@ class SelectBox : public SubObject
 
     protected:
 	SubObject		*obj_;
+	bool			focus_;
 };
 
 

@@ -10,15 +10,100 @@
 
 #include  <GL/glut.h> 
 #include "InputBox.h"
+#include <unistd.h>
+
+/*{ InputText */
+InputText::InputText (float x, float y, float z, float o)
+    : AObject(x, y, z, o)
+{
+    value_ = "";
+}
+
+InputText::~InputText ()
+{
+}
+
+void InputText::initialize()
+{
+}
+
+void InputText::initialize(const std::string &key, int x, int y, int s, const gdl::Color &c)
+{
+    setKey(key);
+    text_.setText(">" + value_);
+    text_.setSize(s);
+    text_.setPosition(x, y);
+    text_.setColor(c);
+}
+
+void InputText::setColor(const gdl::Color &c)
+{
+    text_.setColor(c);
+}
+
+void InputText::update(gdl::GameClock const &, gdl::Input &)
+{
+}
+
+void InputText::draw()
+{
+    text_.setText(">" + value_);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  |
+	    GL_TEXTURE_BIT      | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
+    text_.draw();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    glPopAttrib();
+}
+
+void 	InputText::setKey(const std::string &key)
+{
+    key_ = key;
+}
+
+std::string 	InputText::getKey()
+{
+    return key_;
+}
+
+std::string InputText::getValue()
+{
+    return value_;
+}
+
+void	InputText::append(char c)
+{
+	value_.append(1, c);
+}
+
+void	InputText::pop()
+{
+    if (value_.size() > 0)
+	value_ = value_.substr(0, value_.size() - 1);
+}
+/*}*/
 
 InputBox::InputBox (float x, float y, float z, float o) :
     SelectBox(x, y, z, o)
 {
     ret_ = false;
+    mvt_ = false;
     value_ = 0;
     intervalH_ = 500;
-    input_ = "";
     setStatus(VISIBLE);
+    current_ = 0;
+    addInput("name", 230, 250, 25, gdl::Color(0, 255, 0, 255));
+    addInput("ip", 230, 280, 25, gdl::Color(0, 255, 0, 255));
+    addInput("port", 230, 310, 25, gdl::Color(0, 255, 0, 255));
 }
 
 InputBox::~InputBox ()
@@ -27,7 +112,28 @@ InputBox::~InputBox ()
 
 bool InputBox::select ()
 {
+    mvt_ = SubObject::NONE;
+    if (!value_){
+	value_ = 1;
+    }
+    else {
+	value_ = 0;
+    }
     return true;
+}
+
+bool InputBox::moveUp ()
+{
+    bool ret = SelectBox::moveUp();
+    mvt_ = (ret == false) ? false : true;
+    return ret;
+}
+
+bool InputBox::moveDown ()
+{
+    bool ret = SelectBox::moveDown();
+    mvt_ = (ret == false) ? false : true;
+    return ret;
 }
 
 void InputBox::update (gdl::GameClock const&, gdl::Input &)
@@ -36,28 +142,20 @@ void InputBox::update (gdl::GameClock const&, gdl::Input &)
 
 void InputBox::draw ()
 {
-    gdl::Text text;
     switch (status_){
 	case VISIBLE:
 	    SelectBox::draw();
-	    text.setText(input_);
-	    text.setSize(20);
-	    text.setPosition(100, 50);
-	    glMatrixMode(GL_MODELVIEW);
-	    glPushMatrix();
-	    glMatrixMode(GL_PROJECTION);
-	    glPushMatrix();
-	    glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT   | GL_ENABLE_BIT  |
-		    GL_TEXTURE_BIT      | GL_TRANSFORM_BIT | GL_VIEWPORT_BIT);
-	    glDisable(GL_ALPHA_TEST);
-	    glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_LIGHTING);
-	    text.draw();
-	    glMatrixMode(GL_PROJECTION);
-	    glPopMatrix();
-	    glMatrixMode(GL_MODELVIEW);
-	    glPopMatrix();
-	    glPopAttrib();
+	    if (!mvt_ && focus_){
+		unsigned int i = 0;
+		for (std::list<InputText *>::iterator it = inputs_.begin(); it != inputs_.end(); ++it){
+		    if (i == current_)
+			(*it)->setColor(gdl::Color(255, 0, 0, 255));
+		    else
+			(*it)->setColor(gdl::Color(0, 255, 0, 255));
+		    (*it)->draw();
+		    i++;	
+		}
+	    }
 	    break;
 	case HIDDEN:
 	    break;
@@ -68,24 +166,47 @@ void InputBox::draw ()
     }
 }
 
+void	InputBox::addInput(const std::string &key, int x, int y, int s, const gdl::Color &c)
+{
+    InputText *t = new InputText(_pos.x, _pos.y, _pos.z, _rot.x);
+    t->initialize(key, x, y, s, c);
+    inputs_.push_back(t);
+}
+
 void InputBox::handleKeyDown(gdl::Keys::Key key)
 {
+    std::list<InputText *>::iterator it = inputs_.begin();
+    std::advance(it, current_);
     char c;
+
+    if (!*it)
+	return;
 
     if (key >= gdl::Keys::A && key <= gdl::Keys::Z){
 	c = key - gdl::Keys::A + 'a';
-	input_.append(1, c);
+	(*it)->append(c);
     }
-    if (key == gdl::Keys::Space)
-	input_.append(1, ' ');
-    if (key >= gdl::Keys::Num0 && key <= gdl::Keys::Num9){
+    else if (key == gdl::Keys::Space)
+	(*it)->append(' ');
+    else if (key >= gdl::Keys::Num0 && key <= gdl::Keys::Num9){
 	c = key - gdl::Keys::Num0 + '0';
-	input_.append(1, c);
+	(*it)->append(c);
     }
-    if (key == gdl::Keys::Back && input_.size() > 0)
-	input_ = input_.substr(0, input_.size() - 1);
+    else if (key == gdl::Keys::Back)
+	(*it)->pop();
 
-    std::cout << input_ << std::endl;
-
-
+    else if (key == gdl::Keys::Tab){
+	current_++;
+	if (current_ >= inputs_.size())
+	    current_ = 0;
+    }
+    else if (key != gdl::Keys::Up && key != gdl::Keys::Down)
+	(*it)->append('.');
+}
+std::string InputBox::getInput (const std::string &key)
+{
+    for (std::list<InputText *>::iterator it = inputs_.begin(); it != inputs_.end(); ++it)
+	if ((*it)->getKey() == key)
+	    return ((*it)->getValue());
+    return "";
 }

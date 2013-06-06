@@ -54,18 +54,23 @@ void SubMenu::update(gdl::GameClock const &clock, gdl::Input &input)
 	    keyVector_[i] = input.isKeyDown((gdl::Keys::Key)i);
 	UpdateInput();
     }
+    unsigned int i = 0;
     for (std::list<SelectBox *>::iterator it = boxes_.begin(); it != boxes_.end(); ++it)
     {
 	if (status_ == SubObject::VISIBLE)
 	    motionController(*it);
 	(*it)->update(clock, input);
+	if (i == currentBox_)
+	    (*it)->setFocus(true);
+	else
+	    (*it)->setFocus(false);
 	if ((*it)->getStatus() == SubObject::BACK){
 	    for (std::list<SelectBox *>::iterator it = boxes_.begin(); 
 		    it != boxes_.end(); ++it)
 		(*it)->setStatus(SubObject::VISIBLE);
 	    setStatus(SubObject::VISIBLE);
 	}
-
+	i++;
     }
 }
 
@@ -206,6 +211,7 @@ void	SubMenu::addObject(SelectBox *obj)
     boxes_.push_back(obj);
     sbox_++;
 }
+
 void	SubMenu::addBox(const std::string &key, SelectBox::e_boxtype type) 
 {
     SelectBox *box;

@@ -174,5 +174,9 @@ void	SelectBox::initpos(int x, int y, int z, int v)
 void SelectBox::handleKeyDown(gdl::Keys::Key)
 {
 }
+void SelectBox::setFocus(bool f)
+{
+    focus_ = f;
+}
 
 /*}*/
