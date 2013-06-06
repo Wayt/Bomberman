@@ -1,5 +1,5 @@
 /*
-** GameMonitor.cpp for  in /home/vaga/Projects/tek2/bomberman
+** MenuMonitor.cpp for  in /home/vaga/Projects/tek2/bomberman
 ** 
 ** Made by fabien casters
 ** Login   <fabien.casters@epitech.eu>
@@ -9,27 +9,29 @@
 */
 
 #include <iostream>
-#include "GameMonitor.h"
+#include <unistd.h>
+#include "MenuMonitor.h"
 
-GameMonitor::GameMonitor(Client *cli, uint32 width, uint32 height) :
+MenuMonitor::MenuMonitor(Client *cli, uint32 width, uint32 height) :
     _client(cli), _width(width), _height(height), _cam(), _menu(0, 0, -100, 0)
 {
 }
 
-void GameMonitor::initialize(void)
+void MenuMonitor::initialize(void)
 {
     window_.create();
     _cam.initialize();
     _menu.initialize();
 }
 
-void GameMonitor::update(void)
+void MenuMonitor::update(void)
 {
     _cam.update(gameClock_, input_);
     _menu.update(gameClock_, input_);
+    ::usleep(1000);
 }
 
-void GameMonitor::draw(void)
+void MenuMonitor::draw(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.74f, 0.84f, 95.0f, 1.0f);
@@ -38,6 +40,6 @@ void GameMonitor::draw(void)
     window_.display();
 }
 
-void GameMonitor::unload(void)
+void MenuMonitor::unload(void)
 {
 }
