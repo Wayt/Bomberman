@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Thu Jun 06 15:33:11 2013 maxime ginters
+** Last update Thu Jun 06 20:01:07 2013 vincent leroy
 */
 
 #include "GameObject.h"
@@ -38,21 +38,20 @@ void MovementPoint::Update(uint32 const diff)
     point actu = point(_owner->GetPositionX(), _owner->GetPositionY());
     point dest = *_path.begin();
     float dist = _owner->GetSpeed() * 10.0f * diff / 1000.f;
-    float maxDist = sqrt(CARRE(dest.first - actu.first) + CARRE(dest.second - actu.second));
-    if (std::max(dist, maxDist) == maxDist)
-    {
-        _owner->UpdatePosition(dest.first, dest.second, _owner->GetOrientation());
-        _path.pop_front();
-    }
-    else
-    {
-        float angle = acosf((dest.second - actu.second) / dist);
-        float dx = dist * cosf(angle);
-;
-        float dy = dist * sinf(angle);
+    float maxDist = std::sqrt(CARRE(dest.first - actu.first) + CARRE(dest.second - actu.second));
 
-        _owner->UpdatePosition(actu.first + dx, actu.second + dy, angle);
-    }
+    if (dist > maxDist)
+        _path.pop_front();
+
+    float x = dest.first - actu.first;
+    float y = dest.second - actu.second;
+    float k = std::sqrt(CARRE(dist) / (CARRE(x) + CARRE(y)));
+
+    float dx = x * k;
+    float dy = y * k;
+    float angle = atan2f(dy, dx);
+
+    _owner->UpdatePosition(actu.first + dx, actu.second + dy, angle);
 
     _owner->HandlePositionChange();
     if (_path.empty())
@@ -102,6 +101,11 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
     request.object = this;
     request.callback = &MovementPoint::PathGenerated;
     sPathFinder->addRequest(request);
+}
+
+void MovementPoint::GetPath(std::list<point> &path) const
+{
+    path = _path;
 }
 
 void MovementPoint::PathGenerated(const std::list<point>& points)

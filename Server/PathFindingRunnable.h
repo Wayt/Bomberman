@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:15 2013 vincent leroy
-** Last update Thu Jun 06 15:38:50 2013 maxime ginters
+** Last update Thu Jun 06 17:25:58 2013 vincent leroy
 */
 
 #ifndef PATHFINGINGRUNNABLE_H_
@@ -17,6 +17,7 @@
 #include "Shared.h"
 
 class MovementPoint;
+class PathFinder;
 
 #define CARRE(x) ((x) * (x))
 
@@ -38,7 +39,7 @@ struct PathFinderRequest
 class PathFindingRunnable : public Runnable
 {
 public:
-    PathFindingRunnable();
+    PathFindingRunnable(PathFinder* f);
     virtual ~PathFindingRunnable();
 
     void operator()();
@@ -71,6 +72,8 @@ private:
     void addCloseList(const point &p);
     point bestNoeud(const l_noeud &l) const;
     void restaurePath(std::list<point> &path, const PathFinderRequest *request);
+
+    PathFinder* _finder;
 };
 
 #endif /* !PATHFINGINGRUNNABLE_H_ */

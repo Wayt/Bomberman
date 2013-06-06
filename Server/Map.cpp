@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 14:59:55 2013 maxime ginters
+** Last update Thu Jun 06 18:30:30 2013 vincent leroy
 */
 
 #include <cstdlib>
@@ -619,6 +619,11 @@ void Map::GetRandomStartPosition(float& x, float& y)
         }
     }
     while (!ok);
+
+    x += 2.5f;
+    y += 2.5f;
+    x = 5 * ((uint32)x / 5);
+    y = 5 * ((uint32)y / 5);
 }
 
 void Map::TeleportPlayer(MapObject* obj, float x, float y)
@@ -821,7 +826,7 @@ void Map::SpawnBot(uint32 count)
         float x, y;
         GetRandomStartPosition(x, y);
         obj->UpdatePosition(x, y, 0.0f, 0.0f);
-        obj->InitializeAI("Scripts/bot.lua");
         AddObject(obj);
+        obj->InitializeAI("Scripts/bot.lua");
     }
 }

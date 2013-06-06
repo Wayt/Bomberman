@@ -5,15 +5,19 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Wed Jun 05 11:42:13 2013 vincent leroy
+** Last update Thu Jun 06 19:49:19 2013 vincent leroy
 */
 
+#include <iostream>
+
+#include "Map.h"
 #include "PathFinder.h"
 #include "PathFindingRunnable.h"
 
-PathFindingRunnable::PathFindingRunnable() :
+PathFindingRunnable::PathFindingRunnable(PathFinder* f) :
     Runnable(),
-    _open(), _close()
+    _open(), _close(),
+    _finder(f)
 {
 }
 
@@ -25,7 +29,7 @@ void PathFindingRunnable::operator()()
 {
     while (!isStopped())
     {
-        PathFinderRequest *request = sPathFinder->takeRequest();
+        PathFinderRequest *request = _finder->takeRequest();
         if (!request)
             continue;
 
@@ -97,15 +101,28 @@ void PathFindingRunnable::addAdjacentBox(const point &n, const PathFinderRequest
     {
         if (i < 0 || (uint32)i >= request->width)
             continue;
-        for (int32 j = n.second - 1; i <= n.second + 1; ++j)
+        for (int32 j = n.second - 1; j <= n.second + 1; ++j)
         {
             if (j < 0 || (uint32)j >= request->height || (i == n.first && j == n.second) || request->map[i][j] != 0)
                 continue;
 
             point p(i, j);
 
-            if (!isInList(p, _close) || tmp.cout_f < _open[p].cout_f)
-                _open[p] = tmp;
+            if (!isInList(p, _close))
+            {
+                tmp.cout_g = _close[n].cout_g + distance(p, n);
+                tmp.cout_h = distance(p, request->end);
+                tmp.cout_f = tmp.cout_g + tmp.cout_h;
+                tmp.parent = n;
+
+                if (isInList(p, _open))
+                {
+                    if (tmp.cout_f < _open[p].cout_f)
+                        _open[p] = tmp;
+                }
+                else
+                    _open[p] = tmp;
+            }
         }
     }
 }

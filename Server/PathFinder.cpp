@@ -5,9 +5,10 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 13:39:00 2013 vincent leroy
-** Last update Thu May 23 16:35:24 2013 maxime ginters
+** Last update Thu Jun 06 17:23:37 2013 vincent leroy
 */
 
+#include <iostream>
 #include "PathFinder.h"
 
 PathFinder::PathFinder() :
@@ -15,7 +16,7 @@ PathFinder::PathFinder() :
 {
     for (int i = 0; i < PATHFINDING_THREAD_COUNT; ++i)
     {
-        _finding[i] = new PathFindingRunnable();
+        _finding[i] = new PathFindingRunnable(this);
         _finding[i]->run();
     }
 }

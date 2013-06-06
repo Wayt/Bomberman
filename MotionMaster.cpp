@@ -5,9 +5,12 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Thu Jun 06 15:19:57 2013 maxime ginters
+** Last update Thu Jun 06 16:17:47 2013 vincent leroy
 */
 
+#include <iostream>
+
+#include "Map.h"
 #include "MotionMaster.hpp"
 #include "GameObject.h"
 #include "MovementIdle.h"
@@ -21,7 +24,7 @@ AMovement::AMovement(GameObject* obj, MovementTypes type) :
 AMovement::~AMovement()
 {}
 
-void AMovement::MovePoint(const point&)
+void AMovement::MovePoint(const point&, const Map*)
 {}
 
 void AMovement::MovePoint(const std::list<point>&)
@@ -95,11 +98,11 @@ void MotionMaster::Update(uint32 const diff)
     _moveGen->Update(diff);
 }
 
-void MotionMaster::MovePoint(const point &p)
+void MotionMaster::MovePoint(const point &p, const Map *map)
 {
     Initialize(MOVEMENTTYPE_POINT);
     if (_moveGen)
-        _moveGen->MovePoint(p);
+        _moveGen->MovePoint(p, map);
 }
 
 void MotionMaster::MovePoint(const std::list<point> &points)

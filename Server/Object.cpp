@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 15:49:36 2013 maxime ginters
+** Last update Thu Jun 06 16:12:57 2013 vincent leroy
 */
 
 #include "Object.h"
@@ -168,7 +168,7 @@ void Object::HandleRespawn()
 void Object::MovePoint(float x, float y)
 {
     point pt = std::pair<float, float>(x, y);
-    GetMotionMaster()->MovePoint(pt);
+    GetMotionMaster()->MovePoint(pt, GetMap());
 }
 
 void Object::HandlePathGenerated(std::list<point> const& path)

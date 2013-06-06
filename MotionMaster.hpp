@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Mon May 27 18:40:16 2013 vincent leroy
+** Last update Thu Jun 06 16:15:47 2013 vincent leroy
 */
 
 #ifndef MOTIONMASTER_H_
@@ -15,6 +15,7 @@
 #include "PathFindingRunnable.h"
 #include "Shared.h"
 
+class Map;
 class GameObject;
 
 enum MovementTypes
@@ -35,7 +36,7 @@ public:
     virtual void Update(uint32 const diff) = 0;
     virtual void Finish() = 0;
     virtual void Abort(MovementTypes newType) = 0;
-    virtual void MovePoint(const point&);
+    virtual void MovePoint(const point&, const Map*);
     virtual void MovePoint(const std::list<point> &);
     MovementTypes GetType() const;
 
@@ -55,7 +56,7 @@ public:
     MovementTypes GetMovementType() const;
 
     void Update(uint32 const diff);
-    void MovePoint(const point &p);
+    void MovePoint(const point &p, const Map* map);
     void MovePoint(const std::list<point> &points);
 private:
     template<class T>

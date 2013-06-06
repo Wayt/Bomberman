@@ -2,6 +2,7 @@
 
 function LoadScript(me)
     Log:print("LoadScript !")
+    me:MovePoint(5, 5)
 end
 
 function UpdateAI(me, diff)
