@@ -23,7 +23,7 @@ UNAME	:= $(shell uname -a)
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
 LDFLAGS	+= -lsfml-audio
-LDFLAGS	+= -llua
+#LDFLAGS	+= -llua
 LDFLAGS	+= -llua5.1
 LDFLAGS	+= -lluabind
 LDFLAGS	+= -lSOIL

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 16:12:57 2013 vincent leroy
+** Last update Thu Jun 06 20:07:35 2013 vincent leroy
 */
 
 #include "Object.h"
@@ -81,6 +81,8 @@ void Object::RegisterLua(lua_State* state)
         .def("CheckBonusCross", &Object::CheckBonusCross)
         .def("Kill", &Object::Kill)
         .def("MovePoint", &Object::MovePoint)
+        .def("FindNearestPlayer", &Object::FindNearestPlayer)
+        .def("IsPositionSafe", &Object::IsPositionSafe)
         ];
 }
 
@@ -198,4 +200,99 @@ void Object::HandleFinishMovePoint()
 {
     if (GetAI())
         GetAI()->HandleFinishMovePoint();
+}
+
+MapObject* Object::FindNearestPlayer()
+{
+    std::list<MapObject*> list;
+    GetObjectListInRange(100.0f, list);
+
+    MapObject* obj = NULL;
+    float dist = 200.0f * 200.0f;
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+        {
+            if (!obj)
+                obj = *itr;
+            else
+            {
+                float d = GetDistance2dSquare(*itr);
+                if (d < dist)
+                {
+                    dist = d;
+                    obj = *itr;
+                }
+            }
+        }
+    return obj;
+}
+
+
+
+bool Object::CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const
+{
+    float bx, by, sx, sy;
+    bomb->GetBoxCenter(bx, by);
+    GetBoxCenter(sx, sy);
+
+    if (!((bx >= (sx - 2.5f) && bx <= (sx + 2.5f)) ||
+            (by >= (sy - 2.5f) && by <= (sy + 2.5f))))
+        return false;
+
+    if (bomb->GetDistance2dSquare(sx, sy) > (bomb->GetBombRange() * bomb->GetBombRange()))
+        return false;
+
+    if (FuzzyCompare(sx, bx)) // Translate on y
+    {
+        if (sy < by)
+        {
+            for (float y = sy + 5.0f; y < by; y += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float y = sy - 5.0f; y > by; y -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+
+    }
+    else if (FuzzyCompare(sy, by)) // Translate on x
+    {
+        if (sx < bx)
+        {
+            for (float x = sx + 5.0f; x < bx; x += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float x = sx - 5.0f; x > bx; x -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+
+    }
+    return true;
+}
+
+bool Object::IsPositionSafe() const
+{
+    std::list<MapObject*> list;
+    float bx, by;
+
+    GetBoxCenter(bx, by);
+    GetMap()->GetObjectListInRange(bx, by, 100.0f, list);
+
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if (MapObject* obj = *itr)
+            if (obj->GetModelId() == MODELID_BOMB)
+            {
+                if (CanBeHitBy(obj, list))
+                    return false;
+            }
+    return true;
 }
