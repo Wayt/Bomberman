@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 01:42:29 2013 maxime ginters
+** Last update Thu Jun 06 02:17:34 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -15,14 +15,13 @@ Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
     _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false),
-    _scoreMgr(), _gameTimer(0)
+    _scoreMgr(), _gameTimer(0), _clientObjectList()
 {
     _pingData[PING_INTERVAL] = 5000;
 }
 
 Client::~Client()
 {
-    std::map<uint64, ClientObjectPtr>::iterator itr;
     delete _gameMonitor;
 }
 
@@ -165,15 +164,20 @@ void Client::AddObject(ClientObjectPtr obj)
     _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));
 }
 
-void Client::RemoveObject(ClientObject* obj)
+void Client::AddClientObject(ClientObjectPtr obj)
 {
-    std::map<uint64, ClientObjectPtr>::iterator itr = _clientObjectMap.begin();
-    for (; itr != _clientObjectMap.end(); ++itr)
+    _clientObjectList.push_back(obj);
+}
+
+void Client::RemoveClientObject(ClientObject* obj)
+{
+    std::list<ClientObjectPtr>::iterator itr = _clientObjectList.begin();
+    for (; itr != _clientObjectList.end(); ++itr)
     {
-        ClientObjectPtr ptr = itr->second;
+        ClientObjectPtr ptr = *itr;
         if (ptr.get() == obj)
         {
-            RemoveObject(ptr);
+            _clientObjectList.erase(itr);
             return;
         }
     }
@@ -192,12 +196,18 @@ void Client::RemoveObject(ClientObjectPtr obj)
 
 void Client::GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const
 {
-    uint32 size = 0;
     std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.begin();
     for (; itr != _clientObjectMap.end(); ++itr)
-    {
-        ++size;
         map[itr->first] = itr->second;
+}
+
+void Client::GetClientOnlyObject(std::list<ClientObjectPtr>& list) const
+{
+    std::list<ClientObjectPtr>::const_iterator itr = _clientObjectList.begin();
+    for (; itr != _clientObjectList.end(); ++itr)
+    {
+        ClientObjectPtr ptr = *itr;
+        list.push_back(ptr);
     }
 }
 

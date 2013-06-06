@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Wed Jun 05 22:55:10 2013 fabien casters
+** Last update Thu Jun 06 02:17:12 2013 maxime ginters
 */
 
 #include <iostream>
@@ -38,6 +38,10 @@ void GameMonitor::update(void)
     for(iter = map.begin(); iter != map.end(); ++iter)
         if (iter->second->IsAlive())
             iter->second->GetGraphicObject().update(gameClock_);
+    std::list<ClientObjectPtr> list;
+    _client->GetClientOnlyObject(list);
+    for (std::list<ClientObjectPtr>::iterator iter2 = list.begin(); iter2 != list.end(); ++iter2)
+        (*iter2)->GetGraphicObject().update(gameClock_);
     ClientObjectPtr obj = _client->GetPlayer();
     if (obj.get() && obj->IsAlive())
         obj->GetGraphicObject().update(gameClock_);
@@ -71,6 +75,11 @@ void GameMonitor::draw(void)
     for(iter = map.begin(); iter != map.end(); ++iter)
         if (iter->second->IsAlive())
             iter->second->GetGraphicObject().draw();
+
+    std::list<ClientObjectPtr> list;
+    _client->GetClientOnlyObject(list);
+    for (std::list<ClientObjectPtr>::iterator iter2 = list.begin(); iter2 != list.end(); ++iter2)
+        (*iter2)->GetGraphicObject().draw();
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);

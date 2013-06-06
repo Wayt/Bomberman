@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu Jun 06 01:43:09 2013 maxime ginters
+** Last update Thu Jun 06 02:14:23 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -74,10 +74,12 @@ public:
     void HandleBombBoumed(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
-    void RemoveObject(ClientObject* obj);
+    void AddClientObject(ClientObjectPtr obj);
+    void RemoveClientObject(ClientObject* obj);
     void RemoveObject(ClientObjectPtr obj);
 
     void GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const;
+    void GetClientOnlyObject(std::list<ClientObjectPtr>& list) const;
     ClientObjectPtr GetObject(uint64 guid);
     ClientObjectPtr GetPlayer();
     ChatBox const& GetChatBox() const;
@@ -130,6 +132,8 @@ private:
     bool _scoreOpen;
     ScoreMgr _scoreMgr;
     uint32 _gameTimer;
+
+    std::list<ClientObjectPtr> _clientObjectList;
 };
 
 #endif /* !CLIENT_H_ */
