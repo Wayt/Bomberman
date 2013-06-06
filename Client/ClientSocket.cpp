@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 14:26:06 2013 maxime ginters
-** Last update Wed May 29 01:34:10 2013 maxime ginters
+** Last update Thu Jun 06 13:01:47 2013 maxime ginters
 */
 
 #include <boost/bind.hpp>
@@ -32,7 +32,6 @@ bool ClientSocket::Connect(std::string const& addr, std::string const& port)
         size_t size = _socket.available();
         if (size > 0)
         {
-            std::cout << "AVAILABLE : " << size << std::endl;
             uint8 buff[size];
             boost::system::error_code ignored_ec;
             read(_socket, boost::asio::buffer(buff, size), ignored_ec);
@@ -56,7 +55,7 @@ void ClientSocket::HandleInput(boost::system::error_code const& error, std::size
 {
     if (error)
     {
-        std::cout << "Error: " << error.message() << std::endl;
+        sLog->error("Error: %s", error.message().c_str());
         if (_client)
             _client->Stop();
         return;

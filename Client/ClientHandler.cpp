@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 03:05:42 2013 maxime ginters
+** Last update Thu Jun 06 12:55:56 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -43,7 +43,6 @@ void Client::HandleSendObject(Packet& recvData)
     uint32 count;
     recvData >> count;
 
-    std::cout << "RECEIV " << count << " OBJECT(S)" << std::endl;
     for (uint32 i = 0; i < count; ++i)
     {
         uint64 guid;
@@ -94,7 +93,6 @@ void Client::HandleAddToMap(Packet& recvData)
     recvData >> height;
     _player->ReadPosition(recvData);
 
-    std::cout << "Map size : " << width << " / " << height << " pos : " << *(_player->GetPosition()) << std::endl;
     // Process add to map
     _status = STATUS_INGAME;
 
@@ -159,9 +157,7 @@ void Client::HandleGlobalChatText(Packet& recvData)
 
 void Client::HandleGridChange(Packet& recvData)
 {
-    std::cout << "REVEIV GRID CHANGE" << std::endl;
     _player->ReadPosition(recvData);
-    std::cout << "NEW POS : " << *_player << std::endl;
     std::map<uint64, ClientObjectPtr>::iterator itr;
     for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end();)
     {
@@ -221,7 +217,6 @@ void Client::HandlePlayerKilled(Packet& recvData)
     obj->SetRespawnTime(time);
     obj->SetKillerGUID(byOwner);
 
-    std::cout << "OWNER : " << byOwner << "  -  " << _player->GetGUID() << std::endl;
     if (byOwner == _player->GetGUID())
         sSoundMgr->PlaySound(SOUND_ENEMY_DOWN);
 }
@@ -365,4 +360,30 @@ void Client::HandleBombBoumed(Packet& recvData)
         if (HasWallAtPos(x, i))
             break;
     }
+}
+
+void Client::HandlePlayerJoin(Packet& recvData)
+{
+    uint64 guid;
+    std::string name;
+    recvData >> guid;
+    recvData >> name;
+
+    std::stringstream ss;
+    ss << name << " join the game";
+    _chatBox.PushMessage(ss.str());
+}
+
+void Client::HandlePlayerLeave(Packet& recvData)
+{
+    uint64 guid;
+    std::string name;
+    recvData >> guid;
+    recvData >> name;
+
+    std::stringstream ss;
+    ss << name << " leave the game";
+    _chatBox.PushMessage(ss.str());
+
+    _scoreMgr.RemovePlayer(guid);
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 15:52:15 2013 maxime ginters
-** Last update Wed May 29 14:31:15 2013 maxime ginters
+** Last update Thu Jun 06 13:00:16 2013 maxime ginters
 */
 
 #include <iostream>
@@ -54,7 +54,6 @@ bool Session::IsClosing() const
 
 void Session::HandleLogout()
 {
-    std::cout << "Logout session" << std::endl;
     if (_player)
         _player->HandleLogout();
     _socket->Close();

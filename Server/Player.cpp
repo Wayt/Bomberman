@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 14:49:16 2013 maxime ginters
-** Last update Wed Jun 05 22:32:06 2013 maxime ginters
+** Last update Thu Jun 06 12:59:44 2013 maxime ginters
 */
 
 #include "Player.h"
@@ -51,10 +51,10 @@ void Player::HandleLogout()
         _map->RemoveObject(this);
 }
 
-void Player::HandleHit(MapObject* obj)
+bool Player::HandleHit(MapObject* obj)
 {
-    MapObject::HandleHit(obj);
-    std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
+    if (!MapObject::HandleHit(obj))
+        return false;
 
     SetAlive(false);
     SetKilledBy(obj->GetName());
@@ -79,6 +79,7 @@ void Player::HandleHit(MapObject* obj)
         sc->killed += 1;
         _map->SendScores(obj->GetOwner());
     }
+    return true;
 }
 
 void Player::Update(uint32 const diff)

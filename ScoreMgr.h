@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Jun 03 17:58:56 2013 maxime ginters
-** Last update Wed Jun 05 18:37:11 2013 maxime ginters
+** Last update Thu Jun 06 12:38:54 2013 maxime ginters
 */
 
 #ifndef SCOREMGR_H_
@@ -33,6 +33,7 @@ public:
 
     void AddPlayer(GameObject* obj);
     void AddPlayer(uint64 guid, Score* sc);
+    void RemovePlayer(uint64 guid);
     Score const* GetScore(uint64 guid) const;
     Score* GetScore(uint64 guid);
     std::map<uint64, Score*>::const_iterator ScoreBegin() const;

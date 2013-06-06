@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Thu Jun 06 00:14:26 2013 maxime ginters
+** Last update Thu Jun 06 12:29:59 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -63,7 +63,7 @@ public:
 
     virtual ObjectAI* GetAI();
 
-    virtual void HandleHit(MapObject* obj);
+    virtual bool HandleHit(MapObject* obj);
 
     static void RegisterLua(lua_State* state);
 

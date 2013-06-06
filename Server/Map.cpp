@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 00:52:37 2013 Aymeric Girault
+** Last update Thu Jun 06 12:58:46 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -149,6 +149,14 @@ void Map::AddObject(MapObject* obj)
 
     obj->SetMap(this);
     grid->AddObject(obj);
+
+    if (obj->GetTypeId() == TYPEID_PLAYER)
+    {
+        Packet data(SMSG_PLAYER_JOIN, 8 + obj->GetName().size());
+        data << uint64(obj->GetGUID());
+        data << obj->GetName();
+        BroadcastToAll(data);
+    }
 }
 
 void Map::RemoveObject(MapObject* obj)
@@ -161,6 +169,14 @@ void Map::RemoveObject(MapObject* obj)
     obj->SetGrid(NULL);
     obj->SetMap(NULL);
     _removeList.push_back(obj);
+
+    if (obj->GetTypeId() == TYPEID_PLAYER)
+    {
+        Packet data(SMSG_PLAYER_LEAVE, 8 + obj->GetName().size());
+        data << uint64(obj->GetGUID());
+        data << obj->GetName();
+        BroadcastToAll(data);
+    }
 }
 
 MapGrid::MapGrid() :
@@ -291,10 +307,7 @@ void MapGrid::BroadcastToGrid(Packet const& pkt, MapObject* except)
     for (itr = _objectList.begin(); itr != _objectList.end(); ++itr)
         if ((*itr)->GetTypeId() == TYPEID_PLAYER)
             if ((*itr) != except)
-            {
                 (*itr)->SendPacket(pkt);
-                std::cout << "Send packet to " << (*itr)->GetName() << std::endl;
-            }
 }
 
 void MapGrid::AddObjectForUpdate(std::list<MapObject*>& list) const
@@ -627,13 +640,6 @@ void Map::TeleportPlayer(Player* player, float x, float y)
     UpdateObjectGrid(player);
 
     GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
-
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
-    std::cout << "TELEPORT PLAYER TO " << x << " " << y << std::endl;
 }
 
 bool Map::IsFinish() const

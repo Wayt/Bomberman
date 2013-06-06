@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Thu Jun 06 02:20:22 2013 fabien casters
+** Last update Thu Jun 06 12:52:11 2013 maxime ginters
 */
 
 #include <iostream>
@@ -25,6 +25,8 @@ GameMonitor::GameMonitor(Client *cli, uint32 width, uint32 height) :
 
 void GameMonitor::initialize(void)
 {
+    window_.setWidth(1280);
+    window_.setHeight(720);
     window_.create();
     _cam.initialize();
     sModelFactory->init("models.cfg");

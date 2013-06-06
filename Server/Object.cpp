@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 03:16:07 2013 maxime ginters
+** Last update Thu Jun 06 13:00:01 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -82,16 +82,16 @@ void Object::RegisterLua(lua_State* state)
         ];
 }
 
-void Object::HandleHit(MapObject* obj)
+bool Object::HandleHit(MapObject* obj)
 {
     (void)obj;
     if (!IsInWorld())
-        return;
+        return false;
+    if (!MapObject::HandleHit(obj))
+        return false;
     Map* savedMap = _map;
     if (GetAI())
         GetAI()->HandleHit(obj);
-    //std::cout << obj->GetName() << " HIT " << GetName() << std::endl;
-    //_map->RemoveObject(this);
 
     if (GetModelId() == MODELID_WALL)
     {
@@ -101,6 +101,7 @@ void Object::HandleHit(MapObject* obj)
             savedMap->SendScores(obj->GetOwner());
         }
     }
+    return true;
 }
 
 void Object::HandleCross(MapObject* by)

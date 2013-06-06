@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu Jun 06 00:23:37 2013 maxime ginters
+** Last update Thu Jun 06 12:56:49 2013 maxime ginters
 */
 
 #include <iostream>
@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "ObjectAI.h"
 #include "Bomb.h"
+#include "Client.h"
 
 MapObject::MapObject(uint64 guid, uint32 modelId, TypeId type, std::string const& name) : GameObject(guid, modelId, name),
     _isInWorld(false), _currGrid(NULL), _typeId(type),
@@ -154,10 +155,13 @@ ObjectAI* MapObject::GetAI()
     return NULL;
 }
 
-void MapObject::HandleHit(MapObject* obj)
+bool MapObject::HandleHit(MapObject* obj)
 {
+    if (!IsAlive())
+        return false;
     _alive = false;
     (void)obj;
+    return true;
 }
 
 void MapObject::RegisterLua(lua_State* state)
@@ -195,6 +199,9 @@ void MapObject::SetSpeed(float speed)
 void MapObject::DropBombIfPossible()
 {
     if (_currBomb >= _maxBomb)
+        return;
+
+    if (_client && _client->IsFinish())
         return;
 
     ++_currBomb;
@@ -242,10 +249,7 @@ void MapObject::RandomTeleport()
 
     Player* player = reinterpret_cast<Player*>(this);
     if (!player)
-    {
-        std::cout << "NO REINTEREPREPOK:KA: " << std::endl;
         return;
-    }
 
     float x, y;
     _map->GetRandomStartPosition(x, y);
