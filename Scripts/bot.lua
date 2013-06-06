@@ -2,7 +2,8 @@
 
 function LoadScript(me)
     Log:print("LoadScript !")
-    me:MovePoint(5, 5)
+    pl = me:FindNearestPlayer()
+    me:MovePoint(pl:GetPositionX(), pl:GetPositionY())
 end
 
 function UpdateAI(me, diff)
@@ -20,7 +21,9 @@ end
 
 function HandleRespawn(me)
     Log:print("Handle Respawn !")
-    me:MovePoint(5, 5)
+
+    pl = me:FindNearestPlayer()
+    me:MovePoint(pl:GetPositionX(), pl:GetPositionY())
 end
 
 function HandlePathGenerated(me)

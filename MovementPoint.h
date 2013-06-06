@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:21 2013 vincent leroy
-** Last update Thu Jun 06 16:03:31 2013 vincent leroy
+** Last update Thu Jun 06 20:15:42 2013 maxime ginters
 */
 
 #ifndef MOVEMENTPOINT_H_
@@ -32,6 +32,8 @@ private:
 
     void PathGenerated(const std::list<point>& points);
     std::list<point> _path;
+    bool _notified;
+    Mutex _notifMutex;
 };
 
 #endif /* !MOVEMENTPOINT_H_ */
