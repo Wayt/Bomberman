@@ -101,9 +101,6 @@ InputBox::InputBox (float x, float y, float z, float o) :
     intervalH_ = 500;
     setStatus(VISIBLE);
     current_ = 0;
-    addInput("name", 230, 250, 25, gdl::Color(0, 255, 0, 255));
-    addInput("ip", 230, 280, 25, gdl::Color(0, 255, 0, 255));
-    addInput("port", 230, 310, 25, gdl::Color(0, 255, 0, 255));
 }
 
 InputBox::~InputBox ()
