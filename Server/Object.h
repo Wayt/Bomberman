@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Thu Jun 06 17:56:09 2013 maxime ginters
+** Last update Thu Jun 06 18:50:00 2013 maxime ginters
 */
 
 #ifndef OBJECT_H_
@@ -55,6 +55,7 @@ public:
     bool IsPositionSafe() const;
 
 private:
+    bool CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const;
     ObjectAI* _AI;
 };
 

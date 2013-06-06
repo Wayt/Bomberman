@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 18:16:52 2013 maxime ginters
+** Last update Thu Jun 06 19:17:51 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -81,6 +81,8 @@ void Object::RegisterLua(lua_State* state)
         .def("CheckBonusCross", &Object::CheckBonusCross)
         .def("Kill", &Object::Kill)
         .def("MovePoint", &Object::MovePoint)
+        .def("FindNearestPlayer", &Object::FindNearestPlayer)
+        .def("IsPositionSafe", &Object::IsPositionSafe)
         ];
 }
 
@@ -226,6 +228,72 @@ MapObject* Object::FindNearestPlayer()
     return obj;
 }
 
+class WallPositionCheck
+{
+public:
+    WallPositionCheck(float x, float y) :
+        _posx(x), _posy(y)
+    {}
+
+    bool operator()(MapObject const* obj)
+    {
+        if (FuzzyCompare(_posx, obj->GetPositionX()) && FuzzyCompare(_posy, obj->GetPositionY()))
+            return true;
+        return false;
+    }
+private:
+    float _posx;
+    float _posy;
+};
+
+bool Object::CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const
+{
+    float bx, by, sx, sy;
+    bomb->GetBoxCenter(bx, by);
+    GetBoxCenter(sx, sy);
+
+    if (!((bx >= (sx - 2.5f) && bx <= (sx + 2.5f)) ||
+            (by >= (sy - 2.5f) && by <= (sy + 2.5f))))
+        return false;
+
+    if (bomb->GetDistance2dSquare(sx, sy) > (bomb->GetBombRange() * bomb->GetBombRange()))
+        return false;
+
+    if (FuzzyCompare(sx, bx)) // Translate on y
+    {
+        if (sy < by)
+        {
+            for (float y = sy + 5.0f; y < by; y += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float y = sy - 5.0f; y > by; y -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(sx, y)) >= 1)
+                    return false;
+        }
+
+    }
+    else if (FuzzyCompare(sy, by)) // Translate on x
+    {
+        if (sx < bx)
+        {
+            for (float x = sx + 5.0f; x < bx; x += 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+        else
+        {
+            for (float x = sx - 5.0f; x > bx; x -= 5.0f)
+                if (std::count_if(list.begin(), list.end(), WallPositionCheck(x, sy)) >= 1)
+                    return false;
+        }
+
+    }
+    return true;
+}
+
 bool Object::IsPositionSafe() const
 {
     std::list<MapObject*> list;
@@ -239,14 +307,8 @@ bool Object::IsPositionSafe() const
         if (MapObject* obj = *itr)
             if (obj->GetModelId() == MODELID_BOMB)
             {
-                float x, y;
-                obj->GetPosition(x, y);
-                if ((x >= (bx - 2.5f) && x <= (bx + 2.5f)) ||
-                        (y >= (by - 2.5f) && y <= (by + 2.5f)))
-                {
-                    if (obj->GetDistance2dSquare(bx, by) <= (obj->GetBombRange() * obj->GetBombRange()))
-                        return false;
-                }
+                if (CanBeHitBy(obj, list))
+                    return false;
             }
     return true;
 }
