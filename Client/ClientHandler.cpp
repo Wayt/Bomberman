@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 02:40:29 2013 fabien casters
+** Last update Thu Jun 06 02:50:18 2013 fabien casters
 */
 
 #include "SoundMgr.h"
@@ -310,6 +310,8 @@ void Client::HandleBombBoumed(Packet& recvData)
     {
         if (FuzzyCompare(i, x))
             continue;
+        if (HasBorderAtPos(i, y))
+            break;
         ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
         obj2->UpdatePosition(i, y, 0.0f);
         obj2->SetClient(this);
@@ -322,6 +324,8 @@ void Client::HandleBombBoumed(Packet& recvData)
     {
         if (FuzzyCompare(i, x))
             continue;
+        if (HasBorderAtPos(i, y))
+            break;
         ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
         obj2->UpdatePosition(i, y, 0.0f);
         obj2->SetClient(this);
@@ -334,6 +338,8 @@ void Client::HandleBombBoumed(Packet& recvData)
     {
         if (FuzzyCompare(i, y))
             continue;
+        if (HasBorderAtPos(x, i))
+            break;
         ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
         obj2->UpdatePosition(x, i, 0.0f);
         obj2->SetClient(this);
@@ -346,6 +352,8 @@ void Client::HandleBombBoumed(Packet& recvData)
     {
         if (FuzzyCompare(i, y))
             continue;
+        if (HasBorderAtPos(x, i))
+            break;
         ClientObjectPtr obj2(new ClientObject(0, 8, "Fire"));
         obj2->UpdatePosition(x, i, 0.0f);
         obj2->SetClient(this);
