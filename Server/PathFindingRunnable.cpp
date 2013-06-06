@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu Jun 06 21:22:02 2013 maxime ginters
+** Last update Thu Jun 06 22:38:46 2013 vincent leroy
 */
 
 #include <iostream>
@@ -119,35 +119,35 @@ bool PathFindingRunnable::isInList(const point &p, const l_noeud &l) const
 
 void PathFindingRunnable::addAdjacentBox(const point &n, const PathFinderRequest *request)
 {
+    if (n.second >= 0)
+        checkForAddInList(n.first, n.second - 1);
+    if (n.first >= 0)
+        checkForAddInList(n.first - 1, n.second);
+    if (n.first < request->width);
+        checkForAddInList(n.first + 1, n.second);
+    if (n.second < request->height)
+        checkForAddInList(n.first, n.second + 1);
+}
+
+void PathFindingRunnable::checkForAddInList(uint32 x, uint32 y)
+{
     noeud tmp;
+    point p(x, y);
 
-    for (int32 i = n.first - 1; i <= n.first + 1; ++i)
+    if (!isInList(p, _close))
     {
-        if (i < 0 || (uint32)i >= request->width)
-            continue;
-        for (int32 j = n.second - 1; j <= n.second + 1; ++j)
+        tmp.cout_g = _close[n].cout_g + distance(p, n);
+        tmp.cout_h = distance(p, request->end);
+        tmp.cout_f = tmp.cout_g + tmp.cout_h;
+        tmp.parent = n;
+
+        if (isInList(p, _open))
         {
-            if (j < 0 || (uint32)j >= request->height || (i == n.first && j == n.second) || request->map[j][i] != 0)
-                continue;
-
-            point p(i, j);
-
-            if (!isInList(p, _close))
-            {
-                tmp.cout_g = _close[n].cout_g + distance(p, n);
-                tmp.cout_h = distance(p, request->end);
-                tmp.cout_f = tmp.cout_g + tmp.cout_h;
-                tmp.parent = n;
-
-                if (isInList(p, _open))
-                {
-                    if (tmp.cout_f < _open[p].cout_f)
-                        _open[p] = tmp;
-                }
-                else
-                    _open[p] = tmp;
-            }
+            if (tmp.cout_f < open[p].cout_f)
+                _open[p] = tmp;
         }
+        else
+            _open[p] = tmp;
     }
 }
 

@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:15 2013 vincent leroy
-** Last update Thu Jun 06 17:25:58 2013 vincent leroy
+** Last update Thu Jun 06 22:34:36 2013 vincent leroy
 */
 
 #ifndef PATHFINGINGRUNNABLE_H_
@@ -69,6 +69,7 @@ private:
     float distance(const point &p1, const point &p2) const;
     bool isInList(const point &p, const l_noeud &l) const;
     void addAdjacentBox(const point &n, const PathFinderRequest *request);
+    void checkForAddInList(uint32 x, uint32 y);
     void addCloseList(const point &p);
     point bestNoeud(const l_noeud &l) const;
     void restaurePath(std::list<point> &path, const PathFinderRequest *request);
