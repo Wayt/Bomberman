@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Thu Jun 06 18:16:12 2013 maxime ginters
+** Last update Thu Jun 06 20:06:10 2013 maxime ginters
 */
 
 #include <iostream>
@@ -194,6 +194,8 @@ void MapObject::RegisterLua(lua_State* state)
         .def("RandomTeleport", &MapObject::RandomTeleport)
         .def("IncrBombRange", &MapObject::IncrBombRange)
         .def("Kill", &MapObject::Kill)
+        .def("GetPositionX", &MapObject::GetPositionX)
+        .def("GetPositionY", &MapObject::GetPositionY)
         ];
 }
 
