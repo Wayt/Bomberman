@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Thu Jun 06 20:55:28 2013 maxime ginters
+** Last update Thu Jun 06 22:46:07 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -53,18 +53,27 @@ void MovementPoint::Update(uint32 const diff)
 
     if (dist > maxDist)
         _path.pop_front();
+    else if (maxDist > 0.0f)
+    {
+        float x = dest.first - actu.first;
+        float y = dest.second - actu.second;
+        float k = std::sqrt(CARRE(dist) / (CARRE(x) + CARRE(y)));
 
-    float x = dest.first - actu.first;
-    float y = dest.second - actu.second;
-    float k = std::sqrt(CARRE(dist) / (CARRE(x) + CARRE(y)));
+        float dx = x * k;
+        float dy = y * k;
+        float angle = atan2f(dy, dx);
 
-    float dx = x * k;
-    float dy = y * k;
-    float angle = atan2f(dy, dx);
+        dx += actu.first;
+        dy += actu.second;
+        if (dx != dx || dy != dy)
+        {
+            std::cout << "NAN NAN NAN NAN NAN NAN NAN NAN NAN NAN NAN" << std::endl;
+            _owner = NULL;
+        }
+        _owner->UpdatePosition(dx, dy, angle);
 
-    _owner->UpdatePosition(actu.first + dx, actu.second + dy, angle);
-
-    _owner->HandlePositionChange();
+        _owner->HandlePositionChange();
+    }
     if (_path.empty())
         Finish();
 }
