@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Thu Jun 06 19:17:51 2013 maxime ginters
+** Last update Thu Jun 06 19:19:05 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -228,23 +228,7 @@ MapObject* Object::FindNearestPlayer()
     return obj;
 }
 
-class WallPositionCheck
-{
-public:
-    WallPositionCheck(float x, float y) :
-        _posx(x), _posy(y)
-    {}
 
-    bool operator()(MapObject const* obj)
-    {
-        if (FuzzyCompare(_posx, obj->GetPositionX()) && FuzzyCompare(_posy, obj->GetPositionY()))
-            return true;
-        return false;
-    }
-private:
-    float _posx;
-    float _posy;
-};
 
 bool Object::CanBeHitBy(MapObject* bomb, std::list<MapObject*> const& list) const
 {
