@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu Jun 06 22:37:12 2013 vincent leroy
+** Last update Thu Jun 06 22:38:46 2013 vincent leroy
 */
 
 #include <iostream>
@@ -180,11 +180,15 @@ void PathFindingRunnable::restaurePath(std::list<point> &path, const PathFinderR
     point n(request->end);
     point prec(tmp.parent);
 
+    n.first *= MAP_PRECISION;
+    n.second *= MAP_PRECISION;
     path.push_front(n);
 
     while (prec != request->begin)
     {
         n = prec;
+        n.first *= MAP_PRECISION;
+        n.second *= MAP_PRECISION;
         path.push_front(n);
 
         tmp = _close[tmp.parent];
