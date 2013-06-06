@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Wed Jun 05 22:55:10 2013 fabien casters
+** Last update Thu Jun 06 02:20:22 2013 fabien casters
 */
 
 #include <iostream>
@@ -38,6 +38,10 @@ void GameMonitor::update(void)
     for(iter = map.begin(); iter != map.end(); ++iter)
         if (iter->second->IsAlive())
             iter->second->GetGraphicObject().update(gameClock_);
+    std::list<ClientObjectPtr> list;
+    _client->GetClientOnlyObject(list);
+    for (std::list<ClientObjectPtr>::iterator iter2 = list.begin(); iter2 != list.end(); ++iter2)
+        (*iter2)->GetGraphicObject().update(gameClock_);
     ClientObjectPtr obj = _client->GetPlayer();
     if (obj.get() && obj->IsAlive())
         obj->GetGraphicObject().update(gameClock_);
@@ -57,9 +61,9 @@ void GameMonitor::draw(void)
     glBegin(GL_QUADS);
     glColor3ub(0x99, 0x6F, 0x3A);
     glVertex3f(0.0f, 0.0f, 0.0f);
-    glVertex3f(0.0f, _height, 0.0f);
-    glVertex3f(_width, _height, 0.0f);
-    glVertex3f(_width, 0.0f, 0.0f);
+    glVertex3f(0.0f, _height - 2.5f, 0.0f);
+    glVertex3f(_width - 2.5f, _height - 2.5f, 0.0f);
+    glVertex3f(_width - 2.5f, 0.0f, 0.0f);
     glEnd();
 
     ClientObjectPtr obj = _client->GetPlayer();
@@ -71,6 +75,11 @@ void GameMonitor::draw(void)
     for(iter = map.begin(); iter != map.end(); ++iter)
         if (iter->second->IsAlive())
             iter->second->GetGraphicObject().draw();
+
+    std::list<ClientObjectPtr> list;
+    _client->GetClientOnlyObject(list);
+    for (std::list<ClientObjectPtr>::iterator iter2 = list.begin(); iter2 != list.end(); ++iter2)
+        (*iter2)->GetGraphicObject().draw();
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -232,9 +241,7 @@ void GameMonitor::draw(void)
     glPopAttrib();
 
     window_.display();
-
     usleep(25000);
-
 }
 
 void GameMonitor::unload(void)

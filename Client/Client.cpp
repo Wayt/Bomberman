@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Wed Jun 05 20:26:36 2013 maxime ginters
+** Last update Thu Jun 06 02:50:08 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -15,14 +15,13 @@ Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
     _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false),
-    _scoreMgr(), _gameTimer(0)
+    _scoreMgr(), _gameTimer(0), _clientObjectList()
 {
     _pingData[PING_INTERVAL] = 5000;
 }
 
 Client::~Client()
 {
-    std::map<uint64, ClientObjectPtr>::iterator itr;
     delete _gameMonitor;
 }
 
@@ -120,9 +119,17 @@ void Client::Update(uint32 const diff)
         if (IsFinish())
             return;
 
+        std::map<uint64, ClientObjectPtr> map;
+        GetObjectMap(map);
         std::map<uint64, ClientObjectPtr>::iterator itr;
-        for (itr = _clientObjectMap.begin(); itr != _clientObjectMap.end(); ++itr)
+        for (itr = map.begin(); itr != map.end(); ++itr)
             itr->second->Update(diff);
+
+        std::list<ClientObjectPtr> list;
+        GetClientOnlyObject(list);
+        std::list<ClientObjectPtr>::iterator itr2;
+        for (itr2 = list.begin(); itr2 != list.end(); ++itr2)
+            (*itr2)->Update(diff);
 
         _player->Update(diff);
         _player->UpdateRespawnTime(diff);
@@ -165,6 +172,25 @@ void Client::AddObject(ClientObjectPtr obj)
     _clientObjectMap.insert(std::make_pair<uint64, ClientObjectPtr>(obj->GetGUID(), obj));
 }
 
+void Client::AddClientObject(ClientObjectPtr obj)
+{
+    _clientObjectList.push_back(obj);
+}
+
+void Client::RemoveClientObject(ClientObject* obj)
+{
+    std::list<ClientObjectPtr>::iterator itr = _clientObjectList.begin();
+    for (; itr != _clientObjectList.end(); ++itr)
+    {
+        ClientObjectPtr ptr = *itr;
+        if (ptr.get() == obj)
+        {
+            _clientObjectList.erase(itr);
+            return;
+        }
+    }
+}
+
 void Client::RemoveObject(ClientObjectPtr obj)
 {
     std::map<uint64, ClientObjectPtr>::iterator itr = _clientObjectMap.find(obj->GetGUID());
@@ -178,12 +204,18 @@ void Client::RemoveObject(ClientObjectPtr obj)
 
 void Client::GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const
 {
-    uint32 size = 0;
     std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.begin();
     for (; itr != _clientObjectMap.end(); ++itr)
-    {
-        ++size;
         map[itr->first] = itr->second;
+}
+
+void Client::GetClientOnlyObject(std::list<ClientObjectPtr>& list) const
+{
+    std::list<ClientObjectPtr>::const_iterator itr = _clientObjectList.begin();
+    for (; itr != _clientObjectList.end(); ++itr)
+    {
+        ClientObjectPtr ptr = *itr;
+        list.push_back(ptr);
     }
 }
 
@@ -426,4 +458,34 @@ void Client::SaveMapRequest()
 {
     Packet data(CMSG_SAVE_MAP, 0);
     SendPacket(data);
+}
+
+bool Client::HasWallAtPos(float x, float y) const
+{
+    std::map<uint64, ClientObjectPtr>::const_iterator it;
+    for (it = _clientObjectMap.begin(); it != _clientObjectMap.end(); ++it)
+    {
+        ClientObjectPtr obj = it->second;
+        if (FuzzyCompare(x, obj->GetPositionX()) && FuzzyCompare(y, obj->GetPositionY()))
+        {
+            if (obj->GetModelId() == MODELID_WALL)
+                return true;
+        }
+    }
+    return false;
+}
+
+bool Client::HasBorderAtPos(float x, float y) const
+{
+    std::map<uint64, ClientObjectPtr>::const_iterator it;
+    for (it = _clientObjectMap.begin(); it != _clientObjectMap.end(); ++it)
+    {
+        ClientObjectPtr obj = it->second;
+        if (FuzzyCompare(x, obj->GetPositionX()) && FuzzyCompare(y, obj->GetPositionY()))
+        {
+            if (obj->GetModelId() == MODELID_BORDER)
+                return true;
+        }
+    }
+    return false;
 }
