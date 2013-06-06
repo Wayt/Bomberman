@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Thu Jun 06 13:07:12 2013 maxime ginters
+** Last update Thu Jun 06 14:59:55 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -621,13 +621,13 @@ void Map::GetRandomStartPosition(float& x, float& y)
     while (!ok);
 }
 
-void Map::TeleportPlayer(Player* player, float x, float y)
+void Map::TeleportPlayer(MapObject* obj, float x, float y)
 {
-    player->UpdatePosition(x, y, 0.0f);
+    obj->UpdatePosition(x, y, 0.0f);
 
-    UpdateObjectGrid(player);
+    UpdateObjectGrid(obj);
 
-    GridUpdater(player, GRIDUPDATE_TELEPORT, UPDATE_FULL);
+    GridUpdater(obj, GRIDUPDATE_TELEPORT, UPDATE_FULL);
 }
 
 bool Map::IsFinish() const
@@ -810,5 +810,18 @@ void Map::LoadScore(uint32 count, std::ifstream& stream)
         sc->bomb = to<uint32>(s[4]);
         sc->wall = to<uint32>(s[5]);
         _scoreMgr.AddPlayer(guid, sc);
+    }
+}
+
+void Map::SpawnBot(uint32 count)
+{
+    for (; count > 0; --count)
+    {
+        Object* obj = new Object(MakeNewGuid(), MODELID_BOT, "Bot");
+        float x, y;
+        GetRandomStartPosition(x, y);
+        obj->UpdatePosition(x, y, 0.0f, 0.0f);
+        obj->InitializeAI("Scripts/bot.lua");
+        AddObject(obj);
     }
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Thu Jun 06 12:48:48 2013 vincent leroy
+** Last update Thu Jun 06 15:00:29 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -137,7 +137,7 @@ public:
 
     void GetRandomStartPosition(float& x, float& y);
 
-    void TeleportPlayer(Player* player, float x, float y);
+    void TeleportPlayer(MapObject* obj, float x, float y);
 
     uint32 GetGameTimer() const;
     bool IsFinish() const;
@@ -147,6 +147,8 @@ public:
 
     void SaveToFile(std::string const& filename) const;
     void LoadScore(uint32 count, std::ifstream& stream);
+
+    void SpawnBot(uint32 count);
 
 private:
     bool _GetGridXY(MapGrid* grid, float& x, float& y) const;

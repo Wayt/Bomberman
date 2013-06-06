@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Wed Jun 05 22:35:57 2013 maxime ginters
+** Last update Thu Jun 06 15:31:04 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
@@ -122,6 +122,74 @@ void ObjectAI::HandleCross(MapObject* by)
     catch (std::exception const& e)
     {
         std::cerr << "ObjectAI::HandleCross - " << e.what() << std::endl;
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+}
+
+void ObjectAI::HandleRespawn()
+{
+    if (!_luastate)
+        return;
+
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["HandleRespawn"])
+            f(_me);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "ObjectAI::HandleRespawn - " << e.what() << std::endl;
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+}
+
+void ObjectAI::HandlePathGenerated()
+{
+    if (!_luastate)
+        return;
+
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["HandlePathGenerated"])
+            f(_me);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "ObjectAI::HandlePathGenerated - " << e.what() << std::endl;
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+}
+
+void ObjectAI::HandleFailToCreatePath()
+{
+    if (!_luastate)
+        return;
+
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["HandleFailToCreatePath"])
+            f(_me);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "ObjectAI::HandleFailToCreatePath - " << e.what() << std::endl;
+        LUA_RUNTIME_ERROR(_luastate);
+    }
+}
+
+void ObjectAI::HandleFinishMovePoint()
+{
+    if (!_luastate)
+        return;
+
+    try
+    {
+        if (luabind::object f = luabind::globals(_luastate)["HandleFinishMovePoint"])
+            f(_me);
+    }
+    catch (std::exception const& e)
+    {
+        std::cerr << "ObjectAI::HandleFinishMovePoint - " << e.what() << std::endl;
         LUA_RUNTIME_ERROR(_luastate);
     }
 }

@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:29:51 2013 maxime ginters
-** Last update Thu Jun 06 12:43:50 2013 maxime ginters
+** Last update Thu Jun 06 15:42:09 2013 maxime ginters
 */
 
 #include "Opcodes.h"
@@ -46,6 +46,8 @@ OpcodeHandler const* OpcodesMgr::GetOpcodeHandler(Opcodes code) const
         {SMSG_BOMB_BOUMED, STATUS_INGAME, NULL, &Client::HandleBombBoumed},
         {SMSG_PLAYER_JOIN, STATUS_INGAME, NULL, &Client::HandlePlayerJoin},
         {SMSG_PLAYER_LEAVE, STATUS_INGAME, NULL, &Client::HandlePlayerLeave},
+        {CMSG_SPAWN_BOT, STATUS_INGAME, &Session::HandleSpawnBot, NULL},
+        {SMSG_SEND_PATH, STATUS_INGAME, NULL, &Client::HandleSendPath},
         {NULL_OPCODE, STATUS_NONE, NULL, NULL}
     };
 

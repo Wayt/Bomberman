@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu Jun 06 12:44:17 2013 maxime ginters
+** Last update Thu Jun 06 15:42:37 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -74,6 +74,7 @@ public:
     void HandleBombBoumed(Packet& recvData);
     void HandlePlayerJoin(Packet& recvData);
     void HandlePlayerLeave(Packet& recvData);
+    void HandleSendPath(Packet& recvData);
 
     void AddObject(ClientObjectPtr obj);
     void AddClientObject(ClientObjectPtr obj);

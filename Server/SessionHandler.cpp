@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Thu Jun 06 12:58:27 2013 maxime ginters
+** Last update Thu Jun 06 14:51:43 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -143,4 +143,10 @@ void Session::HandleSaveMap(Packet& recvData)
     _player->GetMap()->SaveToFile("dust2.map");
     Packet data(SMSG_MAP_SAVED, 0);
     SendPacket(data);
+}
+
+void Session::HandleSpawnBot(Packet& recvData)
+{
+    (void)recvData;
+    _player->GetMap()->SpawnBot(1);
 }

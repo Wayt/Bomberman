@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:38:06 2013 maxime ginters
-** Last update Thu Jun 06 12:29:59 2013 maxime ginters
+** Last update Thu Jun 06 15:27:45 2013 maxime ginters
 */
 
 #ifndef MAPOBJECT_H_
@@ -16,6 +16,8 @@
 #include "GameObject.h"
 #include "MotionMaster.hpp"
 #include "Map.h"
+
+#define TIME_TO_RESPAWN 15000
 
 class MapGrid;
 class ObjectAI;
@@ -79,6 +81,9 @@ public:
     float GetBombRange() const;
     void IncrBombRange(float value);
 
+    void Kill(MapObject* by);
+
+
 protected:
     bool _isInWorld;
     MapGrid* _currGrid;
@@ -89,6 +94,7 @@ protected:
     uint32 _maxBomb;
     uint32 _currBomb;
     float _bombPower;
+    uint32 _telTimer;
 };
 
 std::ofstream& operator<<(std::ofstream& stream, MapObject const* obj);

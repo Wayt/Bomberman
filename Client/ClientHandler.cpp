@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 12:55:56 2013 maxime ginters
+** Last update Thu Jun 06 15:45:35 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -386,4 +386,27 @@ void Client::HandlePlayerLeave(Packet& recvData)
     _chatBox.PushMessage(ss.str());
 
     _scoreMgr.RemovePlayer(guid);
+}
+
+void Client::HandleSendPath(Packet& recvData)
+{
+    uint64 guid;
+    uint32 count;
+    recvData >> guid;
+
+    ClientObjectPtr obj = GetObject(guid);
+    if (!obj)
+        return;
+
+    obj->ReadPosition(recvData);
+
+    recvData >> count;
+    std::list<point> list;
+    for (; count > 0; --count)
+    {
+        float x, y;
+        recvData >> x >> y;
+        list.push_back(std::pair<float, float>(x, y));
+    }
+    obj->GetMotionMaster()->MovePoint(list);
 }

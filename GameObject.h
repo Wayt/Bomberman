@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:54 2013 vincent leroy
-** Last update Wed Jun 05 23:50:39 2013 maxime ginters
+** Last update Thu Jun 06 15:31:56 2013 maxime ginters
 */
 
 #ifndef GAMEOBJECT_H_
@@ -13,6 +13,7 @@
 
 #include <list>
 #include "Position.h"
+#include "PathFinder.h"
 
 class Map;
 class Client;
@@ -26,7 +27,9 @@ enum ModelIds
     MODELID_SPEED       = 4,
     MODELID_RANGE       = 5,
     MODELID_MORE        = 6,
-    MODELID_TELEPORT    = 7
+    MODELID_TELEPORT    = 7,
+    MODELID_FIRE        = 8,
+    MODELID_BOT         = 9
 };
 
 class GameObject : public Position
@@ -69,6 +72,10 @@ public:
     std::string const& GetLastKiller() const;
     void SetKillerGUID(uint64 guid);
     uint64 GetLastKillerGUID() const;
+
+    virtual void HandlePathGenerated(std::list<point> const& path);
+    virtual void HandleFailToCreatePath();
+    virtual void HandleFinishMovePoint();
 
 protected:
     uint32 _modelId;

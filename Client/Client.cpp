@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 13:03:14 2013 maxime ginters
+** Last update Thu Jun 06 14:51:24 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -349,6 +349,13 @@ void Client::HandleKeyDown(gdl::Keys::Key key)
         case gdl::Keys::M:
                 if (!IsFinish())
                     SaveMapRequest();
+                break;
+                case gdl::Keys::B:
+                if (!IsFinish())
+                {
+                    Packet data(CMSG_SPAWN_BOT, 0);
+                    SendPacket(data);
+                }
                 break;
         default:
                 break;

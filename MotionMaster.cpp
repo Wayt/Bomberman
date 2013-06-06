@@ -5,13 +5,14 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Mon May 27 18:41:03 2013 vincent leroy
+** Last update Thu Jun 06 15:19:57 2013 maxime ginters
 */
 
 #include "MotionMaster.hpp"
 #include "GameObject.h"
 #include "MovementIdle.h"
 #include "MovementPlayer.h"
+#include "MovementPoint.h"
 
 AMovement::AMovement(GameObject* obj, MovementTypes type) :
     _owner(obj), _type(type)
@@ -41,6 +42,10 @@ MotionMaster::MotionMaster(GameObject* obj) :
     _amovementMap.insert(
             std::make_pair<MovementTypes, AMovement* (MotionMaster::*)() const>(
             MOVEMENTTYPE_PLAYER, &MotionMaster::create<MovementPlayer>)
+            );
+    _amovementMap.insert(
+            std::make_pair<MovementTypes, AMovement* (MotionMaster::*)() const>(
+            MOVEMENTTYPE_POINT, &MotionMaster::create<MovementPoint>)
             );
 }
 

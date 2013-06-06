@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Wed Jun 05 20:59:00 2013 maxime ginters
+** Last update Thu Jun 06 15:33:11 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -48,6 +48,7 @@ void MovementPoint::Update(uint32 const diff)
     {
         float angle = acosf((dest.second - actu.second) / dist);
         float dx = dist * cosf(angle);
+;
         float dy = dist * sinf(angle);
 
         _owner->UpdatePosition(actu.first + dx, actu.second + dy, angle);
@@ -60,6 +61,7 @@ void MovementPoint::Update(uint32 const diff)
 
 void MovementPoint::Finish()
 {
+    _owner->HandleFinishMovePoint();
 }
 
 void MovementPoint::Abort(MovementTypes)
@@ -98,8 +100,17 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
     request.begin = point(_owner->GetPositionX(), _owner->GetPositionY());
     request.end = p;
     request.object = this;
-    request.callback = &AMovement::MovePoint;
+    request.callback = &MovementPoint::PathGenerated;
     sPathFinder->addRequest(request);
+}
+
+void MovementPoint::PathGenerated(const std::list<point>& points)
+{
+    _path = points;
+    if (points.size() > 0)
+        _owner->HandlePathGenerated(points);
+    else
+        _owner->HandleFailToCreatePath();
 }
 
 void MovementPoint::MovePoint(const std::list<point> &points)

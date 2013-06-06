@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 15:33:34 2013 maxime ginters
-** Last update Thu Jun 06 01:37:08 2013 maxime ginters
+** Last update Thu Jun 06 15:50:25 2013 maxime ginters
 */
 
 #ifndef CLIENTOBJECT_H_
@@ -31,6 +31,8 @@ public:
     void HandleRespawn();
 
     void TimedRemove(uint32 time);
+
+    MotionMaster* GetMotionMaster();
 
 private:
     uint32 _modelId;

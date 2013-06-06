@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:35 2013 maxime ginters
-** Last update Wed Jun 05 22:36:07 2013 maxime ginters
+** Last update Thu Jun 06 15:29:39 2013 maxime ginters
 */
 
 #ifndef OBJECTAI_H_
@@ -34,6 +34,10 @@ public:
     void UpdateAI(uint32 const diff);
     void HandleHit(MapObject* obj);
     void HandleCross(MapObject* by);
+    void HandleRespawn();
+    void HandlePathGenerated();
+    void HandleFailToCreatePath();
+    void HandleFinishMovePoint();
 
 private:
     Object* _me;

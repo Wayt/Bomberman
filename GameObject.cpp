@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Mon May 27 18:26:51 2013 vincent leroy
-** Last update Wed Jun 05 23:50:48 2013 maxime ginters
+** Last update Thu Jun 06 15:34:18 2013 maxime ginters
 */
 
 #include "Map.h"
@@ -187,3 +187,14 @@ uint64 GameObject::GetLastKillerGUID() const
 {
     return _lastKillerGUID;
 }
+
+void GameObject::HandlePathGenerated(std::list<point> const& path)
+{
+    (void)path;
+}
+
+void GameObject::HandleFailToCreatePath()
+{}
+
+void GameObject::HandleFinishMovePoint()
+{}
