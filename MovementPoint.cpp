@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Thu Jun 06 20:20:36 2013 vincent leroy
+** Last update Thu Jun 06 20:55:28 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -100,17 +100,47 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
         float x, y;
         (*it)->GetPosition(x, y);
         if ((*it)->GetModelId() == MODELID_WALL || (*it)->GetModelId() == MODELID_BORDER)
-            request.map[(uint32)x / MAP_PRECISION][(uint32)y / MAP_PRECISION] = 1;
+            request.map[(uint32)y / MAP_PRECISION][(uint32)x / MAP_PRECISION] = 1;
         else
-            request.map[(uint32)x / MAP_PRECISION][(uint32)y / MAP_PRECISION] = 0;
+            request.map[(uint32)y / MAP_PRECISION][(uint32)x / MAP_PRECISION] = 0;
     }
 
     request.width = map->GetWidth() / MAP_PRECISION;
     request.height = map->GetHeight() / MAP_PRECISION;
-    request.begin = point(_owner->GetPositionX(), _owner->GetPositionY());
-    request.end = p;
+    float x, y;
+    _owner->GetPosition(x, y);
+    x += 2.5f;
+    y += 2.5f;
+    x = ((uint32)x / MAP_PRECISION) * MAP_PRECISION;
+    y = ((uint32)y / MAP_PRECISION) * MAP_PRECISION;
+
+    request.begin = point(x / MAP_PRECISION, y / MAP_PRECISION);
+
+    x = p.first;
+    y = p.second;
+    x += 2.5f;
+    y += 2.5f;
+    x = ((uint32)x / MAP_PRECISION) * MAP_PRECISION;
+    y = ((uint32)y / MAP_PRECISION) * MAP_PRECISION;
+
+    request.end = point(x / MAP_PRECISION, y / MAP_PRECISION);
     request.object = this;
     request.callback = &MovementPoint::PathGenerated;
+
+    for (uint32 y = 0; y < map->GetHeight() / MAP_PRECISION; ++y)
+    {
+        for (uint32 x = 0; x < map->GetWidth() / MAP_PRECISION; ++x)
+        {
+            if (x == request.begin.first && request.begin.second == y)
+                std::cout << "B ";
+            else if (x == request.end.first && request.end.second == y)
+                std::cout << "E ";
+            else
+                std::cout << uint32(request.map[y][x]) << " ";
+        }
+            std::cout << std::endl;
+    }
+
     sPathFinder->addRequest(request);
 }
 
