@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Wed Jun 05 23:57:56 2013 maxime ginters
+** Last update Thu Jun 06 02:43:20 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -111,7 +111,7 @@ void Object::HandleCross(MapObject* by)
 
 void Object::SpawnBonus()
 {
-    if ((rand() % 1/*0*/) != 0)
+    if ((rand() % 10) != 0)
         return ;
 
     uint32 r = rand() % 4;
