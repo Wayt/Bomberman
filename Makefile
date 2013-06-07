@@ -5,7 +5,7 @@
 ## Login <ginter_m@epitech.eu>
 ##
 ## Started on Mon May 06 13:39:56 2013 maxime ginters
-## Last update Fri Jun 07 14:40:04 2013 vincent leroy
+## Last update Fri Jun 07 15:31:09 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -52,7 +52,8 @@ DEPS	=	Position.h MotionMaster.hpp MovementIdle.h MovementPlayer.h MovementPoint
 all: $(NAME)
 
 $(NAME): $(OBJS) $(DEPS)
-	if [[ -f "/etc/redhat-release" || -f "/etc/redhat_version" ]] ; then \
+	@echo "Linkage"
+	@if [[ -f "/etc/redhat-release" || -f "/etc/redhat_version" ]] ; then \
 		$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS) -llua; \
 	elif [[ -f "/etc/debian_release" || -f "/etc/debian_version" ]] ; then \
 		$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS) -llua5.1; \
