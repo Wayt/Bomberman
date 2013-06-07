@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri Jun 07 12:17:20 2013 maxime ginters
+** Last update Fri Jun 07 14:31:26 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -157,6 +157,9 @@ void Map::AddObject(MapObject* obj)
         data << obj->GetName();
         BroadcastToAll(data);
     }
+
+    if (obj->GetTypeId() == TYPEID_PLAYER || obj->GetModelId() == MODELID_BOT)
+        _scoreMgr.AddPlayer(obj);
 }
 
 void Map::RemoveObject(MapObject* obj)
