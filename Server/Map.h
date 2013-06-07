@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Fri Jun 07 00:46:10 2013 maxime ginters
+** Last update Fri Jun 07 17:38:47 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -99,7 +99,7 @@ class Map
 public:
     explicit Map(uint32 width, uint32 height, uint32 nguid = 1, uint32 time = 600000);
 
-    static Map* CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density);
+    static Map* CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density, uint32 time = 600000);
     static Map* LoadFromFile(std::string const& filename);
 
     void AddObject(MapObject* obj);

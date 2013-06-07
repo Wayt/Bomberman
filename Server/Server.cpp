@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Thu Jun 06 14:48:40 2013 maxime ginters
+** Last update Fri Jun 07 17:47:54 2013 maxime ginters
 */
 
 #include <iostream>
@@ -20,14 +20,20 @@ Server::Server() : _socketMgr(this), _addSessionQueue(),
 Server::~Server()
 {}
 
-bool Server::Initialize(std::string const& addr, std::string const& port, uint8 netthread)
+bool Server::Initialize(std::string const& addr, std::string const& port, uint8 netthread, uint32 botCount, uint32 gameTime, uint32 mapWidth, uint32 mapHeight, std::string const& mapfile)
 {
     if (!_socketMgr.Initialize(addr, port, netthread))
         return false;
 
-    // prepare map
-    //_map = Map::LoadFromFile("dust2.map");
-    _map = Map::CreateNewRandomMap(10, 10, 0.9f, 0.9f);
+    srand(time(NULL));
+
+    if (mapfile.empty())
+    {
+        _map = Map::CreateNewRandomMap(mapWidth, mapHeight, 0.9f, 0.9f, gameTime);
+        _map->SpawnBot(botCount);
+    }
+    else
+        _map = Map::LoadFromFile(mapfile);
     return true;
 }
 

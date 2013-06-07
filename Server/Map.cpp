@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri Jun 07 15:16:09 2013 maxime ginters
+** Last update Fri Jun 07 17:40:47 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -34,11 +34,9 @@ Map::Map(uint32 width, uint32 height, uint32 nguid, uint32 time) :
                     );
 }
 
-Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density)
+Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float complexity, float density, uint32 time)
 {
     sLog->out(">> Generating random map ");
-
-    srand(time(NULL));
 
     uint32** map = new uint32*[height + 1];
     for (uint32 i = 0; i <= height; ++i)
@@ -109,7 +107,7 @@ Map* Map::CreateNewRandomMap(const uint32 width, const uint32 height, float comp
         for (uint32 j = 0; j < width; j += BORDER_DENSITY)
             map[i][j] = 2;
 
-    Map* newMap = new Map(width * MAP_PRECISION, height * MAP_PRECISION);
+    Map* newMap = new Map(width * MAP_PRECISION, height * MAP_PRECISION, 1, time);
     for (uint32 y = 0; y < height; ++y)
     {
         for (uint32 x = 0; x < width; ++x)
