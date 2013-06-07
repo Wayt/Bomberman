@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri Jun 07 00:51:25 2013 maxime ginters
+** Last update Fri Jun 07 12:17:20 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -443,7 +443,7 @@ void Map::Update(uint32 const diff)
     std::list<MapObject*> toUpdate;
     std::map<std::pair<float, float>, MapGrid*>::iterator itr;
     for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
-        if (itr->second->IsActive())
+        //if (itr->second->IsActive())
             itr->second->AddObjectForUpdate(toUpdate);
 
     std::list<MapObject*>::iterator itr2;

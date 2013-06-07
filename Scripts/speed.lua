@@ -20,7 +20,8 @@ function HandleHit(me, by)
 end
 
 function HandleCross(me, by)
-    Log:print("CROSSED")
+    Log:print("CROSSED ==================================================================")
+    Log:print(by:GetName())
     by:SetSpeed(1.5)
     me:Despawn()
 end

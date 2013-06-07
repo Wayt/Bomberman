@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Thu Jun 06 14:51:24 2013 maxime ginters
+** Last update Fri Jun 07 13:12:18 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -15,7 +15,8 @@ Client::Client(KeysMap kmap) :
     _player(), _ioservice(), _status(STATUS_NO_AUTHED),
     _socket(this), _NetThreads(), _recvQueue(), _gameMonitor(NULL), _clientObjectMap(),
     _gameMonitorThread(), _keymap(kmap), _chatBox(), _pingData(), _scoreOpen(false),
-    _scoreMgr(), _gameTimer(0), _clientObjectList()
+    _scoreMgr(), _gameTimer(0), _clientObjectList(),
+    _objectListMutex(), _objectMapMutex()
 {
     _pingData[PING_INTERVAL] = 5000;
 }
@@ -163,6 +164,8 @@ void Client::SendPacket(Packet const& packet)
 
 void Client::AddObject(ClientObjectPtr obj)
 {
+    ScopLock lock(_objectMapMutex);
+
     std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.find(obj->GetGUID());
     if (itr != _clientObjectMap.end())
         return;
@@ -171,11 +174,15 @@ void Client::AddObject(ClientObjectPtr obj)
 
 void Client::AddClientObject(ClientObjectPtr obj)
 {
+    ScopLock lock(_objectListMutex);
+
     _clientObjectList.push_back(obj);
 }
 
 void Client::RemoveClientObject(ClientObject* obj)
 {
+    ScopLock lock(_objectListMutex);
+
     std::list<ClientObjectPtr>::iterator itr = _clientObjectList.begin();
     for (; itr != _clientObjectList.end(); ++itr)
     {
@@ -190,6 +197,8 @@ void Client::RemoveClientObject(ClientObject* obj)
 
 void Client::RemoveObject(ClientObjectPtr obj)
 {
+    ScopLock lock(_objectMapMutex);
+
     std::map<uint64, ClientObjectPtr>::iterator itr = _clientObjectMap.find(obj->GetGUID());
     if (itr == _clientObjectMap.end())
     {
@@ -199,15 +208,19 @@ void Client::RemoveObject(ClientObjectPtr obj)
     _clientObjectMap.erase(itr);
 }
 
-void Client::GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const
+void Client::GetObjectMap(std::map<uint64, ClientObjectPtr>& map)
 {
+    ScopLock lock(_objectMapMutex);
+
     std::map<uint64, ClientObjectPtr>::const_iterator itr = _clientObjectMap.begin();
     for (; itr != _clientObjectMap.end(); ++itr)
         map[itr->first] = itr->second;
 }
 
-void Client::GetClientOnlyObject(std::list<ClientObjectPtr>& list) const
+void Client::GetClientOnlyObject(std::list<ClientObjectPtr>& list)
 {
+    ScopLock lock(_objectListMutex);
+
     std::list<ClientObjectPtr>::const_iterator itr = _clientObjectList.begin();
     for (; itr != _clientObjectList.end(); ++itr)
     {

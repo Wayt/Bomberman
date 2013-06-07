@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:31:54 2013 maxime ginters
-** Last update Wed May 29 17:12:07 2013 maxime ginters
+** Last update Fri Jun 07 12:13:35 2013 maxime ginters
 */
 
 #ifndef POSITION_H_
@@ -51,6 +51,7 @@ public:
     void WritePosition(Packet& data) const;
 
     float GetDistance2d(Position const* other) const;
+    float GetDistance2d(float x1, float y1) const;
 
     static float GetDistance2d(Position const* pos1, Position const* pos2);
     static float GetDistance2d(float x1, float y1, float x2, float y2);

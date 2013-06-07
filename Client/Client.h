@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:11 2013 maxime ginters
-** Last update Thu Jun 06 15:42:37 2013 maxime ginters
+** Last update Fri Jun 07 13:12:30 2013 maxime ginters
 */
 
 #ifndef CLIENT_H_
@@ -81,8 +81,8 @@ public:
     void RemoveClientObject(ClientObject* obj);
     void RemoveObject(ClientObjectPtr obj);
 
-    void GetObjectMap(std::map<uint64, ClientObjectPtr>& map) const;
-    void GetClientOnlyObject(std::list<ClientObjectPtr>& list) const;
+    void GetObjectMap(std::map<uint64, ClientObjectPtr>& map);
+    void GetClientOnlyObject(std::list<ClientObjectPtr>& list);
     ClientObjectPtr GetObject(uint64 guid);
     ClientObjectPtr GetPlayer();
     ChatBox const& GetChatBox() const;
@@ -140,6 +140,8 @@ private:
     uint32 _gameTimer;
 
     std::list<ClientObjectPtr> _clientObjectList;
+    Mutex _objectListMutex;
+    Mutex _objectMapMutex;
 };
 
 #endif /* !CLIENT_H_ */

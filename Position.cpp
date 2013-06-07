@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 14 17:32:36 2013 maxime ginters
-** Last update Wed May 29 17:10:59 2013 maxime ginters
+** Last update Fri Jun 07 12:14:03 2013 maxime ginters
 */
 
 #include "Position.h"
@@ -105,6 +105,13 @@ void Position::WritePosition(Packet& data) const
 float Position::GetDistance2d(Position const* other) const
 {
     return GetDistance2d(this, other);
+}
+
+float Position::GetDistance2d(float x1, float y1) const
+{
+    float x2, y2;
+    GetPosition(x2, y2);
+    return GetDistance2d(x1, y1, x2, y2);
 }
 
 float Position::GetDistance2d(Position const* pos1, Position const* pos2)
