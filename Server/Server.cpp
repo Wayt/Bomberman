@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Fri Jun 07 17:47:54 2013 maxime ginters
+** Last update Fri Jun 07 18:27:33 2013 maxime ginters
 */
 
 #include <iostream>
@@ -22,18 +22,26 @@ Server::~Server()
 
 bool Server::Initialize(std::string const& addr, std::string const& port, uint8 netthread, uint32 botCount, uint32 gameTime, uint32 mapWidth, uint32 mapHeight, std::string const& mapfile)
 {
-    if (!_socketMgr.Initialize(addr, port, netthread))
-        return false;
-
-    srand(time(NULL));
-
-    if (mapfile.empty())
+    try
     {
-        _map = Map::CreateNewRandomMap(mapWidth, mapHeight, 0.9f, 0.9f, gameTime);
-        _map->SpawnBot(botCount);
+        if (!_socketMgr.Initialize(addr, port, netthread))
+            return false;
+
+        srand(time(NULL));
+
+        if (mapfile.empty())
+        {
+            _map = Map::CreateNewRandomMap(mapWidth, mapHeight, 0.9f, 0.9f, gameTime);
+            _map->SpawnBot(botCount);
+        }
+        else
+            _map = Map::LoadFromFile(mapfile);
     }
-    else
-        _map = Map::LoadFromFile(mapfile);
+    catch (std::exception const& e)
+    {
+        sLog->error("Error: %s", e.what());
+        return false;
+    }
     return true;
 }
 
