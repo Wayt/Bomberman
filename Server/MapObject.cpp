@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Fri Jun 07 01:12:57 2013 maxime ginters
+** Last update Fri Jun 07 13:15:06 2013 maxime ginters
 */
 
 #include <iostream>
@@ -445,5 +445,5 @@ bool MapObject::IsPositionSafe() const
 
 void MapObject::HandleBombBoum()
 {
-    std::cout << "Handle BOUM" << std::endl;
+    //std::cout << "Handle BOUM" << std::endl;
 }

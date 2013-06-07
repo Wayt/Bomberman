@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Fri Jun 07 01:36:09 2013 maxime ginters
+** Last update Fri Jun 07 12:10:31 2013 maxime ginters
 */
 
 #include "Object.h"
@@ -73,7 +73,7 @@ void Object::DoAction(uint32 id)
 void Object::RegisterLua(lua_State* state)
 {
     luabind::module(state) [
-        luabind::class_<Object>("Object")
+        luabind::class_<Object, MapObject>("Object")
         .def("GetName", &Object::GetName)
         .def("Despawn", &Object::Despawn)
         .def("DoAction", &Object::DoAction)
@@ -156,7 +156,7 @@ void Object::CheckBonusCross(float range)
     GetObjectListInRange(range, list);
 
     for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
-        if ((*itr)->GetTypeId() == TYPEID_PLAYER)
+        if ((*itr)->GetTypeId() == TYPEID_PLAYER || (*itr)->GetModelId() == MODELID_BOT)
         {
             HandleCross(*itr);
             break;
@@ -227,6 +227,8 @@ MapObject const* Object::FindNearestPlayer() const
         if (((*itr)->GetTypeId() == TYPEID_PLAYER || (*itr)->GetModelId() == MODELID_BOT)
             && (*itr)->IsAlive())
         {
+            if (*itr == this)
+                continue;
             if (!obj)
                 obj = *itr;
             else
@@ -244,17 +246,6 @@ MapObject const* Object::FindNearestPlayer() const
 
 bool Object::MoveToSafePosition()
 {
-    if (MapObject const* player = FindNearestPlayer())
-    {
-        if (player->IsPositionSafe())
-        {
-            float x, y;
-            player->GetPosition(x, y);
-            MovePoint(x, y);
-            return true;
-        }
-    }
-
     std::list<MapObject*> list;
     float bx, by;
     GetBoxCenter(bx, by);
@@ -275,6 +266,7 @@ bool Object::MoveToSafePosition()
     if (maxRange == 0.0f)
         return false;
 
+    std::vector<std::pair<float, float> > points;
     for (float y = by - maxRange; y <= by + maxRange; y += 5.0f)
         for (float x = bx - maxRange; x <= bx + maxRange; x += 5.0f)
         {
@@ -296,12 +288,17 @@ bool Object::MoveToSafePosition()
                         }
                     }
             if (safe)
-            {
-                MovePoint(x, y);
-                return true;
-            }
+                points.push_back(std::pair<float, float>(x, y));
         }
-    return false;
+
+    if (points.empty())
+        return false;
+
+    uint32 index = rand() % points.size();
+    std::pair<float, float> const& target = points[index];
+
+    MovePoint(target.first, target.second);
+    return true;
 }
 
 void Object::HandleBombBoum()

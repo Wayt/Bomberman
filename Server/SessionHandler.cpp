@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Fri May 10 15:42:46 2013 maxime ginters
-** Last update Thu Jun 06 14:51:43 2013 maxime ginters
+** Last update Fri Jun 07 14:30:49 2013 maxime ginters
 */
 
 #include "Bomb.h"
@@ -52,7 +52,6 @@ void Session::HandleEnterGame(Packet& recvData)
     SendPacket(data);
 
     map->AddObject(_player);
-    map->GetScoreMgr().AddPlayer(_player);
     _status = STATUS_INGAME;
     map->SendScores();
 

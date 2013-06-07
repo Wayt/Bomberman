@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Fri Jun 07 13:05:33 2013 vincent leroy
+** Last update Fri Jun 07 14:24:00 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -138,6 +138,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
     request.object = this;
     request.callback = &MovementPoint::PathGenerated;
 
+    /*
     for (uint32 y = 0; y < map->GetHeight() / MAP_PRECISION; ++y)
     {
         for (uint32 x = 0; x < map->GetWidth() / MAP_PRECISION; ++x)
@@ -150,7 +151,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
                 std::cout << uint32(request.map[y][x]) << " ";
         }
             std::cout << std::endl;
-    }
+    }*/
 
     sPathFinder->addRequest(request);
 }

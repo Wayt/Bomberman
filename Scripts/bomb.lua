@@ -4,7 +4,7 @@ local timer = 0
 local used = 0
 
 function LoadScript(me)
-    Log:print("LoadScript !")
+    --Log:print("LoadScript !")
     timer = 3000
     used = 0
 end
@@ -23,7 +23,7 @@ end
 function HandleHit(me, by)
     if used == 0 then
         used = 1
-        Log:print("Boum by other");
+        --Log:print("Boum by other");
         me:DoAction(1)
         me:Despawn()
     end

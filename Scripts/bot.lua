@@ -3,7 +3,7 @@
 local tosafe = 0
 local movetimer = 0
 function LoadScript(me)
-    Log:print("LoadScript !")
+    -- Log:print("LoadScript !")
     pl = me:FindNearestPlayer()
     if pl then
         me:MovePointTarget(pl)
@@ -25,14 +25,14 @@ function UpdateAI(me, diff)
         end
     end
     if me:IsPositionSafe() == false then
-        Log:print("Position pas safe !")
+        -- Log:print("Position pas safe !")
         if tosafe == 0 then
             if me:MoveToSafePosition() == true then
                 tosafe = 1
             end
         end
     else
-        Log:print("Position SAFE !")
+        -- Log:print("Position SAFE !")
         if me:HasPlayerInRange(4) == true then
             me:DropBombIfPossible()
         end
@@ -40,13 +40,13 @@ function UpdateAI(me, diff)
 end
 
 function HandleHit(me, by)
-    Log:print("Boum by other");
+    -- Log:print("Boum by other");
     me:Kill(by)
 end
 
 function HandleRespawn(me)
-    Log:print("Handle Respawn !")
-
+    -- Log:print("Handle Respawn !")
+    tosafe = 0
     pl = me:FindNearestPlayer()
     if pl then
         me:MovePointTarget(pl)
@@ -54,16 +54,16 @@ function HandleRespawn(me)
 end
 
 function HandlePathGenerated(me)
-    Log:print("Path Generated !")
+    -- Log:print("Path Generated !")
 end
 
 function HandleFailToCreatePath(me)
-    Log:print("Fail to create path !")
+    -- Log:print("Fail to create path !")
     tosafe = 0
 end
 
 function HandleFinishMovePoint(me)
-    Log:print("Finish move point !")
+    -- Log:print("Finish move point !")
     if tosafe == 0 then
         me:DropBombIfPossible()
     else

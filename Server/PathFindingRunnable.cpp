@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 22 16:17:12 2013 vincent leroy
-** Last update Thu Jun 06 22:48:27 2013 vincent leroy
+** Last update Fri Jun 07 01:45:02 2013 maxime ginters
 */
 
 #include <iostream>
@@ -82,6 +82,7 @@ void PathFindingRunnable::findPath(std::list<point> &path, const PathFinderReque
     if (actu == request->end)
         restaurePath(path, request);
 
+    /*
     for (uint32 y = 0; y < request->height ; ++y)
     {
         for (uint32 x = 0; x < request->width; ++x)
@@ -104,7 +105,7 @@ void PathFindingRunnable::findPath(std::list<point> &path, const PathFinderReque
             }
         }
             std::cout << std::endl;
-    }
+    }*/
 }
 
 float PathFindingRunnable::distance(const point &p1, const point &p2) const

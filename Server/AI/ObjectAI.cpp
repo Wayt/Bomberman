@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:36:49 2013 maxime ginters
-** Last update Fri Jun 07 00:11:50 2013 maxime ginters
+** Last update Fri Jun 07 11:53:38 2013 maxime ginters
 */
 
 #include "ObjectAI.h"
@@ -29,8 +29,8 @@ bool ObjectAI::Initialize()
     try
     {
         luabind::open(_luastate);
-        Object::RegisterLua(_luastate);
         MapObject::RegisterLua(_luastate);
+        Object::RegisterLua(_luastate);
         Map::RegisterLua(_luastate);
         luabind::module(_luastate) [
             luabind::class_<Log>("Log")
