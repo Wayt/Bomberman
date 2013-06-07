@@ -13,8 +13,9 @@
 #include "MenuMonitor.h"
 
 MenuMonitor::MenuMonitor(Client *cli, uint32 width, uint32 height) :
-    _client(cli), _width(width), _height(height), _cam(), _menu(0, 0, -100, 0)
+    _client(cli), _width(width), _height(height), _cam(), _menu(0, 0, -100, 0), _background(-300, -330, -400, 0)
 {
+    _background.setTexture("Menu/images/background.png");
 }
 
 void MenuMonitor::initialize(void)
@@ -22,12 +23,14 @@ void MenuMonitor::initialize(void)
     window_.create();
     _cam.initialize();
     _menu.initialize();
+    _background.initialize();
 }
 
 void MenuMonitor::update(void)
 {
     _cam.update(gameClock_, input_);
     _menu.update(gameClock_, input_);
+    _background.update(gameClock_, input_);
     ::usleep(1000);
 }
 
@@ -37,6 +40,7 @@ void MenuMonitor::draw(void)
     glClearColor(0.74f, 0.84f, 95.0f, 1.0f);
     glClearDepth(1.0f);
     _menu.draw();
+    _background.draw();
     window_.display();
 }
 

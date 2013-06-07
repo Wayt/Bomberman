@@ -11,6 +11,7 @@
 #ifndef MENUMONITOR_H_
 # define MENUMONITOR_H_
 
+#include "SubObject.h"
 #include "MenuCamera.h"
 #include "Game.hpp"
 #include "Shared.h"
@@ -36,6 +37,7 @@ private:
     uint32 	_height;
     MenuCamera 	_cam;
     Menu	_menu;
+    SelectBox 	_background;
 };
 
 #endif

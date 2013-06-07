@@ -24,13 +24,13 @@ Menu::Menu(float x, float y, float z, float o) :
     InputBox *ib;
 
     single->addBox("config", SelectBox::INPUTBOX);
-    (*single)["config"]->setTexture("Menu/images/new.png");
+    (*single)["config"]->setTexture("Menu/images/input_name.png");
     if ((ib = dynamic_cast<InputBox *>((*single)["config"])) != NULL)
-	ib->addInput("name", 230, 250, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("name", 380, 285, 28, gdl::Color(0, 255, 0, 255));
     single->addBox("new", SelectBox::CHECKBOX);
     single->addBox("load", SelectBox::CHECKBOX);
-    (*single)["new"]->setTexture("Menu/images/new.png", "Menu/images/new.png");
-    (*single)["load"]->setTexture("Menu/images/load.png", "Menu/images/load.png");
+    (*single)["new"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
+    (*single)["load"]->setTexture("Menu/images/load_game.png", "Menu/images/load_game.png");
     single->addBackBox("Menu/images/back.png");
 
     SubMenu *create = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
@@ -44,7 +44,7 @@ Menu::Menu(float x, float y, float z, float o) :
 	ib->addInput("bot", 230, 340, 25, gdl::Color(0, 255, 0, 255));
     }
     create->addBox("start", SelectBox::CHECKBOX);
-    (*create)["start"]->setTexture("Menu/images/new_game.png", "Menu/images/new_game.png");
+    (*create)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
     create->addBackBox("Menu/images/back.png");
 
     SubMenu *join = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
@@ -57,14 +57,13 @@ Menu::Menu(float x, float y, float z, float o) :
 	ib->addInput("port", 230, 310, 25, gdl::Color(0, 255, 0, 255));
     }
     join->addBox("start", SelectBox::CHECKBOX);
-    (*join)["start"]->setTexture("Menu/images/new_game.png", "Menu/images/new_game.png");
+    (*join)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
     join->addBackBox("Menu/images/back.png");
 
     SubMenu *multi = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
 
-    multi->addBox("create", "Menu/images/create.png", create);
-    multi->addBox("join", "Menu/images/join.png", join);
-    (*multi)["join"]->setTexture("Menu/images/join.png", "Menu/images/join.png");
+    multi->addBox("create", "Menu/images/create_server.png", create);
+    multi->addBox("join", "Menu/images/join_server.png", join);
     multi->addBackBox("Menu/images/back.png");
 
     menu_.addBox("single", "Menu/images/single.png", single);
