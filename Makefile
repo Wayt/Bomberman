@@ -8,12 +8,14 @@
 ## Last update Fri Jun 07 16:34:46 2013 vincent leroy
 ##
 
+include Menu/menu.mk
+
 CXX	= g++
 
 RM	= rm -f
 
 CXXFLAGS	+= -Wextra -Wall -Werror
-CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary -IServer/AI
+CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary -IServer/AI -IMenu
 CXXFLAGS	+= -fopenmp
 CXXFLAGS	+= -ggdb3
 CXXFLAGS	+= -I/usr/include/lua5.1
@@ -36,6 +38,8 @@ SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cp
 	Client/ChatBox.cpp Client/SoundMgr.cpp \
 	Graphic/GameMonitor.cpp Graphic/Camera.cpp Graphic/Vector.cpp Graphic/GraphicObject.cpp Graphic/ModelFactory.cpp \
 	Server/PathFinder.cpp Server/PathFindingRunnable.cpp
+
+SRCS	+= $(MENU_SRCS)
 
 OBJS	= $(SRCS:.cpp=.o)
 

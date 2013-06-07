@@ -1,5 +1,5 @@
 /*
-** Camera.cpp for  in /home/vaga/Projects/tek2/bomberman
+** MenuCamera.cpp for  in /home/vaga/Projects/tek2/bomberman
 ** 
 ** Made by fabien casters
 ** Login   <fabien.casters@epitech.eu>
@@ -8,17 +8,17 @@
 ** Last update Wed May 15 15:42:21 2013 fabien casters
 */
 
-#include "Camera.h"
+#include "MenuCamera.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-Camera::Camera() :
+MenuCamera::MenuCamera() :
     _pos(50.0f, 160.0f, 400.0f), _rot(0.0f, 0.0f, 0.0f)
 {
 
 }
 
-void Camera::initialize()
+void MenuCamera::initialize()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -30,7 +30,6 @@ void Camera::initialize()
     glDepthFunc(GL_LEQUAL);
 }
 
-void Camera::update(gdl::GameClock const &, gdl::Input &)
+void MenuCamera::update(gdl::GameClock const &, gdl::Input &)
 {
-    // TODO
 }

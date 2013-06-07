@@ -1,5 +1,5 @@
 /*
-** GameMonitor.h for bomberman in /home/vaga/Projects/tek2/bomberman
+** MenuMonitor.h for bomberman in /home/vaga/Projects/tek2/bomberman
 ** 
 ** Made by fabien casters
 ** Login   <fabien.casters@epitech.eu>
@@ -8,10 +8,11 @@
 ** Last update Wed May 15 16:13:32 2013 fabien casters
 */
 
-#ifndef GAMEMONITOR_H_
-# define GAMEMONITOR_H_
+#ifndef MENUMONITOR_H_
+# define MENUMONITOR_H_
 
-#include "Camera.h"
+#include "SubObject.h"
+#include "MenuCamera.h"
 #include "Game.hpp"
 #include "Shared.h"
 #include "SelectBox.h"
@@ -20,10 +21,10 @@
 
 class Client;
 
-class GameMonitor : public gdl::Game
+class MenuMonitor : public gdl::Game
 {
 public:
-    GameMonitor(Client* cli, uint32 width, uint32 height);
+    MenuMonitor(Client* cli, uint32 width, uint32 height);
 
     void initialize();
     void update();
@@ -34,8 +35,9 @@ private:
     Client* 	_client;
     uint32 	_width;
     uint32 	_height;
-    Camera 	_cam;
+    MenuCamera 	_cam;
     Menu	_menu;
+    SelectBox 	_background;
 };
 
 #endif
