@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 16:52:41 2013 maxime ginters
-** Last update Thu Jun 06 15:45:35 2013 maxime ginters
+** Last update Fri Jun 07 14:58:06 2013 maxime ginters
 */
 
 #include "SoundMgr.h"
@@ -52,6 +52,7 @@ void Client::HandleSendObject(Packet& recvData)
         float speed, speedor;
         uint64 owner;
         bool alive;
+        uint32 moveType;
         recvData >> guid;
         recvData >> modelid;
         recvData >> name;
@@ -63,19 +64,58 @@ void Client::HandleSendObject(Packet& recvData)
         recvData >> speed;
         recvData >> speedor;
         recvData >> alive;
+        recvData >> moveType;
+
+        ClientObjectPtr obj(new ClientObject(guid, modelid, name));
+        obj->SetClient(this);
+        obj->UpdatePosition(x, y, z, o);
+        obj->SetSpeed(speed);
+        obj->SetSpeedOr(speedor);
+        obj->SetAlive(alive);
+
+        if (modelid == MODELID_BOMB && owner == _player->GetGUID())
+            sSoundMgr->PlaySound(SOUND_BOMB_PLANTED);
 
         if (guid != _player->GetGUID())
-        {
-            ClientObjectPtr obj(new ClientObject(guid, modelid, name));
-            obj->SetClient(this);
-            obj->UpdatePosition(x, y, z, o);
-            obj->SetSpeed(speed);
-            obj->SetSpeedOr(speedor);
-            obj->SetAlive(alive);
             AddObject(obj);
 
-            if (modelid == MODELID_BOMB && owner == _player->GetGUID())
-                sSoundMgr->PlaySound(SOUND_BOMB_PLANTED);
+        switch (moveType)
+        {
+            case MOVEMENTTYPE_PLAYER:
+                uint32 moveFlags;
+                recvData >> moveFlags;
+
+                if (guid == _player->GetGUID())
+                    break;
+
+                obj->GetMotionMaster()->Initialize(MOVEMENTTYPE_PLAYER);
+                obj->SetMovementFlags(moveFlags);
+                break;
+            case MOVEMENTTYPE_POINT:
+                {
+                    std::list<point> path;
+                    uint32 count;
+                    recvData >> count;
+                    for (; count > 0; --count)
+                    {
+                        std::pair<float, float> p;
+                        recvData >> p.first;
+                        recvData >> p.second;
+
+                        if (guid != _player->GetGUID())
+                            path.push_back(p);
+                    }
+                    if (guid != _player->GetGUID())
+                        obj->GetMotionMaster()->MovePoint(path);
+                    break;
+                }
+            case MOVEMENTTYPE_IDLE:
+            case MOVEMENTTYPE_NONE:
+                if (guid != _player->GetGUID())
+                    obj->GetMotionMaster()->Initialize((MovementTypes)moveType);
+                break;
+            default:
+                break;
         }
     }
 }

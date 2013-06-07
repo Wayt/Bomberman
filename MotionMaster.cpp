@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Thu Jun 06 16:17:47 2013 vincent leroy
+** Last update Fri Jun 07 15:01:21 2013 maxime ginters
 */
 
 #include <iostream>
@@ -33,6 +33,11 @@ void AMovement::MovePoint(const std::list<point>&)
 MovementTypes AMovement::GetType() const
 {
     return _type;
+}
+
+void AMovement::GetPathList(std::list<point>& list) const
+{
+    (void)list;
 }
 
 MotionMaster::MotionMaster(GameObject* obj) :
@@ -110,4 +115,13 @@ void MotionMaster::MovePoint(const std::list<point> &points)
     Initialize(MOVEMENTTYPE_POINT);
     if (_moveGen)
         _moveGen->MovePoint(points);
+}
+
+void MotionMaster::GetPathList(std::list<point>& path) const
+{
+    if (!_moveGen)
+        return;
+    if (_moveGen->GetType() != MOVEMENTTYPE_POINT)
+        return;
+    _moveGen->GetPathList(path);
 }

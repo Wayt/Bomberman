@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:37:58 2013 maxime ginters
-** Last update Fri Jun 07 13:15:06 2013 maxime ginters
+** Last update Fri Jun 07 14:55:51 2013 maxime ginters
 */
 
 #include <iostream>
@@ -83,6 +83,30 @@ void MapObject::BuildObjectCreateForPlayer(Packet& data) const
     data << float(GetSpeed());
     data << float(GetSpeedOr());
     data << uint8(IsAlive());
+    uint32 moveType = GetMotionMaster()->GetMovementType();
+    data << uint32(moveType);
+    switch (moveType)
+    {
+        case MOVEMENTTYPE_PLAYER:
+            data << uint32(GetMovementFlags());
+            break;
+        case MOVEMENTTYPE_POINT:
+            {
+                std::list<point> path;
+                GetMotionMaster()->GetPathList(path);
+                data << uint32(path.size());
+                for (std::list<point>::const_iterator itr = path.begin(); itr != path.end(); ++itr)
+                {
+                    data << float((*itr).first);
+                    data << float((*itr).second);
+                }
+                break;
+            }
+        case MOVEMENTTYPE_IDLE:
+        case MOVEMENTTYPE_NONE:
+        default:
+            break;
+    }
 }
 
 

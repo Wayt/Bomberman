@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:21 2013 vincent leroy
-** Last update Thu Jun 06 20:15:42 2013 maxime ginters
+** Last update Fri Jun 07 14:45:51 2013 maxime ginters
 */
 
 #ifndef MOVEMENTPOINT_H_
@@ -26,7 +26,7 @@ public:
     void Abort(MovementTypes);
     void MovePoint(const point &p, const Map *map);
     void MovePoint(const std::list<point> &points);
-    void GetPath(std::list<point> &path) const;
+    void GetPathList(std::list<point> &path) const;
 
 private:
 

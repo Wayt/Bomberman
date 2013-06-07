@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Fri Jun 07 14:24:00 2013 maxime ginters
+** Last update Fri Jun 07 14:44:21 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -156,7 +156,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
     sPathFinder->addRequest(request);
 }
 
-void MovementPoint::GetPath(std::list<point> &path) const
+void MovementPoint::GetPathList(std::list<point> &path) const
 {
     path = _path;
 }
@@ -172,3 +172,4 @@ void MovementPoint::MovePoint(const std::list<point> &points)
 {
     _path = points;
 }
+

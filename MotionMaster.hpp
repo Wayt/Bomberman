@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Thu Jun 06 16:15:47 2013 vincent leroy
+** Last update Fri Jun 07 14:43:52 2013 maxime ginters
 */
 
 #ifndef MOTIONMASTER_H_
@@ -39,6 +39,7 @@ public:
     virtual void MovePoint(const point&, const Map*);
     virtual void MovePoint(const std::list<point> &);
     MovementTypes GetType() const;
+    virtual void GetPathList(std::list<point>& list) const;
 
 protected:
     GameObject* _owner;
@@ -58,6 +59,8 @@ public:
     void Update(uint32 const diff);
     void MovePoint(const point &p, const Map* map);
     void MovePoint(const std::list<point> &points);
+    void GetPathList(std::list<point>& list) const;
+
 private:
     template<class T>
     AMovement* create() const
