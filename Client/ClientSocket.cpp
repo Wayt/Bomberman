@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 14:26:06 2013 maxime ginters
-** Last update Thu Jun 06 13:01:47 2013 maxime ginters
+** Last update Fri Jun 07 19:55:36 2013 maxime ginters
 */
 
 #include <boost/bind.hpp>
@@ -20,12 +20,12 @@ ClientSocket::ClientSocket(Client* client) :
 
 bool ClientSocket::Connect(std::string const& addr, std::string const& port)
 {
-    tcp::resolver resolver(_socket.get_io_service());
-    tcp::resolver::query query(tcp::v4(), addr, port);
-    tcp::resolver::iterator iterator = resolver.resolve(query);
-
     try
     {
+        tcp::resolver resolver(_socket.get_io_service());
+        tcp::resolver::query query(tcp::v4(), addr, port);
+        tcp::resolver::iterator iterator = resolver.resolve(query);
+
         boost::asio::connect(_socket, iterator);
         boost::asio::ip::tcp::no_delay option(true);
         _socket.set_option(option);

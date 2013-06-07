@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri Jun 07 19:25:53 2013 maxime ginters
+** Last update Fri Jun 07 19:42:22 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -23,7 +23,7 @@
 
 Map::Map(uint32 width, uint32 height, uint32 nguid, uint32 time) :
     _mapGridMap(), _nextGuid(nguid), _width(width), _height(height), _removeList(),
-    _gameTimer(time)
+    _gameTimer(time), _finish(false)
 {
     for (uint32 y = 0; y < height; y += GRID_SIZE)
         for (uint32 x = 0; x < width; x += GRID_SIZE)
@@ -428,19 +428,26 @@ uint32 Map::GetHeight() const
     return _height;
 }
 
-void Map::Update(uint32 const diff)
+bool Map::Update(uint32 const diff)
 {
-    if (IsFinish())
-        return;
-
     if (_gameTimer <= diff)
     {
-        HandleGameFinish();
-        _gameTimer = 0;
-        return;
+        if (!IsFinish())
+        {
+            HandleGameFinish();
+            _gameTimer = 15000;
+            _finish = true;
+            return true;
+        }
+        else
+            return false;
     }
     else
         _gameTimer -= diff;
+
+    if (IsFinish())
+        return true;
+
     std::list<MapObject*> toUpdate;
     std::map<std::pair<float, float>, MapGrid*>::iterator itr;
     for (itr = _mapGridMap.begin(); itr != _mapGridMap.end(); ++itr)
@@ -462,6 +469,7 @@ void Map::Update(uint32 const diff)
         delete *itr2;
 
     }
+    return true;
 }
 
 void Map::UpdateObjectGrid(MapObject* obj)
@@ -640,7 +648,7 @@ void Map::TeleportPlayer(MapObject* obj, float x, float y)
 
 bool Map::IsFinish() const
 {
-    return _gameTimer == 0;
+    return _finish;
 }
 
 void Map::HandleGameFinish()

@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:32 2013 fabien casters
-** Last update Wed May 22 17:08:06 2013 fabien casters
+** Last update Fri Jun 07 20:24:06 2013 maxime ginters
 */
 
 #ifndef GAMEMONITOR_H_
@@ -32,6 +32,8 @@ public:
     void unload();
 
     void getKeyVector(std::vector<bool>& vec) const;
+
+    void Close();
 
 private:
 
