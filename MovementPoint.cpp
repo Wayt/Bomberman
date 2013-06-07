@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Fri Jun 07 13:54:31 2013 maxime ginters
+** Last update Fri Jun 07 14:24:00 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -135,28 +135,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
             request.map[(uint32)y / MAP_PRECISION][(uint32)x / MAP_PRECISION] = 0;
     }
 
-
-    request.width = map->GetWidth() / MAP_PRECISION;
-    request.height = map->GetHeight() / MAP_PRECISION;
-    float x, y;
-    _owner->GetPosition(x, y);
-    x += 2.5f;
-    y += 2.5f;
-    x = ((uint32)x / MAP_PRECISION) * MAP_PRECISION;
-    y = ((uint32)y / MAP_PRECISION) * MAP_PRECISION;
-
-    request.begin = point(x / MAP_PRECISION, y / MAP_PRECISION);
-
-    x = p.first;
-    y = p.second;
-    x += 2.5f;
-    y += 2.5f;
-    x = ((uint32)x / MAP_PRECISION) * MAP_PRECISION;
-    y = ((uint32)y / MAP_PRECISION) * MAP_PRECISION;
-
-    request.end = point(x / MAP_PRECISION, y / MAP_PRECISION);
-
-        request.object = this;
+    request.object = this;
     request.callback = &MovementPoint::PathGenerated;
 
     /*
@@ -174,10 +153,7 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
             std::cout << std::endl;
     }*/
 
-    if (request.begin != request.end)
-        sPathFinder->addRequest(request);
-    else
-        Finish();
+    sPathFinder->addRequest(request);
 }
 
 void MovementPoint::GetPath(std::list<point> &path) const
