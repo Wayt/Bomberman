@@ -5,12 +5,13 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Thu May 23 16:38:18 2013 vincent leroy
-** Last update Fri Jun 07 14:44:21 2013 maxime ginters
+** Last update Fri Jun 07 15:39:18 2013 maxime ginters
 */
 
 #include "GameObject.h"
 #include "MovementPoint.h"
 #include "Map.h"
+#include "ModelMgr.h"
 
 #include <cmath>
 
@@ -129,10 +130,15 @@ void MovementPoint::MovePoint(const point &p, const Map *map)
     {
         float x, y;
         (*it)->GetPosition(x, y);
-        if ((*it)->GetModelId() == MODELID_WALL || (*it)->GetModelId() == MODELID_BORDER)
-            request.map[(uint32)y / MAP_PRECISION][(uint32)x / MAP_PRECISION] = 1;
-        else
+
+        Model const* m = sModelMgr->GetModel((*it)->GetModelId());
+        if (!m)
+            continue;
+        if (m->crossable)
             request.map[(uint32)y / MAP_PRECISION][(uint32)x / MAP_PRECISION] = 0;
+        else
+            request.map[(uint32)y / MAP_PRECISION][(uint32)x / MAP_PRECISION] = 1;
+
     }
 
     request.object = this;
