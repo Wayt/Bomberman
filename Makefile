@@ -5,7 +5,7 @@
 ## Login <ginter_m@epitech.eu>
 ##
 ## Started on Mon May 06 13:39:56 2013 maxime ginters
-## Last update Thu Jun 06 01:13:24 2013 Aymeric Girault
+## Last update Fri Jun 07 14:40:04 2013 vincent leroy
 ##
 
 CXX	= g++
@@ -23,10 +23,7 @@ UNAME	:= $(shell uname -a)
 LDFLAGS	= -LShared -lshared -lpthread -lboost_system -lgomp
 LDFLAGS	+= -lGL -lGLU -lgdl_gl -LLibrary -Wl,-rpath=Library
 LDFLAGS	+= -lsfml-audio
-#LDFLAGS	+= -llua
-LDFLAGS	+= -llua5.1
 LDFLAGS	+= -lluabind
-LDFLAGS	+= -lSOIL
 
 NAME	= bomberman
 
@@ -42,12 +39,26 @@ SRCS	= Main.cpp Position.cpp MotionMaster.cpp MovementIdle.cpp MovementPlayer.cp
 
 OBJS	= $(SRCS:.cpp=.o)
 
-
+DEPS	=	Position.h MotionMaster.hpp MovementIdle.h MovementPlayer.h MovementPoint.h GameObject.h \
+	Opcodes.h ModelMgr.h ScoreMgr.h \
+	Server/Map.h Server/MapObject.h Server/Player.h Server/Speed.h Server/Range.h Server/More.h Server/Teleport.h \
+	Server/Server.h Server/SessionSocketAcceptor.h Server/Session.h Server/SessionSocket.h \
+	Server/SessionSocketMgr.h Server/Bomb.h Server/Object.h Server/AI/ObjectAI.h \
+	Client/Client.h Client/ClientSocket.h Client/ClientObject.h \
+	Client/ChatBox.h Client/SoundMgr.h \
+	Graphic/GameMonitor.h Graphic/Camera.h Graphic/Vector.h Graphic/GraphicObject.h Graphic/ModelFactory.h \
+	Server/PathFinder.h Server/PathFindingRunnable.h
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS)
+$(NAME): $(OBJS) $(DEPS)
+	if [[ -f "/etc/redhat-release" || -f "/etc/redhat_version" ]] ; then \
+		$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS) -llua; \
+	elif [[ -f "/etc/debian_release" || -f "/etc/debian_version" ]] ; then \
+		$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS) -llua5.1; \
+	elif [[ -f "/etc/arch-release" ]] ; then \
+		$(CXX) $(OBJS) -o $(NAME) $(LDFLAGS) -llua5.1 -lSOIL; \
+	fi
 
 clean:
 	$(RM) $(OBJS)
@@ -57,8 +68,4 @@ fclean: clean
 
 re: fclean all
 
-depend:
-	makedepend -I. $(SRCS)
-
-.PHONY: all clean fclean re depend
-
+.PHONY: all clean fclean re
