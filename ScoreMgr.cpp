@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon Jun 03 17:58:56 2013 maxime ginters
-** Last update Thu Jun 06 12:40:21 2013 maxime ginters
+** Last update Fri Jun 07 19:29:25 2013 maxime ginters
 */
 
 #include "GameObject.h"
@@ -115,5 +115,34 @@ void ScoreMgr::ReadScores(Packet& data)
         data >> sc->killed;
         data >> sc->bomb;
         data >> sc->wall;
+    }
+}
+
+void ScoreMgr::SaveScore() const
+{
+    std::map<uint64, Score*>::const_iterator itr = ScoreBegin();
+    std::stringstream ss;
+    uint32 count = 0;
+    for (; itr != ScoreEnd(); ++itr)
+    {
+        Score const* sc = itr->second;
+        ss << sc->name << "," << sc->died << "," << sc->killed << "," << sc->bomb << "," << sc->wall << std::endl;
+        ++count;
+    }
+
+    try
+    {
+        std::ofstream file;
+        file.open("score.sc", std::ios_base::out | std::ios_base::app | std::ios_base::ate);
+
+        file << time(NULL) << std::endl;
+        file << count << std::endl;
+        file << ss.str();
+
+        file.close();
+    }
+    catch (std::exception const& e)
+    {
+        sLog->error("Error: %s", e.what());
     }
 }

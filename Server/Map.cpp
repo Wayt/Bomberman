@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri Jun 07 17:40:47 2013 maxime ginters
+** Last update Fri Jun 07 19:25:53 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -647,6 +647,8 @@ void Map::HandleGameFinish()
 {
     Packet data(SMSG_GAME_FINISH, 0);
     BroadcastToAll(data);
+
+    _scoreMgr.SaveScore();
 }
 
 uint32 Map::GetGameTimer() const
