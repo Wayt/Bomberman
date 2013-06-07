@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:42 2013 maxime ginters
-** Last update Fri Jun 07 14:43:52 2013 maxime ginters
+** Last update Fri Jun 07 15:16:28 2013 maxime ginters
 */
 
 #ifndef MOTIONMASTER_H_
@@ -60,6 +60,7 @@ public:
     void MovePoint(const point &p, const Map* map);
     void MovePoint(const std::list<point> &points);
     void GetPathList(std::list<point>& list) const;
+    void MoveIdle();
 
 private:
     template<class T>

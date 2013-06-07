@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Wed May 15 12:56:51 2013 maxime ginters
-** Last update Fri Jun 07 15:01:21 2013 maxime ginters
+** Last update Fri Jun 07 15:17:00 2013 maxime ginters
 */
 
 #include <iostream>
@@ -124,4 +124,9 @@ void MotionMaster::GetPathList(std::list<point>& path) const
     if (_moveGen->GetType() != MOVEMENTTYPE_POINT)
         return;
     _moveGen->GetPathList(path);
+}
+
+void MotionMaster::MoveIdle()
+{
+    Initialize(MOVEMENTTYPE_IDLE);
 }

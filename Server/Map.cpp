@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:32:47 2013 maxime ginters
-** Last update Fri Jun 07 14:31:26 2013 maxime ginters
+** Last update Fri Jun 07 15:16:09 2013 maxime ginters
 */
 
 #include <cstdlib>
@@ -632,6 +632,8 @@ void Map::GetRandomStartPosition(float& x, float& y)
 void Map::TeleportPlayer(MapObject* obj, float x, float y)
 {
     obj->UpdatePosition(x, y, 0.0f);
+    if (obj->GetMotionMaster()->GetMovementType() == MOVEMENTTYPE_POINT)
+        obj->GetMotionMaster()->MoveIdle();
 
     UpdateObjectGrid(obj);
 
