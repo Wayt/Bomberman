@@ -30,6 +30,7 @@ public:
     void startSolo(InputBox *box);
     void joinServer(InputBox *box);
     void createServer(InputBox *box);
+    void startWithMap(InputBox *name, InputBox *map);
 
 private:
     SubMenu			menu_;

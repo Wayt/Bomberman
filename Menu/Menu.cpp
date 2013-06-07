@@ -18,35 +18,61 @@
 Menu::Menu(float x, float y, float z, float o) :
     AObject(x, y, z, o), menu_(_pos.x, _pos.y, _pos.z, _rot.x)
 {
-
-
-    SubMenu *single= new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
     InputBox *ib;
+
+    /*{ single */
+    SubMenu *single = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
+    /*{ single/load */
+    SubMenu *load = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
+
+    load->addBox("map", SelectBox::INPUTBOX);
+    (*load )["map"]->setTexture("Menu/images/input_name.png");
+
+    load->addBox("start", SelectBox::CHECKBOX);
+    (*load)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
+
+    load->addBackBox("Menu/images/back.png");
+
+    if ((ib = dynamic_cast<InputBox *>((*load)["map"])) != NULL)
+	ib->addInput("map", 380, 285, 28, gdl::Color(0, 255, 0, 255));
+    /*}*/
 
     single->addBox("config", SelectBox::INPUTBOX);
     (*single)["config"]->setTexture("Menu/images/input_name.png");
-    if ((ib = dynamic_cast<InputBox *>((*single)["config"])) != NULL)
-	ib->addInput("name", 380, 285, 28, gdl::Color(0, 255, 0, 255));
-    single->addBox("new", SelectBox::CHECKBOX);
-    single->addBox("load", SelectBox::CHECKBOX);
-    (*single)["new"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
-    (*single)["load"]->setTexture("Menu/images/load_game.png", "Menu/images/load_game.png");
-    single->addBackBox("Menu/images/back.png");
+    if ((ib = dynamic_cast<InputBox *>((*single)["config"])) != NULL){
+	ib->addInput("name", 230, 220, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("x", 230, 250, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("y", 230, 280, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("time", 230, 310, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("bot", 230, 340, 25, gdl::Color(0, 255, 0, 255));
+    }
 
+    single->addBox("new", SelectBox::CHECKBOX);
+    (*single)["new"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
+
+    single->addBox("load", "Menu/images/load_game.png", load);
+    single->addBackBox("Menu/images/back.png");
+    /*}*/
+
+    /*{ multi */
+    SubMenu *multi = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
+    /*{ multi/create */
     SubMenu *create = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
 
     create->addBox("config", SelectBox::INPUTBOX);
-    (*create)["config"]->setTexture("Menu/images/new.png");
+    (*create)["config"]->setTexture("Menu/images/input_name.png");
     if ((ib = dynamic_cast<InputBox *>((*create)["config"])) != NULL){
-	ib->addInput("name", 230, 250, 25, gdl::Color(0, 255, 0, 255));
-	ib->addInput("x", 230, 280, 25, gdl::Color(0, 255, 0, 255));
-	ib->addInput("y", 230, 310, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("name", 230, 220, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("x", 230, 250, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("y", 230, 280, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("time", 230, 310, 25, gdl::Color(0, 255, 0, 255));
 	ib->addInput("bot", 230, 340, 25, gdl::Color(0, 255, 0, 255));
     }
     create->addBox("start", SelectBox::CHECKBOX);
     (*create)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
     create->addBackBox("Menu/images/back.png");
-
+    /*}*/
+    /*{ multi/join */
     SubMenu *join = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
 
     join->addBox("config", SelectBox::INPUTBOX);
@@ -59,12 +85,11 @@ Menu::Menu(float x, float y, float z, float o) :
     join->addBox("start", SelectBox::CHECKBOX);
     (*join)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
     join->addBackBox("Menu/images/back.png");
-
-    SubMenu *multi = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
-
+    /*}*/
     multi->addBox("create", "Menu/images/create_server.png", create);
     multi->addBox("join", "Menu/images/join_server.png", join);
     multi->addBackBox("Menu/images/back.png");
+/*}*/
 
     menu_.addBox("single", "Menu/images/single.png", single);
     menu_.addBox("multi", "Menu/images/multi.png", multi);
@@ -85,6 +110,7 @@ void Menu::initialize()
 void Menu::update(gdl::GameClock const &clock, gdl::Input &input)
 { 
     InputBox *box;
+    InputBox *map;
 
     if ((*menu_["single"])["new"]->value()  == 1){
 	if ((box = dynamic_cast<InputBox*>((*menu_["single"])["config"])) != NULL)
@@ -100,6 +126,12 @@ void Menu::update(gdl::GameClock const &clock, gdl::Input &input)
 	if ((box = dynamic_cast<InputBox*>((*(*menu_["multi"])["join"])["config"])) != NULL)
 	    joinServer(box);
 	(*(*menu_["multi"])["join"])["start"]->select();
+    }
+    if ((*(*menu_["single"])["load"])["start"]->value() == 1){
+	if (((map = dynamic_cast<InputBox*>((*(*menu_["single"])["load"])["map"])) != NULL) &&
+		((box = dynamic_cast<InputBox*>((*menu_["single"])["config"])) != NULL))
+	    startWithMap(box, map);
+	(*(*menu_["single"])["load"])["start"]->select();
     }
     menu_.update(clock, input);
     if (menu_.getRet() == false)
