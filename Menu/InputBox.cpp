@@ -146,9 +146,9 @@ void InputBox::draw ()
 		unsigned int i = 0;
 		for (std::list<InputText *>::iterator it = inputs_.begin(); it != inputs_.end(); ++it){
 		    if (i == current_)
-			(*it)->setColor(gdl::Color(255, 0, 0, 255));
+			(*it)->setColor(gdl::Color(81, 81, 81, 255));
 		    else
-			(*it)->setColor(gdl::Color(0, 255, 0, 255));
+			(*it)->setColor(gdl::Color(16, 16, 16, 255));
 		    (*it)->draw();
 		    i++;	
 		}
