@@ -5,7 +5,7 @@
 ## Login <ginter_m@epitech.eu>
 ##
 ## Started on Mon May 06 13:39:56 2013 maxime ginters
-## Last update Fri Jun 07 16:34:46 2013 vincent leroy
+## Last update Sat Jun 08 14:37:44 2013 vincent leroy
 ##
 
 include Menu/menu.mk
@@ -53,7 +53,14 @@ DEPS	=	Position.h MotionMaster.hpp MovementIdle.h MovementPlayer.h MovementPoint
 	Graphic/GameMonitor.h Graphic/Camera.h Graphic/Vector.h Graphic/GraphicObject.h Graphic/ModelFactory.h \
 	Server/PathFinder.h Server/PathFindingRunnable.h
 
-all: $(NAME)
+MAKE	= make -C
+
+SHARED	= Shared/
+
+all: shared $(NAME)
+
+shared:
+	$(MAKE) $(SHARED)
 
 $(NAME): $(OBJS) $(DEPS)
 	@echo "Debut de la phase de linkage"
@@ -122,6 +129,7 @@ $(NAME): $(OBJS) $(DEPS)
 	@echo "________________________▓▓"
 
 clean:
+	$(MAKE) $(SHARED) clean
 	$(RM) $(OBJS)
 
 fclean: clean

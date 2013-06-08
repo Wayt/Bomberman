@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Fri Jun 07 12:10:31 2013 maxime ginters
+** Last update Fri Jun 07 18:37:07 2013 Aymeric Girault
 */
 
 #include "Object.h"
@@ -87,6 +87,8 @@ void Object::RegisterLua(lua_State* state)
         .def("DropBombIfPossible", &Object::DropBombIfPossible)
         .def("MoveToSafePosition", &Object::MoveToSafePosition)
         .def("HasPlayerInRange", &Object::HasPlayerInRange)
+	.def("GetBombRange", &Object::GetBombRange)
+	.def("IsMoving", &Object::IsMoving)
         ];
 }
 
@@ -318,4 +320,9 @@ bool Object::HasPlayerInRange(float range) const
         return true;
     return false;
 
+}
+
+bool Object::IsMoving() const
+{
+  return HasMovementFlag(MOVEMENT_MOVING);
 }
