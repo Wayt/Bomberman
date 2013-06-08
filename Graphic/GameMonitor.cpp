@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Thu Jun 06 12:52:11 2013 maxime ginters
+** Last update Sat Jun 08 14:42:09 2013 vincent leroy
 */
 
 #include <iostream>
@@ -248,6 +248,7 @@ void GameMonitor::draw(void)
 
 void GameMonitor::unload(void)
 {
+    _client->Stop();
 }
 
 void GameMonitor::getKeyVector(std::vector<bool>& vec) const
