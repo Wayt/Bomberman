@@ -13,17 +13,18 @@ end
 function UpdateAI(me, diff)
 	if movetimer > 0 then
 		if movetimer <= diff then
-			if me:IsMoving() == false then
+			mov = me:IsMoving()
+			if mov == false then
 				pl = me:FindNearestPlayer()
-				if pl then
-					me:MovePointTarget(pl)
-					movetimer = 0
-				else
-					movetimer = 1000
-				end
-			else
-				movetimer = movetimer - diff
 			end
+			if pl then
+				me:MovePointTarget(pl)
+				movetimer = 0
+			else
+				movetimer = 1000
+			end
+		else
+			movetimer = movetimer - diff
 		end
 	end
 	if me:IsPositionSafe() == false then
