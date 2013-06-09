@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Fri Jun 07 17:46:53 2013 maxime ginters
+** Last update Sun Jun 09 16:16:25 2013 vincent leroy
 */
 
 #include "Shared.h"
@@ -36,8 +36,19 @@ int main(int ac, char **av)
                 return 1;
             }
             serv.Start();
-            cli.Join();
             serv.Join();
+            cli.Join();
+            return 0;
+        }
+        else if (std::string(av[1]) == "-client")
+        {
+            Client cli(KEYMAP_US);
+            if (!cli.Start("127.0.0.1", "9000", "Host"))
+            {
+                std::cout << "Fail to init cli" << std::endl;
+                return 1;
+            }
+            cli.Join();
             return 0;
         }
 

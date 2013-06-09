@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 17:31:52 2013 maxime ginters
-** Last update Fri Jun 07 17:38:47 2013 maxime ginters
+** Last update Fri Jun 07 19:37:59 2013 maxime ginters
 */
 
 #ifndef MAP_H_
@@ -117,7 +117,7 @@ public:
     MapObject const* GetObject(uint64 guid) const;
     MapObject* GetObject(uint64 guid);
 
-    void Update(uint32 const diff);
+    bool Update(uint32 const diff);
 
     void UpdateObjectGrid(MapObject* obj);
 
@@ -164,6 +164,7 @@ private:
     std::list<MapObject*> _removeList;
     ScoreMgr _scoreMgr;
     uint32 _gameTimer;
+    bool _finish;
 
     class ModelIdRemover
     {

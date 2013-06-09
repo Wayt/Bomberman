@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 06 13:44:25 2013 maxime ginters
-** Last update Fri Jun 07 18:27:33 2013 maxime ginters
+** Last update Fri Jun 07 20:13:33 2013 maxime ginters
 */
 
 #include <iostream>
@@ -53,6 +53,20 @@ void Server::Start()
 
 void Server::Stop()
 {
+    Session* sess = NULL;
+    while ((sess = _addSessionQueue.get()) != NULL)
+        if (sess)
+        {
+            sess->GetSessionSocket()->Close();
+        }
+
+    std::list<Session*>::iterator itr = _sessionList.begin();
+    for (; itr != _sessionList.end(); ++itr)
+        if (*itr)
+        {
+            (*itr)->GetSessionSocket()->Close();
+        }
+
     _socketMgr.StopNetwork();
     stop();
 }
@@ -95,8 +109,10 @@ void Server::Update(uint32 const diff)
 {
     UpdateSessions(diff);
 
-    if (_map)
-        _map->Update(diff);
+    if (!_map)
+        return;
+    if (!_map->Update(diff))
+        Stop();
 }
 
 void Server::UpdateSessions(uint32 const diff)

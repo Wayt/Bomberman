@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Mon May 13 13:57:17 2013 maxime ginters
-** Last update Fri Jun 07 13:12:18 2013 maxime ginters
+** Last update Fri Jun 07 20:24:52 2013 maxime ginters
 */
 
 #include "Input.hpp"
@@ -42,14 +42,16 @@ bool Client::Start(std::string const& addr, std::string const& port, std::string
 
 void Client::Stop()
 {
-    _ioservice.stop();
     _socket.Close();
+    _ioservice.stop();
+    _gameMonitor->Close();
     stop();
 }
 
 void Client::Join()
 {
     _NetThreads.JoinAll();
+    _gameMonitorThread.JoinAll();
     join();
 }
 
