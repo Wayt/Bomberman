@@ -96,13 +96,17 @@ Menu::Menu(float x, float y, float z, float o) :
     (*settings)["keymap"]->setTexture("Menu/images/keyus.png", "Menu/images/keyfr.png");
     settings->addBackBox("Menu/images/back.png");
 
+    SubMenu *credits = new SubMenu(_pos.x - 150, _pos.y, _pos.z, _rot.x);
+    credits->addBackBox("Menu/images/credits_img.png");
+
+    SubMenu *highscore = new SubMenu(_pos.x - 150, _pos.y, _pos.z, _rot.x);
+    highscore->addBackBox("Menu/images/highscores_img.png");
+
     menu_.addBox("single", "Menu/images/single.png", single);
     menu_.addBox("multi", "Menu/images/multi.png", multi);
     menu_.addBox("settings", "Menu/images/settings.png", settings);
-    menu_.addBox("highscore", SelectBox::CHECKBOX);
-    menu_.addBox("credits", SelectBox::CHECKBOX);
-    menu_["highscore"]->setTexture("Menu/images/highscore.png", "Menu/images/highscore.png");
-    menu_["credits"]->setTexture("Menu/images/credits.png", "Menu/images/credits.png");
+    menu_.addBox("highscore", "Menu/images/highscore.png", highscore);
+    menu_.addBox("credits", "Menu/images/credits.png", credits);
     menu_.addBackBox("Menu/images/quit.png");
 
     menu_.setStatus(SubObject::VISIBLE);
