@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:55:11 2013 maxime ginters
-** Last update Sun Jun 09 13:13:01 2013 Aymeric Girault
+** Last update Sun Jun 09 20:56:20 2013 Aymeric Girault
 */
 
 #ifndef OBJECT_H_
@@ -59,8 +59,10 @@ public:
     void HandleBombBoum();
 
     bool HasPlayerInRange(float range) const;
+    bool HasBlockInRange(float range) const;
 
     bool IsMoving() const;
+
 
 private:
     ObjectAI* _AI;

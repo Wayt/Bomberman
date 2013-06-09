@@ -38,6 +38,10 @@ function UpdateAI(me, diff)
 		-- Log:print("Position SAFE !")
 		if me:HasPlayerInRange(me:GetBombRange()) == true then
 			me:DropBombIfPossible()
+		elseif me:FindNearestPlayer() == nil then
+			me:DropBombIfPossible()
+			me:MoveTosafePosition()
+			tosafe = 1
 		end
 	end
 end

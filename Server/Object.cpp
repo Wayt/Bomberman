@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Sun Jun 09 13:14:03 2013 Aymeric Girault
+** Last update Sun Jun 09 20:56:15 2013 Aymeric Girault
 */
 
 #include "Object.h"
@@ -83,13 +83,15 @@ void Object::RegisterLua(lua_State* state)
         .def("MovePoint", (void(Object::*)(float, float))&Object::MovePoint)
         .def("MovePointTarget", (void(Object::*)(MapObject const*))&Object::MovePoint)
         .def("FindNearestPlayer", &Object::FindNearestPlayer)
+        .def("FindNearestBlock", &Object::FindNearestBlock)
         .def("IsPositionSafe", &Object::IsPositionSafe)
         .def("DropBombIfPossible", &Object::DropBombIfPossible)
         .def("MoveToSafePosition", &Object::MoveToSafePosition)
         .def("HasPlayerInRange", &Object::HasPlayerInRange)
-	.def("GetBombRange", &Object::GetBombRange)
-	.def("IsMoving", &Object::IsMoving)
-        ];
+        .def("HasBlockInRange", &Object::HasPlayerInRange)
+		.def("GetBombRange", &Object::GetBombRange)
+		.def("IsMoving", &Object::IsMoving)
+		];
 }
 
 bool Object::HandleHit(MapObject* obj)
@@ -348,7 +350,16 @@ bool Object::HasPlayerInRange(float range) const
     if (pl->GetDistance2dSquare(this) <= range * range)
         return true;
     return false;
+}
 
+bool Object::HasBlockInRange(float range) const
+{
+	MapObject const* bl = FindNearestBlock();
+	if (!bl)
+		return false;
+    if (bl->GetDistance2dSquare(this) <= range * range)
+        return true;
+    return false;
 }
 
 bool Object::IsMoving() const
