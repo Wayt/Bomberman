@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Sun Jun 09 16:16:25 2013 vincent leroy
+** Last update Sun Jun 09 16:33:12 2013 vincent leroy
 */
 
 #include "Shared.h"
@@ -23,13 +23,13 @@ int main(int ac, char **av)
         if (std::string(av[1]) == "-debug")
         {
             Server serv;
-            if (serv.Initialize("0.0.0.0", "9000", 2, 5, 60000, 10, 10, "") == false)
+            if (serv.Initialize("0.0.0.0", "9000", 2, 0, 600000, 100, 100, "") == false)
             {
                 std::cout << "Fail to init serv" << std::endl;
                 return 1;
             }
 
-            Client cli(KEYMAP_US);
+            Client cli(KEYMAP_FR);
             if (!cli.Start("127.0.0.1", "9000", "Host"))
             {
                 std::cout << "Fail to init cli" << std::endl;
@@ -42,7 +42,7 @@ int main(int ac, char **av)
         }
         else if (std::string(av[1]) == "-client")
         {
-            Client cli(KEYMAP_US);
+            Client cli(KEYMAP_FR);
             if (!cli.Start("127.0.0.1", "9000", "Host"))
             {
                 std::cout << "Fail to init cli" << std::endl;

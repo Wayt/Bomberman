@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Sun Jun 09 16:30:55 2013 vincent leroy
+** Last update Sun Jun 09 16:42:05 2013 vincent leroy
 */
 
 #include <iostream>
@@ -29,7 +29,15 @@ void GameMonitor::initialize(void)
     window_.setHeight(720);
     window_.create();
     _cam.initialize();
-    sModelFactory->init("models.cfg");
+    try
+    {
+        sModelFactory->init("models.cfg");
+    }
+    catch (const std::exception &e)
+    {
+        sLog->error("Error: %s", e.what());
+        exit(1);
+    }
 }
 
 void GameMonitor::update(void)
