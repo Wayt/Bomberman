@@ -17,31 +17,34 @@
 void	MenuMonitor::startSolo(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
-    std::cout << "mapx: " << box->getInput("x") << std::endl;
-    std::cout << "mapy: " << box->getInput("y") << std::endl;
+    std::cout << "mapx: " << to<unsigned int>(box->getInput("x")) << std::endl;
+    std::cout << "mapy: " << to<unsigned int>(box->getInput("y")) << std::endl;
     std::cout << "bot: " << box->getInput("bot") << std::endl;
     std::cout << "time: " << box->getInput("time") << std::endl;
     if ((box->getInput("name")).size() == 0 ||
-	    (to<unsigned int>(box->getInput("mapx"))) < MAP_MIN_X ||
-	    (to<unsigned int>(box->getInput("mapy"))) < MAP_MIN_Y ||
+	    (box->getInput("x")).size() == 0 ||
+	    (box->getInput("y")).size() == 0 ||
+	    (box->getInput("time")).size() == 0 ||
+	    (to<unsigned int>(box->getInput("x"))) < MAP_MIN_X ||
+	    (to<unsigned int>(box->getInput("y"))) < MAP_MIN_Y ||
 	    (to<unsigned int>(box->getInput("time"))) == 0 ){
 	std::cout << "parametres invalides" << std::endl;
 	return;
     }
+    if (box->getInput("box").size() == 0)
+	box->setValue("box", 0);
     try 
     {
 	Server serv;
 	if (serv.Initialize("127.0.0.1", "9000", 2, to<unsigned int>(box->getInput("bot")), (to<unsigned int>(box->getInput("time")) * 1000), to<unsigned int>(box->getInput("x")), to<unsigned int>(box->getInput("y")), box->getInput("map")) == false)
 	{
 	    std::cout << "Fail to init serv" << std::endl;
-	    ::exit(-1);
 	}
 
 	Client cli(kmap);
 	if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
 	{
 	    std::cout << "Fail to init cli" << std::endl;
-	    ::exit(-1);
 	}
 	serv.Start();
 	cli.Join();
@@ -73,7 +76,6 @@ void	MenuMonitor::joinServer(InputBox *box, KeysMap kmap)
 	if (!cli.Start(box->getInput("ip"), box->getInput("port"), box->getInput("name")))
 	{
 	    std::cout << "Fail to init cli" << std::endl;
-	    ::exit(-1);
 	}
 	cli.Join();
 	cli.Stop();
@@ -93,8 +95,8 @@ void	MenuMonitor::createServer(InputBox *box, KeysMap kmap)
     std::cout << "bot: " << box->getInput("bot") << std::endl;
     std::cout << "time: " << box->getInput("time") << std::endl;
     if ((box->getInput("name")).size() == 0 ||
-	    (to<unsigned int>(box->getInput("mapx"))) < MAP_MIN_X ||
-	    (to<unsigned int>(box->getInput("mapy"))) < MAP_MIN_Y ||
+	    (to<unsigned int>(box->getInput("x"))) < MAP_MIN_X ||
+	    (to<unsigned int>(box->getInput("y"))) < MAP_MIN_Y ||
 	    (to<unsigned int>(box->getInput("time"))) == 0 ){
 	std::cout << "parametres invalides" << std::endl;
 	return;

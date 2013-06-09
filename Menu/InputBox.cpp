@@ -10,7 +10,9 @@
 
 #include  <GL/glut.h> 
 #include "InputBox.h"
+#include "MenuMonitor.h"
 #include <unistd.h>
+#include <sstream>
 
 /*{ InputText */
 InputText::InputText (float x, float y, float z, float o)
@@ -45,6 +47,14 @@ void	InputText::setValue(const std::string &v)
 {
     value_ = v;
     text_.setText(value_);
+}
+
+void	InputText::setValue(unsigned int v)
+{
+    std::stringstream ss;
+    ss << v;
+    value_ = ss.str();
+    text_.setText(ss.str());
 }
 
 void InputText::update(gdl::GameClock const &, gdl::Input &)
@@ -169,11 +179,20 @@ void InputBox::draw ()
     }
 }
 
-void	InputBox::addInput(const std::string &key, int x, int y, int s, const gdl::Color &c)
+void	InputBox::setValue(const std::string &key, unsigned int v)
+{
+    for (std::list<InputText *>::iterator it = inputs_.begin(); it != inputs_.end(); ++it){
+	if ((*it)->getKey() == key)
+	    (*it)->setValue(v);
+	}
+}
+
+void	InputBox::addInput(const std::string &key, int x, int y, int s, const gdl::Color &c, InputBox::keyType type)
 {
     InputText *t = new InputText(_pos.x, _pos.y, _pos.z, _rot.x);
     t->initialize(key, x, y, s, c);
     inputs_.push_back(t);
+    keytype_ = type;
 }
 
 void InputBox::handleKeyDown(gdl::Keys::Key key)
