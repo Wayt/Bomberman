@@ -13,7 +13,7 @@
 #include "Server.h"
 #include "Client.h"
 
-void	Menu::startSolo(InputBox *box)
+void	Menu::startSolo(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "mapx: " << box->getInput("x") << std::endl;
@@ -26,7 +26,7 @@ void	Menu::startSolo(InputBox *box)
 	std::cout << "Fail to init serv" << std::endl;
     }
 
-    Client cli(KEYMAP_US);
+    Client cli(kmap);
     if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
     {
 	std::cout << "Fail to init cli" << std::endl;
@@ -36,12 +36,12 @@ void	Menu::startSolo(InputBox *box)
     serv.Join();
 }
 
-void	Menu::joinServer(InputBox *box)
+void	Menu::joinServer(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "ip  : " << box->getInput("ip") << std::endl;
     std::cout << "port: " << box->getInput("port") << std::endl;
-    Client cli(KEYMAP_US);
+    Client cli(kmap);
     if (!cli.Start(box->getInput("ip"), box->getInput("port"), box->getInput("name")))
     {
 	std::cout << "Fail to init cli" << std::endl;
@@ -49,7 +49,7 @@ void	Menu::joinServer(InputBox *box)
     cli.Join();
 }
 
-void	Menu::createServer(InputBox *box)
+void	Menu::createServer(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "mapx: " << box->getInput("x") << std::endl;
@@ -62,7 +62,7 @@ void	Menu::createServer(InputBox *box)
 	std::cout << "Fail to init serv" << std::endl;
     }
 
-    Client cli(KEYMAP_US);
+    Client cli(kmap);
     if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
     {
 	std::cout << "Fail to init cli" << std::endl;
@@ -72,7 +72,7 @@ void	Menu::createServer(InputBox *box)
     serv.Join();
 }
 
-void	Menu::startWithMap(InputBox *box, InputBox *map)
+void	Menu::startWithMap(InputBox *box, InputBox *map, KeysMap kmap)
 {
     std::cout << "map: " << map->getInput("map") << std::endl;
     std::cout << "name: " << box->getInput("name") << std::endl;
@@ -83,7 +83,7 @@ void	Menu::startWithMap(InputBox *box, InputBox *map)
 	std::cout << "Fail to init serv" << std::endl;
     }
 
-    Client cli(KEYMAP_US);
+    Client cli(kmap);
     if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
     {
 	std::cout << "Fail to init cli" << std::endl;

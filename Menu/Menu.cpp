@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include "Menu.h"
+#include "Client.h"
 #include "Image.hpp"
 #include "CheckBox.h"
 
@@ -90,14 +91,19 @@ Menu::Menu(float x, float y, float z, float o) :
     multi->addBox("join", "Menu/images/join_server.png", join);
     multi->addBackBox("Menu/images/back.png");
 /*}*/
+    SubMenu *settings = new SubMenu(_pos.x, _pos.y, _pos.z, _rot.x);
+    settings->addBox("keymap", SelectBox::CHECKBOX);
+    (*settings)["keymap"]->setTexture("Menu/images/keyus.png", "Menu/images/keyfr.png");
+    settings->addBackBox("Menu/images/back.png");
 
     menu_.addBox("single", "Menu/images/single.png", single);
     menu_.addBox("multi", "Menu/images/multi.png", multi);
+    menu_.addBox("settings", "Menu/images/settings.png", settings);
     menu_.addBox("highscore", SelectBox::CHECKBOX);
     menu_.addBox("credits", SelectBox::CHECKBOX);
     menu_["highscore"]->setTexture("Menu/images/highscore.png", "Menu/images/highscore.png");
     menu_["credits"]->setTexture("Menu/images/credits.png", "Menu/images/credits.png");
-    menu_.addBackBox("Menu/images/back.png");
+    menu_.addBackBox("Menu/images/quit.png");
 
     menu_.setStatus(SubObject::VISIBLE);
 }
@@ -111,26 +117,28 @@ void Menu::update(gdl::GameClock const &clock, gdl::Input &input)
 { 
     InputBox *box;
     InputBox *map;
+    KeysMap keymap;
 
+    keymap = (*menu_["settings"])["keymap"]->value() ? KEYMAP_FR : KEYMAP_US;
     if ((*menu_["single"])["new"]->value()  == 1){
 	if ((box = dynamic_cast<InputBox*>((*menu_["single"])["config"])) != NULL)
-	    startSolo(box);
+	    startSolo(box, keymap);
 	(*menu_["single"])["new"]->select();
     }
     if ((*(*menu_["multi"])["create"])["start"]->value() == 1){
 	if ((box = dynamic_cast<InputBox*>((*(*menu_["multi"])["create"])["config"])) != NULL)
-	    createServer(box);
+	    createServer(box, keymap);
 	(*(*menu_["multi"])["create"])["start"]->select();
     }
     if ((*(*menu_["multi"])["join"])["start"]->value() == 1){
 	if ((box = dynamic_cast<InputBox*>((*(*menu_["multi"])["join"])["config"])) != NULL)
-	    joinServer(box);
+	    joinServer(box, keymap);
 	(*(*menu_["multi"])["join"])["start"]->select();
     }
     if ((*(*menu_["single"])["load"])["start"]->value() == 1){
 	if (((map = dynamic_cast<InputBox*>((*(*menu_["single"])["load"])["map"])) != NULL) &&
 		((box = dynamic_cast<InputBox*>((*menu_["single"])["config"])) != NULL))
-	    startWithMap(box, map);
+	    startWithMap(box, map, keymap);
 	(*(*menu_["single"])["load"])["start"]->select();
     }
     menu_.update(clock, input);

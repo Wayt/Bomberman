@@ -16,6 +16,7 @@ MenuMonitor::MenuMonitor(Client *cli, uint32 width, uint32 height) :
     _client(cli), _width(width), _height(height), _cam(), _menu(0, 0, -100, 0), _background(-300, -330, -400, 0)
 {
     _background.setTexture("Menu/images/background.png");
+    _background.setStatus(SubObject::VISIBLE);
 }
 
 void MenuMonitor::initialize(void)
