@@ -15,6 +15,7 @@
 #include "Client.h"
 #include "Image.hpp"
 #include "CheckBox.h"
+#include "Highscores.h"
 
 Menu::Menu(float x, float y, float z, float o) :
     AObject(x, y, z, o), menu_(_pos.x, _pos.y, _pos.z, _rot.x)
@@ -100,7 +101,10 @@ Menu::Menu(float x, float y, float z, float o) :
     credits->addBackBox("Menu/images/credits_img.png");
 
     SubMenu *highscore = new SubMenu(_pos.x - 150, _pos.y, _pos.z, _rot.x);
-    highscore->addBackBox("Menu/images/highscores_img.png");
+    Highscores *h = new Highscores(_pos.x - 150, _pos.y, _pos.z, _rot.x);
+    h->setRet(false);
+    h->setTexture("Menu/images/highscores_img.png");
+    highscore->addObject(h);
 
     menu_.addBox("single", "Menu/images/single.png", single);
     menu_.addBox("multi", "Menu/images/multi.png", multi);

@@ -10,4 +10,5 @@ MENU_SRCS	= ./Menu/MenuMonitor.cpp	\
 		  ./Menu/SubObject.cpp 		\
 		  ./Menu/CheckBox.cpp 		\
 		  ./Menu/ListBox.cpp 		\
+		  ./Menu/Highscores.cpp		\
 		  ./Menu/InputBox.cpp

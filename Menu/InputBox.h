@@ -24,6 +24,7 @@ class InputText: public AObject
 	~InputText ();
 	void 		setColor(const gdl::Color &c);
 	std::string 	getValue();
+	void		setValue(const std::string &);
 	void 		setKey(const std::string &key);
 	std::string 	getKey();
 	void		append(char);

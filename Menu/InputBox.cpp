@@ -41,6 +41,12 @@ void InputText::setColor(const gdl::Color &c)
     text_.setColor(c);
 }
 
+void	InputText::setValue(const std::string &v)
+{
+    value_ = v;
+    text_.setText(value_);
+}
+
 void InputText::update(gdl::GameClock const &, gdl::Input &)
 {
 }
