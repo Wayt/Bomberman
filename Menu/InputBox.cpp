@@ -203,7 +203,8 @@ void InputBox::handleKeyDown(gdl::Keys::Key key)
 	if (current_ >= inputs_.size())
 	    current_ = 0;
     }
-    else if (key != gdl::Keys::Up && key != gdl::Keys::Down)
+    else if (key != gdl::Keys::Up && key != gdl::Keys::Down 
+	    && key != gdl::Keys::LShift && key != gdl::Keys::RShift)
 	(*it)->append('.');
 }
 std::string InputBox::getInput (const std::string &key)
