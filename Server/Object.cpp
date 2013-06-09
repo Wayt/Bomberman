@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Tue May 21 17:59:16 2013 maxime ginters
-** Last update Fri Jun 07 18:37:07 2013 Aymeric Girault
+** Last update Sun Jun 09 13:14:03 2013 Aymeric Girault
 */
 
 #include "Object.h"
@@ -227,6 +227,35 @@ MapObject const* Object::FindNearestPlayer() const
 
     for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
         if (((*itr)->GetTypeId() == TYPEID_PLAYER || (*itr)->GetModelId() == MODELID_BOT)
+            && (*itr)->IsAlive())
+        {
+            if (*itr == this)
+                continue;
+            if (!obj)
+                obj = *itr;
+            else
+            {
+                float d = GetDistance2dSquare(*itr);
+                if (d < dist)
+                {
+                    dist = d;
+                    obj = *itr;
+                }
+            }
+        }
+    return obj;
+}
+
+MapObject const* Object::FindNearestBlock() const
+{
+	std::list<MapObject*> list;
+    GetObjectListInRange(100.0f, list);
+
+    MapObject* obj = NULL;
+    float dist = 200.0f * 200.0f;
+
+    for (std::list<MapObject*>::const_iterator itr = list.begin(); itr != list.end(); ++itr)
+        if (((*itr)->GetTypeId() == TYPEID_OBJECT || (*itr)->GetModelId() == MODELID_WALL)
             && (*itr)->IsAlive())
         {
             if (*itr == this)
