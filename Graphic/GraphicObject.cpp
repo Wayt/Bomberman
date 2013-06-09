@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:10 2013 vincent leroy
-** Last update Wed Jun 05 18:10:26 2013 vincent leroy
+** Last update Sun Jun 09 16:30:00 2013 vincent leroy
 */
 
 #include <cmath>
@@ -16,19 +16,28 @@
 #include "ClientObject.h"
 
 GraphicObject::GraphicObject(ClientObject const *o) :
-    _object(o), _model(NULL)
+    _object(o), _model(NULL),
+    _config(), _color(NULL)
+
 {
 }
 
 GraphicObject::~GraphicObject()
 {
     delete _model;
+    delete _color;
 }
 
 void GraphicObject::init()
 {
     _config = sModelFactory->load(_object->GetModelId());
     _model = _config.model;
+
+    if (_object->GetModelId() == 0 || _object->GetModelId() == 9)
+    {
+        _color = new gdl::Color(rand() % 255, rand() % 255, rand() % 255);
+        _model->set_default_model_color(*_color);
+    }
 }
 
 void GraphicObject::update(gdl::GameClock const &clock)

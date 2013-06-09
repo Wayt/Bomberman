@@ -5,7 +5,7 @@
 ** Login  <leroy_v@epitech.eu>
 **
 ** Started on  Wed May 15 13:32:13 2013 vincent leroy
-** Last update Wed Jun 05 18:07:02 2013 vincent leroy
+** Last update Sun Jun 09 16:22:17 2013 vincent leroy
 */
 
 #ifndef GRAPHICOBJECT_H_
@@ -14,6 +14,7 @@
 #include "GameClock.hpp"
 #include "ModelFactory.h"
 #include "Model.hpp"
+#include "Color.hpp"
 
 class ClientObject;
 
@@ -31,6 +32,7 @@ private:
     ClientObject const *_object;
     gdl::Model *_model;
     modelConfig _config;
+    gdl::Color *_color;
 };
 
 #endif

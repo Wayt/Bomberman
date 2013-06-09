@@ -5,7 +5,7 @@
 ** Login   <fabien.casters@epitech.eu>
 ** 
 ** Started on  Mon May 06 18:45:22 2013 fabien casters
-** Last update Sun Jun 09 11:25:55 2013 maxime ginters
+** Last update Sun Jun 09 16:30:55 2013 vincent leroy
 */
 
 #include <iostream>
@@ -57,7 +57,7 @@ void GameMonitor::draw(void)
 {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.74f, 0.84f, 95.0f, 1.0f);
+    glClearColor(0x0F / 255.f, 0x83 / 255.f, 0xD6 / 255.f, 1.0f);
     glClearDepth(1.0f);
 
     glBegin(GL_QUADS);
@@ -91,7 +91,7 @@ void GameMonitor::draw(void)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    gluOrtho2D(0, 800, 0, 600);
+    gluOrtho2D(0, 1280, 0, 720);
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();

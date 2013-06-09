@@ -5,7 +5,7 @@
 ** Login  <ginter_m@epitech.eu>
 **
 ** Started on  Sat May 04 15:21:22 2013 maxime ginters
-** Last update Fri Jun 07 20:25:45 2013 maxime ginters
+** Last update Sun Jun 09 16:16:25 2013 vincent leroy
 */
 
 #include "Shared.h"
@@ -23,7 +23,7 @@ int main(int ac, char **av)
         if (std::string(av[1]) == "-debug")
         {
             Server serv;
-            if (serv.Initialize("0.0.0.0", "9000", 2, 5, 6000, 10, 10, "") == false)
+            if (serv.Initialize("0.0.0.0", "9000", 2, 5, 60000, 10, 10, "") == false)
             {
                 std::cout << "Fail to init serv" << std::endl;
                 return 1;
