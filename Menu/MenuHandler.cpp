@@ -8,12 +8,12 @@
 // Last update Thu Jun 06 22:26:06 2013 
 //
 
-#include "Menu.h"
+#include "MenuMonitor.h"
 #include "Shared.h"
 #include "Server.h"
 #include "Client.h"
 
-void	Menu::startSolo(InputBox *box, KeysMap kmap)
+void	MenuMonitor::startSolo(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "mapx: " << box->getInput("x") << std::endl;
@@ -34,9 +34,13 @@ void	Menu::startSolo(InputBox *box, KeysMap kmap)
     serv.Start();
     cli.Join();
     serv.Join();
+    serv.Stop();
+    cli.Stop();
+    initialize();
+    std::cout << "toto" << std::endl;
 }
 
-void	Menu::joinServer(InputBox *box, KeysMap kmap)
+void	MenuMonitor::joinServer(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "ip  : " << box->getInput("ip") << std::endl;
@@ -47,9 +51,11 @@ void	Menu::joinServer(InputBox *box, KeysMap kmap)
 	std::cout << "Fail to init cli" << std::endl;
     }
     cli.Join();
+    cli.Stop();
+    initialize();
 }
 
-void	Menu::createServer(InputBox *box, KeysMap kmap)
+void	MenuMonitor::createServer(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "mapx: " << box->getInput("x") << std::endl;
@@ -70,9 +76,12 @@ void	Menu::createServer(InputBox *box, KeysMap kmap)
     serv.Start();
     cli.Join();
     serv.Join();
+    serv.Stop();
+    cli.Stop();
+    initialize();
 }
 
-void	Menu::startWithMap(InputBox *box, InputBox *map, KeysMap kmap)
+void	MenuMonitor::startWithMap(InputBox *box, InputBox *map, KeysMap kmap)
 {
     std::cout << "map: " << map->getInput("map") << std::endl;
     std::cout << "name: " << box->getInput("name") << std::endl;
@@ -91,4 +100,7 @@ void	Menu::startWithMap(InputBox *box, InputBox *map, KeysMap kmap)
     serv.Start();
     cli.Join();
     serv.Join();
+    serv.Stop();
+    cli.Stop();
+    initialize();
 }

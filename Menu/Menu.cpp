@@ -121,37 +121,14 @@ void Menu::initialize()
     menu_.initialize();
 }
 
+SubMenu &Menu::getMenu()
+{
+    return menu_;
+}
+
 void Menu::update(gdl::GameClock const &clock, gdl::Input &input)
 { 
-    InputBox *box;
-    InputBox *map;
-    KeysMap keymap;
-
-    keymap = (*menu_["settings"])["keymap"]->value() ? KEYMAP_FR : KEYMAP_US;
-    if ((*menu_["single"])["new"]->value()  == 1){
-	if ((box = dynamic_cast<InputBox*>((*menu_["single"])["config"])) != NULL)
-	    startSolo(box, keymap);
-	(*menu_["single"])["new"]->select();
-    }
-    if ((*(*menu_["multi"])["create"])["start"]->value() == 1){
-	if ((box = dynamic_cast<InputBox*>((*(*menu_["multi"])["create"])["config"])) != NULL)
-	    createServer(box, keymap);
-	(*(*menu_["multi"])["create"])["start"]->select();
-    }
-    if ((*(*menu_["multi"])["join"])["start"]->value() == 1){
-	if ((box = dynamic_cast<InputBox*>((*(*menu_["multi"])["join"])["config"])) != NULL)
-	    joinServer(box, keymap);
-	(*(*menu_["multi"])["join"])["start"]->select();
-    }
-    if ((*(*menu_["single"])["load"])["start"]->value() == 1){
-	if (((map = dynamic_cast<InputBox*>((*(*menu_["single"])["load"])["map"])) != NULL) &&
-		((box = dynamic_cast<InputBox*>((*menu_["single"])["config"])) != NULL))
-	    startWithMap(box, map, keymap);
-	(*(*menu_["single"])["load"])["start"]->select();
-    }
     menu_.update(clock, input);
-    if (menu_.getRet() == false)
-	::exit(0);
     usleep(1000);
 }
 

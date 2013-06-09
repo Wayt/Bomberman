@@ -31,7 +31,13 @@ public:
     void draw();
     void unload();
 
+    void startSolo(InputBox *box, KeysMap);
+    void joinServer(InputBox *box, KeysMap);
+    void createServer(InputBox *box, KeysMap);
+    void startWithMap(InputBox *name, InputBox *map, KeysMap);
+
 private:
+    bool	initm_;
     Client* 	_client;
     uint32 	_width;
     uint32 	_height;
