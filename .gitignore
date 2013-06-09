@@ -2,6 +2,7 @@
 !Server.dia
 !.gitignore
 !*.hpp
+!*.mk
 !*.cpp
 !*.h
 !*.so

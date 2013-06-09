@@ -13,30 +13,35 @@
 #include "Server.h"
 #include "Client.h"
 
-void	Menu::startSolo(InputBox *box)
+void	Menu::startSolo(InputBox *box, KeysMap kmap)
 {
-        Server serv;
-        if (serv.Initialize("0.0.0.0", "9000", 2) == false)
-        {
-            std::cout << "Fail to init serv" << std::endl;
-        }
+    std::cout << "name: " << box->getInput("name") << std::endl;
+    std::cout << "mapx: " << box->getInput("x") << std::endl;
+    std::cout << "mapy: " << box->getInput("y") << std::endl;
+    std::cout << "bot: " << box->getInput("bot") << std::endl;
+    std::cout << "time: " << box->getInput("time") << std::endl;
+    Server serv;
+    if (serv.Initialize("127.0.0.1", "9000", 2, to<unsigned int>(box->getInput("bot")), (to<unsigned int>(box->getInput("time")) * 1000), to<unsigned int>(box->getInput("x")), to<unsigned int>(box->getInput("y")), box->getInput("map")) == false)
+    {
+	std::cout << "Fail to init serv" << std::endl;
+    }
 
-        Client cli(KEYMAP_US);
-        if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
-        {
-            std::cout << "Fail to init cli" << std::endl;
-        }
-        serv.Start();
-        cli.Join();
-        serv.Join();
+    Client cli(kmap);
+    if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
+    {
+	std::cout << "Fail to init cli" << std::endl;
+    }
+    serv.Start();
+    cli.Join();
+    serv.Join();
 }
 
-void	Menu::joinServer(InputBox *box)
+void	Menu::joinServer(InputBox *box, KeysMap kmap)
 {
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "ip  : " << box->getInput("ip") << std::endl;
     std::cout << "port: " << box->getInput("port") << std::endl;
-    Client cli(KEYMAP_US);
+    Client cli(kmap);
     if (!cli.Start(box->getInput("ip"), box->getInput("port"), box->getInput("name")))
     {
 	std::cout << "Fail to init cli" << std::endl;
@@ -44,25 +49,46 @@ void	Menu::joinServer(InputBox *box)
     cli.Join();
 }
 
-void	Menu::createServer(InputBox *box)
+void	Menu::createServer(InputBox *box, KeysMap kmap)
 {
-        Server serv;
-        if (serv.Initialize("0.0.0.0", "9000", 2) == false)
-        {
-            std::cout << "Fail to init serv" << std::endl;
-        }
-
-        Client cli(KEYMAP_US);
-        if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
-        {
-            std::cout << "Fail to init cli" << std::endl;
-        }
-        serv.Start();
-        cli.Join();
-        serv.Join();
     std::cout << "name: " << box->getInput("name") << std::endl;
     std::cout << "mapx: " << box->getInput("x") << std::endl;
     std::cout << "mapy: " << box->getInput("y") << std::endl;
     std::cout << "bot: " << box->getInput("bot") << std::endl;
+    std::cout << "time: " << box->getInput("time") << std::endl;
+    Server serv;
+    if (serv.Initialize("0.0.0.0", "9000", 2, to<unsigned int>(box->getInput("bot")), (to<unsigned int>(box->getInput("time")) * 1000), to<unsigned int>(box->getInput("x")), to<unsigned int>(box->getInput("y")), box->getInput("map")) == false)
+    {
+	std::cout << "Fail to init serv" << std::endl;
+    }
+
+    Client cli(kmap);
+    if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
+    {
+	std::cout << "Fail to init cli" << std::endl;
+    }
+    serv.Start();
+    cli.Join();
+    serv.Join();
 }
 
+void	Menu::startWithMap(InputBox *box, InputBox *map, KeysMap kmap)
+{
+    std::cout << "map: " << map->getInput("map") << std::endl;
+    std::cout << "name: " << box->getInput("name") << std::endl;
+
+    Server serv;
+    if (serv.Initialize("0.0.0.0", "9000", 2, to<unsigned int>(box->getInput("bot")), (to<unsigned int>(box->getInput("time")) * 1000), to<unsigned int>(box->getInput("x")), to<unsigned int>(box->getInput("y")), map->getInput("map")) == false)
+    {
+	std::cout << "Fail to init serv" << std::endl;
+    }
+
+    Client cli(kmap);
+    if (!cli.Start("127.0.0.1", "9000", box->getInput("name")))
+    {
+	std::cout << "Fail to init cli" << std::endl;
+    }
+    serv.Start();
+    cli.Join();
+    serv.Join();
+}

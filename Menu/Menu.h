@@ -17,6 +17,7 @@
 #include "AObject.h"
 #include "SubMenu.h"
 #include "InputBox.h"
+#include "Client.h"
 
 class Menu : public AObject
 {
@@ -27,9 +28,10 @@ public:
     void initialize();
     void update(gdl::GameClock const&, gdl::Input &);
     void draw();
-    void startSolo(InputBox *box);
-    void joinServer(InputBox *box);
-    void createServer(InputBox *box);
+    void startSolo(InputBox *box, KeysMap);
+    void joinServer(InputBox *box, KeysMap);
+    void createServer(InputBox *box, KeysMap);
+    void startWithMap(InputBox *name, InputBox *map, KeysMap);
 
 private:
     SubMenu			menu_;
