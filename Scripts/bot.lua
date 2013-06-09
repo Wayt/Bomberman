@@ -40,7 +40,7 @@ function UpdateAI(me, diff)
 			me:DropBombIfPossible()
 		elseif me:FindNearestPlayer() == nil then
 			me:DropBombIfPossible()
-			me:MoveTosafePosition()
+			me:MoveToSafePosition()
 			tosafe = 1
 		end
 	end
