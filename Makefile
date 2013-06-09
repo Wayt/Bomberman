@@ -5,7 +5,7 @@
 ## Login <ginter_m@epitech.eu>
 ##
 ## Started on Mon May 06 13:39:56 2013 maxime ginters
-## Last update Sat Jun 08 14:37:44 2013 vincent leroy
+## Last update Sun Jun 09 17:03:30 2013 vincent leroy
 ##
 
 include Menu/menu.mk
@@ -17,7 +17,6 @@ RM	= rm -f
 CXXFLAGS	+= -Wextra -Wall -Werror
 CXXFLAGS	+= -I. -IShared -IClient -IServer -IGraphic -ILibrary -IServer/AI -IMenu
 CXXFLAGS	+= -fopenmp
-CXXFLAGS	+= -ggdb3
 CXXFLAGS	+= -I/usr/include/lua5.1
 
 UNAME	:= $(shell uname -a)

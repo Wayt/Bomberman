@@ -21,6 +21,8 @@ MenuMonitor::MenuMonitor(Client *cli, uint32 width, uint32 height) : initm_(fals
 
 void MenuMonitor::initialize(void)
 {
+    window_.setWidth(800);
+    window_.setHeight(600);
     window_.create();
     _cam.initialize();
     if (!initm_){

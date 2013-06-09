@@ -11,8 +11,9 @@
 #ifndef MENUMONITOR_H_
 # define MENUMONITOR_H_
 
-#define MAP_MIN_X 5
-#define MAP_MIN_Y 5
+#define MAP_MIN_X 10
+#define MAP_MIN_Y 10
+#define DEFAULT_TIME 60
 
 #include "SubObject.h"
 #include "MenuCamera.h"

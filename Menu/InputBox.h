@@ -25,6 +25,7 @@ class InputText: public AObject
 	void 		setColor(const gdl::Color &c);
 	std::string 	getValue();
 	void		setValue(const std::string &);
+	void		setValue(unsigned int);
 	void 		setKey(const std::string &key);
 	std::string 	getKey();
 	void		append(char);
@@ -47,23 +48,30 @@ class InputBox : public SelectBox
     public:
 	InputBox (float, float, float, float);
 	~InputBox ();
+	enum keyType {
+	    NUM,
+	    PNUM,
+	    ALPHANUM,
+	};
 
 	virtual void draw ();
 	virtual void update (gdl::GameClock const&clock, gdl::Input &input);
 
 	virtual bool select ();
 	void handleKeyDown(gdl::Keys::Key);
+	void	setValue(const std::string &key, unsigned int v);
 
 	virtual bool moveUp();
 	virtual bool moveDown();
 
-	void	addInput(const std::string &key, int x, int y, int size, const gdl::Color &c);
+	void	addInput(const std::string &key, int x, int y, int size, const gdl::Color &c, keyType );
 	std::string getInput (const std::string &);
 
     private:
 	std::list<InputText *>	inputs_;
 	unsigned int		current_;
 	bool			mvt_;
+	keyType			keytype_;
 };
 
 #endif

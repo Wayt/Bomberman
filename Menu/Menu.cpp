@@ -16,6 +16,7 @@
 #include "Image.hpp"
 #include "CheckBox.h"
 #include "Highscores.h"
+#include "MenuMonitor.h"
 
 Menu::Menu(float x, float y, float z, float o) :
     AObject(x, y, z, o), menu_(_pos.x, _pos.y, _pos.z, _rot.x)
@@ -36,17 +37,21 @@ Menu::Menu(float x, float y, float z, float o) :
     load->addBackBox("Menu/images/back.png");
 
     if ((ib = dynamic_cast<InputBox *>((*load)["map"])) != NULL)
-	ib->addInput("map", 455, 283, 25, gdl::Color(39, 39, 39, 255));
+	ib->addInput("map", 455, 283, 25, gdl::Color(39, 39, 39, 255), InputBox::ALPHANUM);
     /*}*/
 
     single->addBox("config", SelectBox::INPUTBOX);
     (*single)["config"]->setTexture("Menu/images/single_config.png");
     if ((ib = dynamic_cast<InputBox *>((*single)["config"])) != NULL){
-	ib->addInput("name", 455, 200, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("x", 455, 227, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("y", 455, 254, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("time", 455, 281, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("bot", 455, 308, 25, gdl::Color(39, 39, 39, 255));
+	ib->addInput("name", 455, 200, 25, gdl::Color(39, 39, 39, 255), InputBox::ALPHANUM);
+	ib->addInput("x", 455, 227, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("x", MAP_MIN_X);
+	ib->addInput("y", 455, 254, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("y", MAP_MIN_Y);
+	ib->addInput("time", 455, 281, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("time", DEFAULT_TIME);
+	ib->addInput("bot", 455, 308, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("bot", 0);
     }
 
     single->addBox("new", SelectBox::CHECKBOX);
@@ -64,11 +69,15 @@ Menu::Menu(float x, float y, float z, float o) :
     create->addBox("config", SelectBox::INPUTBOX);
     (*create)["config"]->setTexture("Menu/images/single_config.png");
     if ((ib = dynamic_cast<InputBox *>((*create)["config"])) != NULL){
-	ib->addInput("name", 455, 200, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("x", 455, 227, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("y", 455, 254, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("time", 455, 281, 25, gdl::Color(39, 39, 39, 255));
-	ib->addInput("bot", 455, 308, 25, gdl::Color(39, 39, 39, 255));
+	ib->addInput("name", 455, 200, 25, gdl::Color(39, 39, 39, 255), InputBox::ALPHANUM);
+	ib->addInput("x", 455, 227, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("x", MAP_MIN_X);
+	ib->addInput("y", 455, 254, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("y", MAP_MIN_Y);
+	ib->addInput("time", 455, 281, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("time", DEFAULT_TIME);
+	ib->addInput("bot", 455, 308, 25, gdl::Color(39, 39, 39, 255), InputBox::NUM);
+	ib->setValue("bot", 0);
     }
     create->addBox("start", SelectBox::CHECKBOX);
     (*create)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
@@ -80,9 +89,10 @@ Menu::Menu(float x, float y, float z, float o) :
     join->addBox("config", SelectBox::INPUTBOX);
     (*join)["config"]->setTexture("Menu/images/join_config.png");
     if ((ib = dynamic_cast<InputBox *>((*join)["config"])) != NULL){
-	ib->addInput("name", 445, 260, 25, gdl::Color(0, 255, 0, 255));
-	ib->addInput("ip", 445, 287, 25, gdl::Color(0, 255, 0, 255));
-	ib->addInput("port", 445, 314, 25, gdl::Color(0, 255, 0, 255));
+	ib->addInput("name", 445, 260, 25, gdl::Color(0, 255, 0, 255), InputBox::ALPHANUM);
+	ib->addInput("ip", 445, 287, 25, gdl::Color(0, 255, 0, 255), InputBox::PNUM);
+	ib->addInput("port", 445, 314, 25, gdl::Color(0, 255, 0, 255), InputBox::NUM);
+	ib->setValue("port", 9000);
     }
     join->addBox("start", SelectBox::CHECKBOX);
     (*join)["start"]->setTexture("Menu/images/start_game.png", "Menu/images/start_game.png");
@@ -112,7 +122,6 @@ Menu::Menu(float x, float y, float z, float o) :
     menu_.addBox("highscore", "Menu/images/highscore.png", highscore);
     menu_.addBox("credits", "Menu/images/credits.png", credits);
     menu_.addBackBox("Menu/images/quit.png");
-
     menu_.setStatus(SubObject::VISIBLE);
 }
 
